@@ -1,0 +1,20 @@
+{
+	"id" : "myBMW",
+	"name" : "My BMW",
+	"description" : "Ce plugin vous permet d'interagir avec votre voiture BMW ou Mini équipée des services Connected Drive, au même titre que l’application officielle “My BMW”.",
+	"licence" : "AGPL",
+	"author" : "Xav-74",
+	"require" : "4.0",
+	"category" : "devicecommunication",
+	"hasDependency" : false,
+	"hasOwnDeamon" : false,
+	"maxDependancyInstallTime" : 0,
+	"changelog" : "https://xav-74.github.io/Documentation/myBMW/#language#/changelog",
+	"documentation" : "https://xav-74.github.io/Documentation/myBMW/#language#/",
+	"link" : {
+		"forum" : "",
+		"video" : ""
+	},
+	"language" : ["fr_FR"],
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4"]
+}
