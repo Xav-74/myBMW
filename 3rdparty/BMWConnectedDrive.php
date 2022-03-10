@@ -29,7 +29,7 @@ class BMWConnectedDrive
 	const REMOTESERVICES_STATUS = '/remoteservices/v1/%s/state/execution';
     const NAVIGATION_INFO = '/navigation/v1/%s';
     const EFFICIENCY = '/efficiency/v1/%s';
-    const SERVICES = '/remoteservices/%s/';
+    const SERVICES = '/remote-commands/%s/';
     const MESSAGES = '/myinfo/v1';
     const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';

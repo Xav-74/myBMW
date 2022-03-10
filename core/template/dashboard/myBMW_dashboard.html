@@ -12,7 +12,7 @@
 			<div class="col-sm-6">
 		
 				<div class="row" id="picture">
-					<img src="plugins/myBMW/data/WBY7Z210107B30392.png" style="height:150px; width:300px" />
+					<img id="img_car#id#" src="" style="height:150px" />
 				</div>
 				
 				<div class="row">
@@ -97,7 +97,7 @@
 				
 				<span class="label cmdName" style="font-weight: bold">Localisation</span>
 				<div class="row" id="location">
-					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=iconCmd#gps_coordinates_id#" width="380" height="220" frameborder="0" style="border:0"></iframe>
+					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#" width="380" height="220" frameborder="0" style="border:0"></iframe>
 				</div>
 				
 				<hr class="cmdName">
@@ -120,7 +120,21 @@
 	
 	<script>
         
-      	jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
+      	jeedom.cmd.update['#id#'] =function(_options) {
+            var cmd  = $('#myFrame#id#')[0];
+			cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
+		}
+		jeedom.cmd.update['#id#']({display_value: '#gps_coordinates#'});
+		
+		
+		jeedom.cmd.update['#id#'] =function(_options) {
+            var cmd2  = $('#img_car#id#')[0];
+			cmd2.src = "/plugins/myBMW/data/"+_options.display_value+".png";
+		}
+		jeedom.cmd.update['#id#']({display_value: '#vehicle_vin#id##'});
+				
+				
+		jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
             if ( _options.display_value == "Unlocked")  {
             	$('.iconCmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green jeedomapp-lock-ouvert"></i>');
             }
@@ -261,10 +275,10 @@
 		
 		jeedom.cmd.update['#connectorStatus_id#'] = function(_options) {
            	if ( _options.display_value == 1)  {			
-				$('.iconCmd#connectorStatus_id#').empty().append('<span> Prise connectée</span>');
+				$('.iconCmd#connectorStatus_id#').empty().append('<span> Prise : connectée</span>');
 			}
 			if ( _options.display_value == 0)  {			
-				$('.iconCmd#connectorStatus_id#').empty().append('<span> Prise deconnectée</span>');
+				$('.iconCmd#connectorStatus_id#').empty().append('<span> Prise : deconnectée</span>');
 			}
         }
 		jeedom.cmd.update['#connectorStatus_id#']({display_value:'#connectorStatus#'});
@@ -286,14 +300,6 @@
            	$('.iconCmd#remaining_fuel_id#').empty().append('<span>'+' '+_options.display_value+' L'+'</span>');
         }
 		jeedom.cmd.update['#remaining_fuel_id#']({display_value:'#remaining_fuel#'});
-		
-		
-		jeedom.cmd.update['#gps_coordinates_id#'] = function(_options) {
-           	var cmd  = $('#myFrame#id#')[0];
-			cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
-        }
-		jeedom.cmd.update['#gps_coordinates_id#']({display_value:'#gps_coordinates#'});
-		
 		
 		/*jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
            	

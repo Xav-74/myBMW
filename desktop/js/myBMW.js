@@ -115,7 +115,7 @@ $('#bt_Synchronization').on('click',function() {
 				$('#div_type').append('<input id="type" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="'+data.result['driveTrain']+'" readonly>');
 				
 				$('#div_img').empty();
-				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px; width:600px" />';
+				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
 				$('#div_img').append(img);
 			
 			}

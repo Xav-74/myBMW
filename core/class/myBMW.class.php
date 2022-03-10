@@ -105,7 +105,7 @@ class myBMW extends eqLogic {
 		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 23, 'info', 'numeric');
         $this->createCmd('remaining_fuel', 'Carburant restant', 24, 'info', 'numeric');
 		
-        $this->createCmd('vehicleMessages', 'Messages', 25, 'info', 'string', ['dashboard', 'bmw_message_mmi']);
+        $this->createCmd('vehicleMessages', 'Messages', 25, 'info', 'string');
         $this->createCmd('gps_coordinates', 'Coordonnées GPS', 26, 'info', 'string');
       	
         $this->createCmd('refresh', 'Rafraichir', 27, 'action', 'other');
@@ -155,10 +155,8 @@ class myBMW extends eqLogic {
 		$version = jeedom::versionAlias($_version);
 		$replace['#version#'] = $_version;
 		
-		//$replace['#vehicle_vin#'] = $this->getConfiguration('vehicle_vin');
-		//$replace['#username#'] = $this->getConfiguration('username');
-		//$replace['#password#'] = $this->getConfiguration('password');
-					
+		$replace['#vehicle_vin'.$this->getId().'#'] = $this->getConfiguration('vehicle_vin');
+							
 		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
 
 		// Traitement des commandes infos
@@ -247,14 +245,22 @@ class myBMW extends eqLogic {
 				
 		$result = $myConnection->getVehicles();
 		$bmwCarInfo = json_decode($result->body);
-				
-		foreach ($bmwCarInfo as $vehicle)
+		
+		if ( count($bmwCarInfo) == 0 )
 		{
-			if ( $vehicle->vin == $vin )
+			log::add('myBMW', 'debug', '| Result myCar->getVehicles() : no vehicle found with services BMWConnectedDrive activated');
+			log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
+		}
+		else
+		{
+			foreach ($bmwCarInfo as $vehicle)
 			{
-				log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
-				log::add('myBMW', 'debug', '└─End of synchronisation : ['.$result->httpCode.']');
-				return $vehicle;
+				if ( $vehicle->vin == $vin )
+				{
+					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
+					log::add('myBMW', 'debug', '└─End of synchronisation : ['.$result->httpCode.']');
+					return $vehicle;
+				}
 			}
 		}
 	}
@@ -264,54 +270,62 @@ class myBMW extends eqLogic {
 		$myConnection = $this->getConnection();
 		$result = $myConnection->getVehicles();
 		$bmwCarInfo = json_decode($result->body);
-				
-		//Update infos from BMWConnectedDrive
-		foreach ($bmwCarInfo as $vehicle)
+		
+		if ( count($bmwCarInfo) == 0 )
 		{
-			if ( $vehicle->vin == $this->getConfiguration("vehicle_vin") )
+			log::add('myBMW', 'debug', '| Result myCar->getVehicles() : no vehicle found with services BMWConnectedDrive activated');
+			log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
+		}
+		else
+		{
+			//Update infos from BMWConnectedDrive
+			foreach ($bmwCarInfo as $vehicle)
 			{
-				$this->checkAndUpdateCmd('brand', $vehicle->brand);
-				$this->checkAndUpdateCmd('model', $vehicle->model);
-				$this->checkAndUpdateCmd('year', $vehicle->year);
-				$this->checkAndUpdateCmd('type', $vehicle->driveTrain);
-				
-				$this->checkAndUpdateCmd("mileage", $vehicle->status->currentMileage->mileage);
-				$this->checkAndUpdateCmd('unitOfLength', $vehicle->status->currentMileage->units);
-				$this->checkAndUpdateCmd('unitOfFuel', $vehicle->properties->fuelLevel->units);
-				
-				$this->checkAndUpdateCmd('doorLockState', $vehicle->status->doorsGeneralState);
-				$this->checkAndUpdateCmd('doorDriverFront', $vehicle->properties->doorsAndWindows->doors->driverFront);
-				$this->checkAndUpdateCmd('doorDriverRear', $vehicle->properties->doorsAndWindows->doors->driverRear);
-				$this->checkAndUpdateCmd('doorPassengerFront', $vehicle->properties->doorsAndWindows->doors->passengerFront);
-				$this->checkAndUpdateCmd('doorPassengerRear', $vehicle->properties->doorsAndWindows->doors->passengerRear);
-				$this->checkAndUpdateCmd('windowDriverFront', $vehicle->properties->doorsAndWindows->windows->driverFront);
-				$this->checkAndUpdateCmd('windowDriverRear', $vehicle->properties->doorsAndWindows->windows->driverRear);
-				$this->checkAndUpdateCmd('windowPassengerFront', $vehicle->properties->doorsAndWindows->windows->passengerFront);
-				$this->checkAndUpdateCmd('windowPassengerRear', $vehicle->properties->doorsAndWindows->windows->passengerRear);
-				$this->checkAndUpdateCmd('trunk_state', $vehicle->properties->doorsAndWindows->trunk);
-				$this->checkAndUpdateCmd('hood_state', $vehicle->properties->doorsAndWindows->hood);
-				
-				$this->checkAndUpdateCmd('chargingStatus', $vehicle->properties->chargingState->state);
-				$this->checkAndUpdateCmd('connectorStatus', $vehicle->properties->chargingState->isChargerConnected);
-				$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->properties->electricRangeAndStatus->distance->value);
-				$this->checkAndUpdateCmd('chargingLevelHv', $vehicle->properties->electricRangeAndStatus->chargePercentage);
-				
-				$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->properties->combustionRange->distance->value);
-				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->properties->fuelLevel->value);
-				
-				$messages = $vehicle->properties->checkControlMessages;
-				$table_messages = array();
-				foreach ($messages as $message) {
-					$table_messages[] = array( "title" => $message->name, "description" => $message->description, "date" => $message->timestamp);
+				if ( $vehicle->vin == $this->getConfiguration("vehicle_vin") )
+				{
+					$this->checkAndUpdateCmd('brand', $vehicle->brand);
+					$this->checkAndUpdateCmd('model', $vehicle->model);
+					$this->checkAndUpdateCmd('year', $vehicle->year);
+					$this->checkAndUpdateCmd('type', $vehicle->driveTrain);
+					
+					$this->checkAndUpdateCmd("mileage", $vehicle->status->currentMileage->mileage);
+					$this->checkAndUpdateCmd('unitOfLength', $vehicle->status->currentMileage->units);
+					$this->checkAndUpdateCmd('unitOfFuel', $vehicle->properties->fuelLevel->units);
+					
+					$this->checkAndUpdateCmd('doorLockState', $vehicle->status->doorsGeneralState);
+					$this->checkAndUpdateCmd('doorDriverFront', $vehicle->properties->doorsAndWindows->doors->driverFront);
+					$this->checkAndUpdateCmd('doorDriverRear', $vehicle->properties->doorsAndWindows->doors->driverRear);
+					$this->checkAndUpdateCmd('doorPassengerFront', $vehicle->properties->doorsAndWindows->doors->passengerFront);
+					$this->checkAndUpdateCmd('doorPassengerRear', $vehicle->properties->doorsAndWindows->doors->passengerRear);
+					$this->checkAndUpdateCmd('windowDriverFront', $vehicle->properties->doorsAndWindows->windows->driverFront);
+					$this->checkAndUpdateCmd('windowDriverRear', $vehicle->properties->doorsAndWindows->windows->driverRear);
+					$this->checkAndUpdateCmd('windowPassengerFront', $vehicle->properties->doorsAndWindows->windows->passengerFront);
+					$this->checkAndUpdateCmd('windowPassengerRear', $vehicle->properties->doorsAndWindows->windows->passengerRear);
+					$this->checkAndUpdateCmd('trunk_state', $vehicle->properties->doorsAndWindows->trunk);
+					$this->checkAndUpdateCmd('hood_state', $vehicle->properties->doorsAndWindows->hood);
+					
+					$this->checkAndUpdateCmd('chargingStatus', $vehicle->properties->chargingState->state);
+					$this->checkAndUpdateCmd('connectorStatus', $vehicle->properties->chargingState->isChargerConnected);
+					$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->properties->electricRangeAndStatus->distance->value);
+					$this->checkAndUpdateCmd('chargingLevelHv', $vehicle->properties->electricRangeAndStatus->chargePercentage);
+					
+					$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->properties->combustionRange->distance->value);
+					$this->checkAndUpdateCmd('remaining_fuel', $vehicle->properties->fuelLevel->value);
+					
+					$messages = $vehicle->properties->checkControlMessages;
+					$table_messages = array();
+					foreach ($messages as $message) {
+						$table_messages[] = array( "title" => $message->name, "description" => $message->description, "date" => $message->timestamp);
+					}
+					$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages,JSON_PRETTY_PRINT));
+					
+					$this->checkAndUpdateCmd('gps_coordinates', $vehicle->properties->vehicleLocation->coordinates->latitude.','.$vehicle->properties->vehicleLocation->coordinates->longitude);
+					$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s'));
+					
+					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
+					log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
+					return $vehicle;
 				}
-				$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages,JSON_PRETTY_PRINT));
-				
-				$this->checkAndUpdateCmd('gps_coordinates', $vehicle->properties->vehicleLocation->coordinates->latitude.','.$vehicle->properties->vehicleLocation->coordinates->longitude);
-				$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s'));
-				
-				log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
-				log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
-				return $vehicle;
 			}
 		}
     }
@@ -341,36 +355,36 @@ class myBMW extends eqLogic {
     {
         $result = $this->getConnection()->doHornBlow();
         $response = json_decode($result->body);
-		log::add('myBMW', 'debug', '└─End of car event : ['.$result->httpCode.'] '.$response->remoteServiceEvent->remoteServiceType.' - '.$response->remoteServiceEvent->remoteServiceStatus.' - '.$response->remoteServiceEvent->lastUpdate);
+		log::add('myBMW', 'debug', '└─End of car event doHornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
     }
 
     public function doLightFlash()
     {
         $result = $this->getConnection()->doLightFlash();
         $response = json_decode($result->body);
-		log::add('myBMW', 'debug', '└─End of car event : ['.$result->httpCode.'] '.$response->remoteServiceEvent->remoteServiceType.' - '.$response->remoteServiceEvent->remoteServiceStatus.' - '.$response->remoteServiceEvent->lastUpdate);
-    }
+		log::add('myBMW', 'debug', '└─End of car event doLightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+	}
 
     public function doDoorLock()
     {
         $result = $this->getConnection()->doDoorLock();
         $response = json_decode($result->body);
-		log::add('myBMW', 'debug', '└─End of car event : ['.$result->httpCode.'] '.$response->remoteServiceEvent->remoteServiceType.' - '.$response->remoteServiceEvent->remoteServiceStatus.' - '.$response->remoteServiceEvent->lastUpdate);
+		log::add('myBMW', 'debug', '└─End of car event doDoorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
     }
 
     public function doDoorUnlock()
     {
         $result = $this->getConnection()->doDoorUnlock();
         $response = json_decode($result->body);
-		log::add('myBMW', 'debug', '└─End of car event : ['.$result->httpCode.'] '.$response->remoteServiceEvent->remoteServiceType.' - '.$response->remoteServiceEvent->remoteServiceStatus.' - '.$response->remoteServiceEvent->lastUpdate);
-    }
+		log::add('myBMW', 'debug', '└─End of car event doDoorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+	}
 
     public function doClimateNow()
     {
         $result = $this->getConnection()->doClimateNow();
         $response = json_decode($result->body);
-		log::add('myBMW', 'debug', '└─End of car event : ['.$result->httpCode.'] '.$response->remoteServiceEvent->remoteServiceType.' - '.$response->remoteServiceEvent->remoteServiceStatus.' - '.$response->remoteServiceEvent->lastUpdate);
-    }	
+		log::add('myBMW', 'debug', '└─End of car event doClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+	}	
 		
 }
 
