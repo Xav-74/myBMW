@@ -249,7 +249,7 @@ class myBMW extends eqLogic {
 		if ( count($bmwCarInfo) == 0 )
 		{
 			log::add('myBMW', 'debug', '| Result myCar->getVehicles() : no vehicle found with services BMWConnectedDrive activated');
-			log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
+			log::add('myBMW', 'debug', '└─End of synchronisation : ['.$result->httpCode.']');
 		}
 		else
 		{
@@ -257,7 +257,7 @@ class myBMW extends eqLogic {
 			{
 				if ( $vehicle->vin == $vin )
 				{
-					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
+					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.str_replace('\n','',json_encode($vehicle)));
 					log::add('myBMW', 'debug', '└─End of synchronisation : ['.$result->httpCode.']');
 					return $vehicle;
 				}
@@ -322,7 +322,7 @@ class myBMW extends eqLogic {
 					$this->checkAndUpdateCmd('gps_coordinates', $vehicle->properties->vehicleLocation->coordinates->latitude.','.$vehicle->properties->vehicleLocation->coordinates->longitude);
 					$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s'));
 					
-					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '.json_encode($vehicle));
+					log::add('myBMW', 'debug', '| Result myCar->getVehicles() : '. str_replace('\n','',json_encode($vehicle)));
 					log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
 					return $vehicle;
 				}
