@@ -96,25 +96,26 @@ class myBMW extends eqLogic {
         $this->createCmd('windowPassengerRear', 'Fenêtre Passager Arrière', 16, 'info', 'string');
 		$this->createCmd('trunk_state', 'Coffre', 17, 'info', 'string');
         $this->createCmd('hood_state', 'Capot Moteur', 18, 'info', 'string');
+		$this->createCmd('moonroof_state', 'Toit ouvrant', 19, 'info', 'string');
 		
-		$this->createCmd('chargingStatus', 'Etat de la charge', 19, 'info', 'string');
-		$this->createCmd('connectorStatus', 'Etat de la prise', 20, 'info', 'string');
-		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 21, 'info', 'numeric');
-        $this->createCmd('chargingLevelHv', 'Charge restante', 22, 'info', 'numeric');
+		$this->createCmd('chargingStatus', 'Etat de la charge', 20, 'info', 'string');
+		$this->createCmd('connectorStatus', 'Etat de la prise', 21, 'info', 'string');
+		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 22, 'info', 'numeric');
+        $this->createCmd('chargingLevelHv', 'Charge restante', 23, 'info', 'numeric');
         
-		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 23, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 24, 'info', 'numeric');
+		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 24, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 25, 'info', 'numeric');
 		
-        $this->createCmd('vehicleMessages', 'Messages', 25, 'info', 'string');
-        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 26, 'info', 'string');
+        $this->createCmd('vehicleMessages', 'Messages', 26, 'info', 'string');
+        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 27, 'info', 'string');
       	
-        $this->createCmd('refresh', 'Rafraichir', 27, 'action', 'other');
-        $this->createCmd('climateNow', 'Climatiser', 28, 'action', 'other');
-        $this->createCmd('doorLock', 'Verrouiller', 29, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 30, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 31, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 32, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 33, 'info', 'string');
+        $this->createCmd('refresh', 'Rafraichir', 28, 'action', 'other');
+        $this->createCmd('climateNow', 'Climatiser', 29, 'action', 'other');
+        $this->createCmd('doorLock', 'Verrouiller', 30, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 31, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 32, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 33, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 34, 'info', 'string');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -303,6 +304,7 @@ class myBMW extends eqLogic {
 					$this->checkAndUpdateCmd('windowPassengerRear', $vehicle->properties->doorsAndWindows->windows->passengerRear);
 					$this->checkAndUpdateCmd('trunk_state', $vehicle->properties->doorsAndWindows->trunk);
 					$this->checkAndUpdateCmd('hood_state', $vehicle->properties->doorsAndWindows->hood);
+					$this->checkAndUpdateCmd('moonroof_state', $vehicle->properties->doorsAndWindows->moonroof);
 					
 					$this->checkAndUpdateCmd('chargingStatus', $vehicle->properties->chargingState->state);
 					$this->checkAndUpdateCmd('connectorStatus', $vehicle->properties->chargingState->isChargerConnected);

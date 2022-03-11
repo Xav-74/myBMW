@@ -29,15 +29,15 @@
 				
 				<div class="row" id="engine">
 					<div class="col-sm-6">
-						<span class="label cmdName" style="font-weight: bold">Moteur électrique</span>
+						<i class="fa-2x fas fa-charging-station"></i><span class="label cmdName" style="font-weight: bold">Moteur électrique</span>
 						</br></br>
 						<div class="row label"><i class="fa-xl fas fa-map-pin"></i><span class="iconCmd#beRemainingRangeElectric_id#"></span></div></br>
 						<div class="row label"><i class="fa-xl fas fa-car-battery"></i><span class="iconCmd#chargingLevelHv_id#"></span></div></br>
 						<div class="row label"><i class="fa-xl fas fa-plug"></i><span class="iconCmd#connectorStatus_id#"></span></div></br>
-						<div class="row label"><i class="fa-xl fas fa-bolt"></i><span class="iconCmd#chargingStatus_id#"></span></div>
+						<div class="row label"><i class="fa-xl fas fa-charging-station"></i><span class="iconCmd#chargingStatus_id#"></span></div>
 					</div>
 					<div class="col-sm-6">
-						<span class="label cmdName" style="font-weight: bold">Moteur thermique</span>
+						<i class="fa-2x fas fa-gas-pump"></i><span class="label cmdName" style="font-weight: bold">Moteur thermique</span>
 						</br></br>
 						<div class="row label"><i class="fa-xl fas fa-map-pin"></i><span class="iconCmd#beRemainingRangeFuelKm_id#"></span></div></br>
 						<div class="row label"><i class="fa-xl fas fa-gas-pump"></i><span class="iconCmd#remaining_fuel_id#"></span></div>
@@ -77,6 +77,7 @@
 						</div>
 					</div>
 					</br>
+					<div class="row"><span class="label pull-center">Toit ouvrant : <i class="iconCmd#moonroof_state_id#"></i></span></div>
 					<div class="row"><span class="label pull-center">Coffre : <i class="iconCmd#trunk_state_id#"></i></span></div>				
 				</div>
 			</div>
@@ -97,21 +98,20 @@
 				
 				<span class="label cmdName" style="font-weight: bold">Localisation</span>
 				<div class="row" id="location">
-					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#" width="380" height="220" frameborder="0" style="border:0"></iframe>
+					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#" width="380" height="233" frameborder="0" style="border:0"></iframe>
 				</div>
 				
 				<hr class="cmdName">
 				
 				<span class="label cmdName" style="font-weight: bold">Messages</span>
 				<div class="row" id="messages">
-					<textarea id="msg_area" readonly class="form-control input-sm message" rows="12" placeholder="Messages"></textarea>
+					<textarea id="msg_area" readonly class="form-control input-sm message" rows="13" placeholder="Messages"></textarea>
 				</div>
 			
 			</div>
 			
 		</div>
 		
-		</br>
 		<div class="row">
 			<div class="label pull-center">Dernière mise à jour : <span class="iconCmd#lastUpdate_id# state"></span></div>
 		</div>
@@ -146,113 +146,139 @@
       	
 		
 		jeedom.cmd.update['#doorDriverFront_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#doorDriverFront_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#doorDriverFront_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#doorDriverFront_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#doorDriverFront_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#doorDriverFront_id#']({display_value:'#doorDriverFront#'});
 		
 		
 		jeedom.cmd.update['#doorDriverRear_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#doorDriverRear_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#doorDriverRear_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#doorDriverRear_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#doorDriverRear_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+            }
+			if ( _options.display_value == "0")  {
+              	$('.iconCmd#doorDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
 		jeedom.cmd.update['#doorDriverRear_id#']({display_value:'#doorDriverRear#'});
 		
 		
 		jeedom.cmd.update['#doorPassengerFront_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#doorPassengerFront_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#doorPassengerFront_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#doorPassengerFront_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#doorPassengerFront_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#doorPassengerFront_id#']({display_value:'#doorPassengerFront#'});
 		
 		
 		jeedom.cmd.update['#doorPassengerRear_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#doorPassengerRear_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#doorPassengerRear_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#doorPassengerRear_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#doorPassengerRear_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+            }
+			if ( _options.display_value == "0")  {
+              	$('.iconCmd#doorPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
 		jeedom.cmd.update['#doorPassengerRear_id#']({display_value:'#doorPassengerRear#'});
 		
 		
 		jeedom.cmd.update['#windowDriverFront_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#windowDriverFront_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#windowDriverFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#windowDriverFront_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#windowDriverFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#windowDriverFront_id#']({display_value:'#windowDriverFront#'});
 		
 		
 		jeedom.cmd.update['#windowDriverRear_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#windowDriverRear_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#windowDriverRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#windowDriverRear_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#windowDriverRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+            }
+			if ( _options.display_value == "0")  {
+              	$('.iconCmd#windowDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
 		jeedom.cmd.update['#windowDriverRear_id#']({display_value:'#windowDriverRear#'});
 		
 		
 		jeedom.cmd.update['#windowPassengerFront_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#windowPassengerFront_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#windowPassengerFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#windowPassengerFront_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#windowPassengerFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#windowPassengerFront_id#']({display_value:'#windowPassengerFront#'});
 		
 		
 		jeedom.cmd.update['#windowPassengerRear_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#windowPassengerRear_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#windowPassengerRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#windowPassengerRear_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#windowPassengerRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+            }
+			if ( _options.display_value == "0")  {
+              	$('.iconCmd#windowPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
 		jeedom.cmd.update['#windowPassengerRear_id#']({display_value:'#windowPassengerRear#'});
 				
       
 		jeedom.cmd.update['#trunk_state_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#trunk_state_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#trunk_state_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#trunk_state_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#trunk_state_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#trunk_state_id#']({display_value:'#trunk_state#'});
 		
       
 		jeedom.cmd.update['#hood_state_id#'] = function(_options) {
-           if ( _options.display_value == "OPENED")  {
-            	$('.iconCmd#hood_state_id#').empty().append('<i class="icon_green jeedomapp-lock-ouvert"></i>');
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#hood_state_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.iconCmd#hood_state_id#').empty().append('<i class="icon_red jeedomapp-lock-ferme"></i>');
+              	$('.iconCmd#hood_state_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
             }
 		}
 		jeedom.cmd.update['#hood_state_id#']({display_value:'#hood_state#'});
+		
+		
+		jeedom.cmd.update['#moonroof_state_id#'] = function(_options) {
+           if ( _options.display_value == "OPEN")  {
+            	$('.iconCmd#moonroof_state_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            }
+          	if ( _options.display_value == "CLOSED")  {
+              	$('.iconCmd#moonroof_state_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+            }
+			if ( _options.display_value == "0")  {
+              	$('.iconCmd#moonroof_state_id#').empty().append('<i class="fas fa-ban"></i>');
+            }
+		}
+		jeedom.cmd.update['#moonroof_state_id#']({display_value:'#moonroof_state#'});
 		
 		
 		jeedom.cmd.update['#mileage_id#'] = function(_options) {
@@ -268,7 +294,7 @@
 		
 		
 		jeedom.cmd.update['#chargingLevelHv_id#'] = function(_options) {
-           	$('.iconCmd#chargingLevelHv_id#').empty().append('<span>'+' '+_options.display_value+' %'+'</span>');
+           	$('.iconCmd#chargingLevelHv_id#').empty().append('<span>'+' Batterie : '+_options.display_value+' %'+'</span>');
         }
 		jeedom.cmd.update['#chargingLevelHv_id#']({display_value:'#chargingLevelHv#'});
 		
@@ -297,7 +323,7 @@
 		
 		
 		jeedom.cmd.update['#remaining_fuel_id#'] = function(_options) {
-           	$('.iconCmd#remaining_fuel_id#').empty().append('<span>'+' '+_options.display_value+' L'+'</span>');
+           	$('.iconCmd#remaining_fuel_id#').empty().append('<span>'+' Volume : '+_options.display_value+' L'+'</span>');
         }
 		jeedom.cmd.update['#remaining_fuel_id#']({display_value:'#remaining_fuel#'});
 		
@@ -334,7 +360,7 @@
 	}
 	
 	.myBMW_widget #engine {
-		margin-top: 10px;
+		margin-top: 15px;
 		margin-bottom: 15px;
 	}
 	

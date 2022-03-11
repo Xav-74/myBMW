@@ -26,7 +26,7 @@ $plugin = plugin::byId('myBMW');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogic = eqLogic::byId($_GET['eqLogicId']);
 
-log::add('myBMW', 'debug', 'Retrieving raw data - eqLogicId ' . $_GET['eqLogicId']);
+log::add('myBMW', 'debug', '┌─Command execution : Retrieving raw data - eqLogicId ' . $_GET['eqLogicId']);
 
 ?>	
 
