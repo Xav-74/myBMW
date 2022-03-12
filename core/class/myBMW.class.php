@@ -19,8 +19,8 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-if (!class_exists('BMWConnectedDrive')) {
-	require_once __DIR__ . '/../../3rdparty/BMWConnectedDrive.php';
+if (!class_exists('BMWConnectedDrive_API')) {
+	require_once __DIR__ . '/../../3rdparty/BMWConnectedDrive_API.php';
 }
 
 
@@ -225,8 +225,8 @@ class myBMW extends eqLogic {
         $bmwVin = $this->getConfiguration("vehicle_vin");
         $bmwUsername = $this->getConfiguration("username");
         $bmwPassword = $this->getConfiguration("password");
-		$myCar = new BMWConnectedDrive($bmwVin, $bmwUsername, $bmwPassword);
-		log::add('myBMW', 'debug', '| Connection car vin :'.$bmwVin.' with username : '.$bmwUsername);
+		$myCar = new BMWConnectedDrive_API($bmwVin, $bmwUsername, $bmwPassword);
+		log::add('myBMW', 'debug', '| Connection car vin : '.$bmwVin.' with username : '.$bmwUsername);
 		
 		return $myCar;
 	}
@@ -234,8 +234,8 @@ class myBMW extends eqLogic {
 	public function synchronize($vin, $username, $password)
     {
 		log::add('myBMW', 'debug', '┌─Command execution : synchronize');
-		$myConnection = new BMWConnectedDrive($vin, $username, $password);
-		log::add('myBMW', 'debug', '| Connection car vin :'.$vin.' with username : '.$username);
+		$myConnection = new BMWConnectedDrive_API($vin, $username, $password);
+		log::add('myBMW', 'debug', '| Connection car vin : '.$vin.' with username : '.$username);
 		
 		$filename = dirname(__FILE__).'/../../data/'.$vin.'.png';
 		$result = $myConnection->getPictures();
