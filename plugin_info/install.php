@@ -28,7 +28,7 @@ function myBMW_update() {
 
 	// Mise à jour de l'ensemble des commandes pour chaque équipement
     log::add('myBMW', 'debug', 'Mise à jour en cours des commandes du plugin MyBMW');
-    foreach (eqLogic::byType('verisure') as $eqLogic) {
+    foreach (eqLogic::byType('myBMW') as $eqLogic) {
         $eqLogic->save();
         log::add('myBMW', 'debug', 'Mise à jour des commandes effectuée pour l\'équipement '. $eqLogic->getHumanName());
     }

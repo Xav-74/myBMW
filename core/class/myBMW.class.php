@@ -314,12 +314,16 @@ class myBMW extends eqLogic {
 					$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->properties->combustionRange->distance->value);
 					$this->checkAndUpdateCmd('remaining_fuel', $vehicle->properties->fuelLevel->value);
 					
-					$messages = $vehicle->properties->checkControlMessages;
+					$control_messages = $vehicle->status->checkControlMessages;
+					$services_messages = $vehicle->status->requiredServices;
 					$table_messages = array();
-					foreach ($messages as $message) {
-						$table_messages[] = array( "title" => $message->name, "description" => $message->description, "date" => $message->timestamp);
+					foreach ($control_messages as $message) {
+						$table_messages[] = array( "criticalness" => $message->criticalness, "title" => $message->title, "description" => $message->longDescription, "date" => date('d/m/Y H:i:s', strtotime($message->timestamp)) );
 					}
-					$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages,JSON_PRETTY_PRINT));
+					foreach ($services_messages as $message) {
+						$table_messages[] = array( "criticalness" => $message->criticalness, "title" => $message->title, "description" => $message->longDescription.' '.$message->subtitle, "date" => date('d/m/Y') );
+					}
+					$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 					
 					$this->checkAndUpdateCmd('gps_coordinates', $vehicle->properties->vehicleLocation->coordinates->latitude.','.$vehicle->properties->vehicleLocation->coordinates->longitude);
 					$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s'));
