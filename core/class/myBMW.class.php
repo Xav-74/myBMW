@@ -157,6 +157,7 @@ class myBMW extends eqLogic {
 		$replace['#version#'] = $_version;
 		
 		$replace['#vehicle_vin'.$this->getId().'#'] = $this->getConfiguration('vehicle_vin');
+		$replace['#vehicle_type'.$this->getId().'#'] = $this->getConfiguration('vehicle_type');
 							
 		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
 
