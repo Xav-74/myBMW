@@ -144,6 +144,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								
+								<div class="form-group">		
+									<label class="col-sm-6 control-label">{{Marque}}</label>
+									<div class="col-sm-6">
+										<select id="sel_brand" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule">
+											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
+											<option value="1">BMW</option>
+											<option value="2">Mini</option>
+										</select>
+									</div>
+								</div>   
+								
 								<div id="div_vin" class="form-group">		
 									<label class="col-sm-6 control-label">{{VIN}}</label>
 									<div class="col-sm-6">
@@ -151,14 +162,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								
-								</br></br>
-								
-								<div class="form-group">		
-									<label class="col-sm-6 control-label">{{Marque}}</label>
-									<div id="div_brand" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule" value="" readonly>
+								<div class="form-group">
+									<label class="col-sm-6 control-label">{{Widget personnalisé :}}</label>
+									<div class="col-sm-6">
+										<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>
 									</div>
 								</div>
+								
+								</br></br>
 								
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Modèle}}</label>

@@ -1,7 +1,7 @@
 <?php
 
 /**
-A PHP Client for BMW Connected Drive API
+A PHP Client for Mini Connected Drive API
 Origin: https://github.com/bluewalk/BMWConnecteDrive
 Modified by Xav-74
 **/
@@ -15,23 +15,27 @@ if (!class_exists('Auth_Config')) {
 }
 
 
-class BMWConnectedDrive_API
+class MiniConnectedDrive_API
 {
-    //BMW URLs - subject to change
+    //Mini URLs - subject to change
     const AUTH_URL = 'https://customer.bmwgroup.com/gcdm/oauth/authenticate';
     const AUTH_TOKEN_URL = 'https://customer.bmwgroup.com/gcdm/oauth/token';
 	const API_URL = 'https://cocoapi.bmwgroup.com';
-    const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
+    const API_URL_MINI = 'https://b2vapi.bmwgroup.com/api/vehicle';
+	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
-	const VEHICLES = '/eadrax-vcs/v1/vehicles?apptimezone=%s&appDateTime=%s&tireGuardMode=ENABLED';
+	const VEHICLE_INFO = '/dynamic/v1/%s';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
-	const ACTIONS = '/eadrax-vrccs/v2/presentation';
-	const SERVICES = '/remote-commands/%s/';
-	const REMOTE_DOOR_LOCK= 'door-lock';
-    const REMOTE_DOOR_UNLOCK= 'door-unlock';
-    const REMOTE_HORN_BLOW = "horn-blow";
-    const REMOTE_LIGHT_FLASH = "light-flash";
-    const REMOTE_CLIMATE_NOW = "climate-now";
+	const REMOTESERVICES_STATUS = '/remoteservices/v1/%s/state/execution';
+    const NAVIGATION_INFO = '/navigation/v1/%s';
+    const EFFICIENCY = '/efficiency/v1/%s';
+    const SERVICES = '/remoteservices/v1/%s/';
+    const MESSAGES = '/myinfo/v1';
+    const REMOTE_DOOR_LOCK= 'RDL';
+    const REMOTE_DOOR_UNLOCK= 'RDU';
+    const REMOTE_HORN_BLOW = "RHB";
+    const REMOTE_LIGHT_FLASH = "RLF";
+    const REMOTE_CLIMATE_NOW = "RCN";
     const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		302 => 'FOUND',
@@ -296,10 +300,8 @@ class BMWConnectedDrive_API
 	public function getVehicles()
     {
         $this->_checkAuth();
-		$headers = ['x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)'];
-        return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
+		return $this->_request($this::API_URL_MINI . sprintf($this::VEHICLE_INFO, $this->auth_config->getVin()), 'GET', null, []);
 	}
-
 
 	public function getPictures()
     {
@@ -312,12 +314,33 @@ class BMWConnectedDrive_API
 		
 	}
 
-
-    public function doLightFlash()
+	/*public function getRemoteServicesStatus()
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_LIGHT_FLASH, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::REMOTESERVICES_STATUS, $this->auth_config->getVin()), 'GET', null, $headers);
+    }*/
+
+
+    /*public function getNavigationInfo()
+    {
+        $this->_checkAuth();
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::NAVIGATION_INFO, $this->auth_config->getVin()), 'GET', null, []);
+    }*/
+
+
+    /*public function getEfficiency()
+    {
+        $this->_checkAuth();
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::EFFICIENCY, $this->auth_config->getVin()), 'GET', null, []);
+	}*/
+
+
+    public function doLightFlash()
+    {
+    	$this->_checkAuth();
+		$headers = ['Accept: application/json'];
+        return $this->_request($this::API_URL_MINI .  sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_LIGHT_FLASH, 'POST', null, $headers);
     }
 
 
@@ -325,7 +348,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', null, $headers);
+        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', null, $headers);
     }
 
 
@@ -333,7 +356,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_LOCK, 'POST', null, $headers);
+        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_LOCK, 'POST', null, $headers);
     }
 
 
@@ -341,7 +364,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_UNLOCK, 'POST', null, $headers);
+        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_UNLOCK, 'POST', null, $headers);
     }
 
 
@@ -349,17 +372,17 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
+        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
     }
 
 
-    public function doSendMessage($title, $message)
+    /*public function doSendMessage($title, $message)
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
 		$data = ['vins'=>$this->auth_config->getVin(), 'message' => $message, 'subject' => $title];
         return $this->_request($this::API_URL . $this::MESSAGES, 'POST', $data, $headers);
-    }
+    }*/
 }
 
 ?>

@@ -31,7 +31,7 @@ try {
     }
 	
 	if (init('action') == 'synchronize') {
-		$result = myBMW::synchronize(init('vin'),init('username'),init('pwd'));
+		$result = myBMW::synchronize(init('vin'),init('username'),init('pwd'),init('brand'));
 		ajax::success($result);
 	}
 		

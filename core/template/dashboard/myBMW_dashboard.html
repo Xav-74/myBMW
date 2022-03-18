@@ -147,7 +147,7 @@
             if ( _options.display_value == "Unlocked")  {
             	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green jeedomapp-lock-ouvert"></i>');
             }
-          	if ( _options.display_value == "Locked")  {
+          	if ( _options.display_value == "Locked" || "SECURED")  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red jeedomapp-lock-ferme"></i>');
             }
 			if ( _options.display_value == "Unknown")  {
@@ -365,16 +365,17 @@
            	$('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>');
         }
 		jeedom.cmd.update['#lastUpdate_id#']({display_value:'#lastUpdate#'});
-		
-		
+
+
 		jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
            	var messages = jQuery.parseJSON(_options.display_value);
+			console.log(messages);
 			var table_html= "";
 			$('.nb_message#id#').empty().append('<span>'+'('+Object.keys(messages).length+')'+'</span>');
 			
 			table_html += '<ul class="list-group" style="text-align: left">';
 			jQuery.each(messages,function(key,message){
-				table_html += '<li class="list-group-item" style="margin-bottom: 10px"><span class="label cmdName">'+message.date+'  -  '+message.criticalness+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName">'+message.description+'</span></li>'
+				table_html += '<li class="list-group-item" style="margin-bottom: 10px"><span class="label cmdName">'+message.date+'  -  '+message.criticalness+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
 			});
 			table_html += '</ul>';
 			$('.table_message#id#').empty().append(table_html);
