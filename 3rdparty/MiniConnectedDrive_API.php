@@ -26,16 +26,17 @@ class MiniConnectedDrive_API
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
 	const VEHICLE_INFO = '/dynamic/v1/%s';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
-	const REMOTESERVICES_STATUS = '/remoteservices/v1/%s/state/execution';
-    const NAVIGATION_INFO = '/navigation/v1/%s';
+	const NAVIGATION_INFO = '/navigation/v1/%s';
     const EFFICIENCY = '/efficiency/v1/%s';
-    const SERVICES = '/remoteservices/v1/%s/';
-    const MESSAGES = '/myinfo/v1';
-    const REMOTE_DOOR_LOCK= 'RDL';
-    const REMOTE_DOOR_UNLOCK= 'RDU';
-    const REMOTE_HORN_BLOW = "RHB";
-    const REMOTE_LIGHT_FLASH = "RLF";
-    const REMOTE_CLIMATE_NOW = "RCN";
+    const ACTIONS = '/eadrax-vrccs/v2/presentation';
+	const SERVICES = '/remote-commands/%s/';
+	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
+	const REMOTE_DOOR_LOCK= 'door-lock';
+    const REMOTE_DOOR_UNLOCK= 'door-unlock';
+    const REMOTE_HORN_BLOW = "horn-blow";
+    const REMOTE_LIGHT_FLASH = "light-flash";
+    const REMOTE_CLIMATE_NOW = "climate-now";
+	const MESSAGES = '/myinfo/v1';
     const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		302 => 'FOUND',
@@ -340,7 +341,7 @@ class MiniConnectedDrive_API
     {
     	$this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL_MINI .  sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_LIGHT_FLASH, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_LIGHT_FLASH, 'POST', null, $headers);
     }
 
 
@@ -348,7 +349,7 @@ class MiniConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', null, $headers);
     }
 
 
@@ -356,7 +357,7 @@ class MiniConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_LOCK, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_LOCK, 'POST', null, $headers);
     }
 
 
@@ -364,7 +365,7 @@ class MiniConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_UNLOCK, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_UNLOCK, 'POST', null, $headers);
     }
 
 
@@ -372,9 +373,17 @@ class MiniConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL_MINI . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
     }
 
+
+	public function getRemoteServiceStatus($action_type, $event_id)
+	{
+		$this->_checkAuth();
+		$headers = ['Accept: application/json'];
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $action_type . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'GET', null, $headers);
+	}
+	
 
     /*public function doSendMessage($title, $message)
     {

@@ -27,6 +27,7 @@ class BMWConnectedDrive_API
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
+	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';
     const REMOTE_HORN_BLOW = "horn-blow";
@@ -353,13 +354,12 @@ class BMWConnectedDrive_API
     }
 
 
-    public function doSendMessage($title, $message)
-    {
-        $this->_checkAuth();
+	public function getRemoteServiceStatus($action_type, $event_id)
+	{
+		$this->_checkAuth();
 		$headers = ['Accept: application/json'];
-		$data = ['vins'=>$this->auth_config->getVin(), 'message' => $message, 'subject' => $title];
-        return $this->_request($this::API_URL . $this::MESSAGES, 'POST', $data, $headers);
-    }
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $action_type . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'GET', null, $headers);
+	}
 }
 
 ?>

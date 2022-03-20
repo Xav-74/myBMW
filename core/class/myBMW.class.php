@@ -455,35 +455,30 @@ class myBMW extends eqLogic {
         $result = $this->getConnection()->doHornBlow();
         $response = json_decode($result->body);
 		log::add('myBMW', 'debug', '└─End of car event doHornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshCarInfos();
-    }
+	}
 
     public function doLightFlash()
     {
         $result = $this->getConnection()->doLightFlash();
         $response = json_decode($result->body);
 		log::add('myBMW', 'debug', '└─End of car event doLightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshCarInfos();
 	}
 
     public function doDoorLock()
     {
-        $result = $this->getConnection()->doDoorLock();
+        $myConnection = $this->getConnection();
+		$result = $myConnection->doDoorLock();
         $response = json_decode($result->body);
 		log::add('myBMW', 'debug', '└─End of car event doDoorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshCarInfos();
-    }
+		//$status = $myConnection->getRemoteServiceStatus('door-lock', $response->eventId);
+		//log::add('myBMW', 'debug', '┌─Command execution : getRemoteServiceStatus() : ['.$result->httpCode.'] - '.$status->body);
+	}
 
     public function doDoorUnlock()
     {
         $result = $this->getConnection()->doDoorUnlock();
         $response = json_decode($result->body);
 		log::add('myBMW', 'debug', '└─End of car event doDoorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshCarInfos();
 	}
 
     public function doClimateNow()
@@ -491,8 +486,6 @@ class myBMW extends eqLogic {
         $result = $this->getConnection()->doClimateNow();
         $response = json_decode($result->body);
 		log::add('myBMW', 'debug', '└─End of car event doClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshCarInfos();
 	}	
 		
 }
