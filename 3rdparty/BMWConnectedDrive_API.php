@@ -27,6 +27,7 @@ class BMWConnectedDrive_API
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
+	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';
@@ -354,11 +355,17 @@ class BMWConnectedDrive_API
     }
 
 
-	public function getRemoteServiceStatus($action_type, $event_id)
+	public function getRemoteServiceStatus($event_id)
 	{
 		$this->_checkAuth();
-		$headers = ['Accept: application/json'];
-		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $action_type . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'GET', null, $headers);
+		$headers = [
+			'Accept: application/json',
+			'user-agent: Dart/2.13 (dart:io)',
+            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'Authorization: Bearer '.$this->auth_token->getToken(),
+			'accept-language: en',
+        ];
+		return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'POST', null, $headers);
 	}
 }
 

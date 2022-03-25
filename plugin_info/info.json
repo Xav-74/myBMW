@@ -1,7 +1,7 @@
 {
 	"id" : "myBMW",
 	"name" : "My BMW",
-	"description" : "Ce plugin vous permet d'interagir avec votre voiture BMW ou Mini équipée des services Connected Drive, au même titre que l’application officielle “My BMW”.",
+	"description" : "Ce plugin vous permet d'interagir avec votre voiture BMW ou Mini équipée des services Connected Drive, au même titre que l’application officielle “My BMW”. Vous retrouverez les principales fonctionnalités de l’application : détail de votre véhicule / localisation / verrouillage et déverrouillage à distance / lancement de la ventilation / appel de phares / klaxon.",
 	"licence" : "AGPL",
 	"author" : "Xav-74",
 	"require" : "4.0",
@@ -16,5 +16,5 @@
 		"video" : ""
 	},
 	"language" : ["fr_FR"],
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4"]
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4", "atlas"]
 }

@@ -150,7 +150,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<select id="sel_brand" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule">
 											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
 											<option value="1">BMW</option>
-											<option value="2">Mini</option>
+											<option value="2">MINI</option>
 										</select>
 									</div>
 								</div>   
@@ -223,7 +223,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="col-sm-6 control-label">{{Actions}}</label>	
 									<div class="col-sm-6">
 										<a class="btn btn-danger btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
-										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="fas fa-sync"></i> {{Données brutes}}</a>
+										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
 									</div>	
 								</div>
 							
