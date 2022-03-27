@@ -12,9 +12,9 @@
 	"changelog" : "https://xav-74.github.io/Documentation/myBMW/#language#/changelog",
 	"documentation" : "https://xav-74.github.io/Documentation/myBMW/#language#/",
 	"link" : {
-		"forum" : "",
+		"forum" : "https://community.jeedom.com/t/plugin-my-bmw-presentation-actualites/81759",
 		"video" : ""
 	},
 	"language" : ["fr_FR"],
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4", "atlas"]
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4","atlas"]
 }
