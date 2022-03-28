@@ -146,10 +146,10 @@
 				
 		jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
             if ( _options.display_value == "Unlocked" || _options.display_value == "UNLOCKED" )  {
-            	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green jeedomapp-lock-ouvert"></i>');
+            	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red jeedomapp-lock-ouvert"></i>');
             }
           	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SECURED"  || _options.display_value == "SELECTIVELOCKED" )  {
-              	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red jeedomapp-lock-ferme"></i>');
+              	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green jeedomapp-lock-ferme"></i>');
             }
 			if ( _options.display_value == "Unknown" || _options.display_value == "not available" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x fas fa-ban"></i>');
@@ -160,10 +160,10 @@
 		
 		jeedom.cmd.update['#doorDriverFront_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#doorDriverFront_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -174,10 +174,10 @@
 		
 		jeedom.cmd.update['#doorDriverRear_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#doorDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -188,10 +188,10 @@
 		
 		jeedom.cmd.update['#doorPassengerFront_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -202,10 +202,10 @@
 		
 		jeedom.cmd.update['#doorPassengerRear_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -216,10 +216,10 @@
 		
 		jeedom.cmd.update['#windowDriverFront_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+              	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#windowDriverFront_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -230,10 +230,10 @@
 		
 		jeedom.cmd.update['#windowDriverRear_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+              	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#windowDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -244,10 +244,10 @@
 		
 		jeedom.cmd.update['#windowPassengerFront_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+              	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -258,10 +258,10 @@
 		
 		jeedom.cmd.update['#windowPassengerRear_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+              	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -272,10 +272,10 @@
       
 		jeedom.cmd.update['#trunk_state_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#trunk_state_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -286,10 +286,10 @@
       
 		jeedom.cmd.update['#hood_state_id#'] = function(_options) {
             if ( _options.display_value == "OPEN")  {
-            	$('.Cmd#hood_state_id#').empty().append('<i class="icon_green jeedom-porte-ouverte"></i>');
+            	$('.Cmd#hood_state_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED")  {
-              	$('.Cmd#hood_state_id#').empty().append('<i class="icon_red jeedom-porte-ferme"></i>');
+              	$('.Cmd#hood_state_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#hood_state_id#').empty().append('<i class="fas fa-ban"></i>');
@@ -300,10 +300,10 @@
 		
 		jeedom.cmd.update['#moonroof_state_id#'] = function(_options) {
             if ( _options.display_value == "OPEN" || _options.display_value != "0" || _options.display_value != "CLOSED" )  {
-            	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_green jeedom-fenetre-ouverte"></i>');
+            	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED" || _options.display_value == "0" )  {
-              	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_red jeedom-fenetre-ferme"></i>');
+              	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
 			if ( _options.display_value == "not available")  {
               	$('.Cmd#moonroof_state_id#').empty().append('<i class="fas fa-ban"></i>');
