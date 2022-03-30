@@ -29,11 +29,13 @@ class BMWConnectedDrive_API
 	const SERVICES = '/remote-commands/%s/';
 	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
+	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';
     const REMOTE_HORN_BLOW = "horn-blow";
     const REMOTE_LIGHT_FLASH = "light-flash";
     const REMOTE_CLIMATE_NOW = "climate-now";
+	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
     const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		302 => 'FOUND',
@@ -275,6 +277,7 @@ class BMWConnectedDrive_API
 		log::add('myBMW', 'debug', '| Result ' . 'refrehToken OK at time ' . time() . ' and expires in : '. $token->expires_in.' s' );
 	}
     
+	
 	private function _checkAuth()
     {
         if (!$this->auth_token->getToken())
@@ -354,6 +357,14 @@ class BMWConnectedDrive_API
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
     }
 
+	
+	public function vehicleFinder()
+    {
+        $this->_checkAuth();
+		$headers = ['Accept: application/json'];
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_VEHICLE_FINDER, 'POST', null, $headers);
+    }
+	
 
 	public function getRemoteServiceStatus($event_id)
 	{
@@ -367,6 +378,23 @@ class BMWConnectedDrive_API
         ];
 		return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'POST', null, $headers);
 	}
+	
+	
+	public function getEventPosition($event_id)
+	{
+		$this->_checkAuth();
+		$headers = [
+			'Accept: application/json',
+			'user-agent: Dart/2.13 (dart:io)',
+            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'Authorization: Bearer '.$this->auth_token->getToken(),
+			'accept-language: en',
+			'latitude: 0.000000',
+			'longitude: 0.000000',
+        ];
+		return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_POSITION, $event_id), 'POST', null, $headers);
+	}	
+	
 }
 
 ?>

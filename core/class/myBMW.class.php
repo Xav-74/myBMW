@@ -117,7 +117,15 @@ class myBMW extends eqLogic {
         $this->createCmd('doorUnlock', 'Déverrouiller', 31, 'action', 'other');
         $this->createCmd('lightFlash', 'Appel de phares', 32, 'action', 'other');
         $this->createCmd('hornBlow', 'Klaxonner', 33, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 34, 'info', 'string');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 34, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 35, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 36, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 37, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 38, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 39, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 40, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 41, 'info', 'string');
+		
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -465,40 +473,21 @@ class myBMW extends eqLogic {
 		}
     }
 
-	/*public function refreshCarNavigationInfo()
-    {
-        $bmwCarNavigationInfo = $this->getConnection()->getNavigationInfo();
-        log::add('myBMW', 'debug', '| Result myCar->getNavigationInfo() : '.serialize($bmwCarNavigationInfo->body));
-        return $bmwCarNavigationInfo;
-    }
-
-    public function refreshCarEfficiency()
-    {
-        $bmwCarEfficiency= $this->getConnection()->getEfficiency();
-        log::add('myBMW', 'debug', '| Result myCar->getEfficiency() : '.serialize($bmwCarEfficiency->body));
-        return $bmwCarEfficiency;
-    }
-
-    public function getRemoteServicesStatus()
-    {
-        $bmwRemoteServicesStatus= $this->getConnection()->getRemoteServicesStatus();
-        log::add('myBMW', 'debug', '| Result myCar->getRemoteServicesStatus() : '.serialize($bmwRemoteServicesStatus->body));
-        return $bmwRemoteServicesStatus;
-    }*/
-
-    public function doHornBlow()
+	public function doHornBlow()
     {
         $myConnection = $this->getConnection();
 		$result = $myConnection->doHornBlow();
         $response = json_decode($result->body);
 		
 		$eventStatus = '';
+		$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
 		$retry = 12;
 		while ($retry > 0 && $eventStatus != 'EXECUTED')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
 			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}		
@@ -512,12 +501,14 @@ class myBMW extends eqLogic {
         $response = json_decode($result->body);
 		
 		$eventStatus = '';
+		$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
 		$retry = 12;
 		while ($retry > 0 && $eventStatus != 'EXECUTED')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
 			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
@@ -531,12 +522,14 @@ class myBMW extends eqLogic {
         $response = json_decode($result->body);
 		
 		$eventStatus = '';
+		$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
 		$retry = 12;
 		while ($retry > 0 && $eventStatus != 'EXECUTED')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
 			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}
@@ -550,12 +543,14 @@ class myBMW extends eqLogic {
         $response = json_decode($result->body);
 		
 		$eventStatus = '';
+		$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
 		$retry = 12;
 		while ($retry > 0 && $eventStatus != 'EXECUTED')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
 			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
@@ -569,16 +564,49 @@ class myBMW extends eqLogic {
         $response = json_decode($result->body);
 		
 		$eventStatus = '';
+		$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
 		$retry = 12;
 		while ($retry > 0 && $eventStatus != 'EXECUTED')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
 			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
 		log::add('myBMW', 'debug', '└─End of car event doClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+	}
+
+	public function vehicleFinder()
+	{
+		$myConnection = $this->getConnection();
+		$result = $myConnection->vehicleFinder(); 
+		$response = json_decode($result->body);
+		
+		$eventStatus = '';
+		$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
+		$retry = 12;
+		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		{
+			$status = $myConnection->getRemoteServiceStatus($response->eventId);
+			$eventStatus = json_decode($status->body)->eventStatus;
+			log::add('myBMW', 'debug', '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
+			sleep(5);
+			$retry--;
+		}
+		
+		if ( $eventStatus == 'EXECUTED' )
+		{
+			$position = $myConnection->getEventPosition($response->eventId);
+			$eventPosition = json_decode($position->body);
+			$gps_coordinates = $eventPosition->positionData->position->latitude.','.$eventPosition->positionData->position->longitude;
+			log::add('myBMW', 'debug', '| Result getEventPosition() : ['.$position->httpCode.'] - '.$position->body);
+			log::add('myBMW', 'debug', '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+			return $gps_coordinates; 
+		}
+		else { return false; }
 	}	
 		
 }
@@ -625,7 +653,7 @@ class myBMWCmd extends cmd {
                 case 'climateNow':
                     $eqLogic->doClimateNow();
                     break;
-                default:
+				default:
                     throw new \Exception("Unknown command", 1);
                     break;
             }

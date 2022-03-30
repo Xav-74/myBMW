@@ -93,6 +93,13 @@
 					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventilerr" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-2x icon jeedomapp-wind"></i></button>
 					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});"><i class="fa-2x icon jeedomapp-ampoule-on"></i></button>
 					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});"><i class="fa-2x icon jeedomapp-audioup"></i></button>
+					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-2x icon fas fa-search-location"></i></button>
+					<script>
+						$('.cmd[data-cmd_id=#vehicleFinder_id#]').on('click', function () {
+							$('#md_modal').dialog({title: "Recherche Véhicule"});
+							$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=VehicleFinder.myBMW&eqLogic_id='+'#id#').dialog('open');
+						});
+					</script>
 				</div>
 			
 				<hr class="cmdName">
@@ -334,10 +341,10 @@
 		
 		
 		jeedom.cmd.update['#connectorStatus_id#'] = function(_options) {
-           	if ( _options.display_value == "1")  {			
+           	if ( _options.display_value == "1" )  {			
 				$('.Cmd#connectorStatus_id#').empty().append('<span> Prise : connectée</span>');
 			}
-			if ( _options.display_value == "0")  {			
+			if ( _options.display_value == "0" || _options.display_value == "" )  {			
 				$('.Cmd#connectorStatus_id#').empty().append('<span> Prise : deconnectée</span>');
 			}
 		}

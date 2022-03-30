@@ -26,19 +26,18 @@ class MiniConnectedDrive_API
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
 	const VEHICLE_INFO = '/dynamic/v1/%s';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
-	const NAVIGATION_INFO = '/navigation/v1/%s';
-    const EFFICIENCY = '/efficiency/v1/%s';
-    const ACTIONS = '/eadrax-vrccs/v2/presentation';
+	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
 	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
+	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';
     const REMOTE_HORN_BLOW = "horn-blow";
     const REMOTE_LIGHT_FLASH = "light-flash";
     const REMOTE_CLIMATE_NOW = "climate-now";
-	const MESSAGES = '/myinfo/v1';
-    const ERROR_CODE_MAPPING = [
+	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
+	const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		302 => 'FOUND',
         401 => 'UNAUTHORIZED',
@@ -305,6 +304,7 @@ class MiniConnectedDrive_API
 		return $this->_request($this::API_URL_MINI . sprintf($this::VEHICLE_INFO, $this->auth_config->getVin()), 'GET', null, []);
 	}
 
+
 	public function getPictures()
     {
 		$this->_checkAuth();
@@ -313,29 +313,7 @@ class MiniConnectedDrive_API
 			'Accept: image/png'
 		];
 		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'VehicleStatus'), 'GET', null, $headers);
-		
 	}
-
-	/*public function getRemoteServicesStatus()
-    {
-        $this->_checkAuth();
-		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::REMOTESERVICES_STATUS, $this->auth_config->getVin()), 'GET', null, $headers);
-    }*/
-
-
-    /*public function getNavigationInfo()
-    {
-        $this->_checkAuth();
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::NAVIGATION_INFO, $this->auth_config->getVin()), 'GET', null, []);
-    }*/
-
-
-    /*public function getEfficiency()
-    {
-        $this->_checkAuth();
-		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::EFFICIENCY, $this->auth_config->getVin()), 'GET', null, []);
-	}*/
 
 
     public function doLightFlash()
@@ -378,6 +356,14 @@ class MiniConnectedDrive_API
     }
 
 
+	public function vehicleFinder()
+    {
+        $this->_checkAuth();
+		$headers = ['Accept: application/json'];
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_VEHICLE_FINDER, 'POST', null, $headers);
+    }
+	
+
 	public function getRemoteServiceStatus($event_id)
 	{
 		$this->_checkAuth();
@@ -392,13 +378,20 @@ class MiniConnectedDrive_API
 	}
 	
 
-    /*public function doSendMessage($title, $message)
-    {
-        $this->_checkAuth();
-		$headers = ['Accept: application/json'];
-		$data = ['vins'=>$this->auth_config->getVin(), 'message' => $message, 'subject' => $title];
-        return $this->_request($this::API_URL . $this::MESSAGES, 'POST', $data, $headers);
-    }*/
+	public function getEventPosition($event_id)
+	{
+		$this->_checkAuth();
+		$headers = [
+			'Accept: application/json',
+			'user-agent: Dart/2.13 (dart:io)',
+            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'Authorization: Bearer '.$this->auth_token->getToken(),
+			'accept-language: en',
+			'latitude: 0.000000',
+			'longitude: 0.000000',
+        ];
+		return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_POSITION, $event_id), 'POST', null, $headers);
+	}	
 }
 
 ?>
