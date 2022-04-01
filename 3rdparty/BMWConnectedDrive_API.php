@@ -28,6 +28,7 @@ class BMWConnectedDrive_API
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
 	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
+	const SEND_POI = '/eadrax-dcs/v1/send-to-car/send-to-car';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
@@ -132,7 +133,7 @@ class BMWConnectedDrive_API
 
         curl_close($ch);
 
-        return (object)[
+		return (object)[
             'headers' => $header,
             'body' => $body,
             'httpCode' => $this->_convertHttpCode($httpCode)
@@ -332,7 +333,7 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$data = [ 'action' => 'START' ];
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=START', 'POST', null, $headers);
     }
 
 
@@ -341,7 +342,7 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$data = [ 'action' => 'STOP' ];
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=STOP', 'POST', null, $headers);
     }
 	
 	
@@ -349,6 +350,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
+		log::add('myBMW', 'debug', '| Result doChargeNow ' . $this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW );
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
     }
 	
