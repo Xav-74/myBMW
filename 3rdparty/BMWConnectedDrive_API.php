@@ -35,6 +35,7 @@ class BMWConnectedDrive_API
     const REMOTE_HORN_BLOW = "horn-blow";
     const REMOTE_LIGHT_FLASH = "light-flash";
     const REMOTE_CLIMATE_NOW = "climate-now";
+	const REMOTE_CHARGE_NOW = "charge-now";
 	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
     const ERROR_CODE_MAPPING = [
         200 => 'OK',
@@ -329,10 +330,28 @@ class BMWConnectedDrive_API
     public function doClimateNow()
     {
         $this->_checkAuth();
+		$data = [ 'action' => 'START' ];
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', null, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
     }
 
+
+	public function stopClimateNow()
+    {
+        $this->_checkAuth();
+		$data = [ 'action' => 'STOP' ];
+		$headers = ['Accept: application/json'];
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
+    }
+	
+	
+	 public function doChargeNow()
+    {
+        $this->_checkAuth();
+		$headers = ['Accept: application/json'];
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
+    }
+	
 
     public function doDoorLock()
     {

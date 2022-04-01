@@ -90,7 +90,9 @@
 					<!-- <button class="btn cmd action" data-cmd_id="#refresh_id#" title="Rafraichir" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i class="fa-2x icon jeedomapp-reload"></i></button> -->
 					<button class="btn cmd action" data-cmd_id="#doorLock_id#" title="Verrouiller" onclick="jeedom.cmd.execute({id: #doorLock_id#});"><i class="fa-2x icon jeedom-lock-ferme"></i></button>
 					<button class="btn cmd action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});"><i class="fa-2x icon jeedom-lock-ouvert"></i></button>
-					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventilerr" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-2x icon jeedomapp-wind"></i></button>
+					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-2x icon jeedomapp-wind"></i></button>
+					<button class="btn cmd action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});"><i class="fa-2x icon fas fa-ban"></i></button>
+					<button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});"><i class="fa-2x icon jeedomapp-prise"></i></button>
 					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});"><i class="fa-2x icon jeedomapp-ampoule-on"></i></button>
 					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});"><i class="fa-2x icon jeedomapp-audioup"></i></button>
 					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-2x icon fas fa-search-location"></i></button>
@@ -133,6 +135,7 @@
 			$('#electric_engine#id#').width("450px");
 		}
 		if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
+			$('#charge_btn#id#').hide();
 			$('#electric_engine#id#').hide();
 			$('#combustion_engine#id#').width("450px");
 		}
