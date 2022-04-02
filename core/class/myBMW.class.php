@@ -483,10 +483,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doHornBlow();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -495,7 +495,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}		
-		log::add('myBMW', 'debug', '└─End of car event doHornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event hornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doLightFlash()
@@ -504,10 +504,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doLightFlash();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -516,7 +516,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', 'debug', '└─End of car event doLightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event lightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doDoorLock()
@@ -525,10 +525,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doDoorLock();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -537,7 +537,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}
-		log::add('myBMW', 'debug', '└─End of car event doDoorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event doorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doDoorUnlock()
@@ -546,10 +546,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doDoorUnlock();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -558,7 +558,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', 'debug', '└─End of car event doDoorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event doorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doClimateNow()
@@ -567,10 +567,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doClimateNow();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -579,7 +579,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', 'debug', '└─End of car event doClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event climateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function stopClimateNow()
@@ -588,10 +588,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->stopClimateNow();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('stopClimateNow_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -609,10 +609,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->doChargeNow();
         $response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -621,7 +621,7 @@ class myBMW extends eqLogic {
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', 'debug', '└─End of car event doChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
 	public function vehicleFinder()
@@ -630,10 +630,10 @@ class myBMW extends eqLogic {
 		$result = $myConnection->vehicleFinder(); 
 		$response = json_decode($result->body);
 		
-		$eventStatus = '';
+		$eventStatus = 'PENDING';
 		$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus != 'EXECUTED')
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
@@ -652,7 +652,11 @@ class myBMW extends eqLogic {
 			log::add('myBMW', 'debug', '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 			return $gps_coordinates; 
 		}
-		else { return false; }
+		else 
+		{ 
+			log::add('myBMW', 'debug', '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+			return false;
+		}
 	}	
 		
 }

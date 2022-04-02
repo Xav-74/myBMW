@@ -29,6 +29,7 @@ class MiniConnectedDrive_API
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
 	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
+	const SEND_POI = '/eadrax-dcs/v1/send-to-car/send-to-car';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
 	const REMOTE_DOOR_LOCK= 'door-lock';
@@ -328,18 +329,16 @@ class MiniConnectedDrive_API
     public function doClimateNow()
     {
         $this->_checkAuth();
-		$data = [ 'action' => 'START' ];
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
+        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=START', 'POST', null, $headers);
     }
 
 
 	public function stopClimateNow()
     {
         $this->_checkAuth();
-		$data = [ 'action' => 'STOP' ];
 		$headers = ['Accept: application/json'];
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW, 'POST', $data, $headers);
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=STOP', 'POST', null, $headers);
     }
 	
 	

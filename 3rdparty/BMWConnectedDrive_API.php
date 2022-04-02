@@ -331,7 +331,6 @@ class BMWConnectedDrive_API
     public function doClimateNow()
     {
         $this->_checkAuth();
-		$data = [ 'action' => 'START' ];
 		$headers = ['Accept: application/json'];
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=START', 'POST', null, $headers);
     }
@@ -340,7 +339,6 @@ class BMWConnectedDrive_API
 	public function stopClimateNow()
     {
         $this->_checkAuth();
-		$data = [ 'action' => 'STOP' ];
 		$headers = ['Accept: application/json'];
 		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=STOP', 'POST', null, $headers);
     }
