@@ -40,6 +40,7 @@ class BMWConnectedDrive_API
 	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
     const ERROR_CODE_MAPPING = [
         200 => 'OK',
+		201 => 'CREATED',
 		302 => 'FOUND',
         401 => 'UNAUTHORIZED',
         404 => 'NOT_FOUND',
@@ -382,6 +383,21 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_VEHICLE_FINDER, 'POST', null, $headers);
+    }
+	
+	
+	public function sendPOI($json_POI)
+    {
+        $this->_checkAuth();
+		$headers = [
+			'Accept: application/json',
+			'user-agent: Dart/2.13 (dart:io)',
+            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'Authorization: Bearer '.$this->auth_token->getToken(),
+			'accept-language: en',
+        ];
+        $data = $json_POI;
+		return $this->_request($this::API_URL . $this::SEND_POI, 'POST', $data, $headers);
     }
 	
 

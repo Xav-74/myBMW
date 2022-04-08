@@ -120,15 +120,17 @@ class myBMW extends eqLogic {
         $this->createCmd('lightFlash', 'Appel de phares', 34, 'action', 'other');
         $this->createCmd('hornBlow', 'Klaxonner', 35, 'action', 'other');
 		$this->createCmd('vehicleFinder', 'Recherche véhicule', 36, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 37, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 38, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 39, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 40, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 41, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 42, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 43, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 44, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 45, 'info', 'string');
+		$this->createCmd('sendPOI', 'Envoi POI', 37, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 38, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 39, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 40, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 41, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 42, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 43, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 44, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 45, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 46, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 47, 'info', 'string');
 		
 	}
 
@@ -657,8 +659,45 @@ class myBMW extends eqLogic {
 			log::add('myBMW', 'debug', '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 			return false;
 		}
-	}	
+	}
+
+	public function sendPOI($vin, $username, $password, $brand, $json_POI)
+    {
+		$eqLogic = self::SetEqLogic($vin);
+		log::add('myBMW', 'debug', '┌─Command execution : sendPOI');
 		
+		if ( $brand == 1 )
+		{
+		$myConnection = new BMWConnectedDrive_API($vin, $username, $password);
+		log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username);
+		}
+		if ( $brand == 2 )
+		{
+		$myConnection = new MiniConnectedDrive_API($vin, $username, $password);
+		log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username);
+		}
+		
+		$eqLogic->checkAndUpdateCmd('sendPOI_status', 'PENDING');
+		$result = $myConnection->sendPOI($json_POI);
+		log::add('myBMW', 'debug', '| Send json : '.json_encode($json_POI));
+		if ( $result->httpCode == "201 - CREATED" )
+		{
+			$eqLogic->checkAndUpdateCmd('sendPOI_status', 'EXECUTED');
+		}
+		else { $eqLogic->checkAndUpdateCmd('sendPOI_status', 'ERROR'); }
+		log::add('myBMW', 'debug', '└─End of car event sendPOI : ['.$result->httpCode.']');
+	}
+	
+	public function SetEqLogic($vehicle_vin)   {
+	
+		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {
+			if ( $myBMW->getConfiguration('vehicle_vin') == $vehicle_vin )   {
+				$eqLogic = $myBMW;
+			}
+		}
+		return $eqLogic;
+	}
+	
 }
 
 

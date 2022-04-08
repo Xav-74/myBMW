@@ -103,13 +103,31 @@
 						});
 					</script>
 					<button class="btn cmd action" data-cmd_id="#sendPOI_id#" title="Envoi POI"><i class="fa-2x icon fas fa-map-marker-alt"></i></button>
+					<script>
+						$('.cmd[data-cmd_id=#sendPOI_id#]').on('click', function () {
+							$('body').append('<div id="mod_sendPOI" style="overflow-x: hidden; overflow-y: hidden;"/>');
+							$("#mod_sendPOI").dialog({
+									title: "Envoi POI",
+									closeText: '',
+									autoOpen: false,
+									modal: true,
+									height: 240,
+									width: 447
+							});
+							jQuery.ajaxSetup({async: false});
+							$('#mod_sendPOI').load('index.php?v=d&plugin=myBMW&modal=SendPOI.myBMW&eqLogic_id='+'#id#');
+							jQuery.ajaxSetup({async: true});
+														
+							$('#mod_sendPOI').dialog('open');
+						});
+					</script>
 				</div>
 			
 				<hr class="cmdName">
 				
 				<span class="label cmdName" style="font-weight: bold">Localisation</span>
 				<div class="row" id="location">
-					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#" width="380" height="238" frameborder="0" style="border:0"></iframe>
+					<iframe id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#" width="380" height="239" frameborder="0" style="border:0"></iframe>
 				</div>
 				
 				<hr class="cmdName">
@@ -450,7 +468,7 @@
 		height: 255px;
 		overflow: auto;
 	}
-		
+				
 	</style>
 	
 </div>

@@ -26,6 +26,11 @@ try {
     
     ajax::init();
 
+	if (init('action') == 'sendPOI') {
+		$result = myBMW::sendPOI(init('vin'),init('username'),init('pwd'),init('brand'),init('json'));
+		ajax::success($result);
+	}
+		
 	if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
