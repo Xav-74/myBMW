@@ -92,7 +92,7 @@
 					<button class="btn cmd action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});"><i class="fa-2x icon fas fa-lock-open"></i></button>
 					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-2x icon fas fa-fan"></i></button>
 					<button class="btn cmd action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});"><i class="fa-2x icon fas fa-ban"></i></button>
-					<button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});"><i class="fa-2x icon fas fa-plug"></i></button>
+					<!-- <button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});"><i class="fa-2x icon fas fa-plug"></i></button> -->
 					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});"><i class="fa-2x icon fas fa-lightbulb"></i></button>
 					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});"><i class="fa-2x icon fas fa-volume-up"></i></button>
 					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-2x icon fas fa-map-marked"></i></button>
@@ -154,7 +154,7 @@
 			$('#electric_engine#id#').width("450px");
 		}
 		if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
-			$('#charge_btn#id#').hide();
+			//$('#charge_btn#id#').hide();
 			$('#electric_engine#id#').hide();
 			$('#combustion_engine#id#').width("450px");
 		}
