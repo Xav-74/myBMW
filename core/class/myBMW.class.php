@@ -190,6 +190,8 @@ class myBMW extends eqLogic {
 			$replace['#' . $cmd->getLogicalId() . '_name#'] = $cmd->getName();
 			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
 			$replace['#' . $cmd->getLogicalId() . '_visible#'] = $cmd->getIsVisible();
+			//$replace['#' . $cmd->getLogicalId() . '_collect#'] = $cmd->getCollectDate();
+			//if ($cmd->getIsHistorized() == 1) { $replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor'; }
 		}
 
 		// Traitement des commandes actions

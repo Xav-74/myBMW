@@ -146,6 +146,7 @@
 		</div>
 	
 	</div>
+	#divGraphInfo#
 	
 	<script>
         
@@ -177,8 +178,11 @@
             if ( _options.display_value == "Unlocked" || _options.display_value == "UNLOCKED" )  {
             	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red fas fa-lock-open"></i>');
             }
-          	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SECURED"  || _options.display_value == "SELECTIVELOCKED" )  {
+          	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SELECTIVELOCKED" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>');
+            }
+			if (  _options.display_value == "Secured" || _options.display_value == "SECURED" )  {
+              	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>&nbsp<i class="fa-1x icon_green fas fa-shield-alt"></i>');
             }
 			if ( _options.display_value == "Unknown" || _options.display_value == "not available" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x fas fa-ban"></i>');

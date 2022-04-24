@@ -41,8 +41,8 @@ function addCmdToTable(_cmd) {
 	tr += '</td>';
 	tr += '<td>';
 	if (init(_cmd.type) == 'info') {
-		//tr += '<span><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized"/>{{Historiser}}<br/></span>';
 		tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isVisible"/>{{Affichage}}<br/></span>';
+		tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isHistorized"/>{{Historiser}}<br/></span>';
 		if (init(_cmd.subType) == 'binary') {
 			tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="display" data-l2key="invertBinary"/>{{Inverser}}</br></span> ';
 		}
