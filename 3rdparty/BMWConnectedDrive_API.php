@@ -43,6 +43,7 @@ class BMWConnectedDrive_API
 		201 => 'CREATED',
 		302 => 'FOUND',
         401 => 'UNAUTHORIZED',
+		403 => 'FORBIDDEN',
         404 => 'NOT_FOUND',
         405 => 'MOBILE_ACCESS_DISABLED',
         408 => 'VEHICLE_UNAVAILABLE',
@@ -304,8 +305,9 @@ class BMWConnectedDrive_API
 	public function getVehicles()
     {
         $this->_checkAuth();
-		$headers = ['x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)'];
-        return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
+		//$headers = ['x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)'];
+        $headers = ['x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row'];
+		return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
 	}
 
 
@@ -313,7 +315,7 @@ class BMWConnectedDrive_API
     {
 		$this->_checkAuth();
 		$headers = [
-			'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
 			'Accept: image/png'
 		];
 		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'VehicleStatus'), 'GET', null, $headers);
@@ -391,8 +393,8 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.13 (dart:io)',
-            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'user-agent: Dart/2.14 (dart:io)',
+            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -406,8 +408,8 @@ class BMWConnectedDrive_API
 		$this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.13 (dart:io)',
-            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'user-agent: Dart/2.14 (dart:io)',
+            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -420,8 +422,8 @@ class BMWConnectedDrive_API
 		$this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.13 (dart:io)',
-            'x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)',
+			'user-agent: Dart/2.14 (dart:io)',
+            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
 			'latitude: 0.000000',
