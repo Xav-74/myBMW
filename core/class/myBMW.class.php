@@ -353,7 +353,7 @@ class myBMW extends eqLogic {
 						if ( array_key_exists('year', $vehicle) ) {$this->checkAndUpdateCmd('year', $vehicle->year); } else { $this->checkAndUpdateCmd('year', 'not available'); }
 						if ( array_key_exists('driveTrain', $vehicle) ) {$this->checkAndUpdateCmd('type', $vehicle->driveTrain); } else { $this->checkAndUpdateCmd('type', 'not available'); }
 						
-						if ( array_key_exists('mileage', $vehicle->status->currentMileage) ) { $this->checkAndUpdateCmd('mileage', $vehicle->status->currentMileage->mileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
+						if ( array_key_exists('mileage', $vehicle->status->currentMileage) ) { $this->checkAndUpdateCmd('mileage', round($vehicle->status->currentMileage->mileage*1.609344)); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
 						if ( array_key_exists('units', $vehicle->status->currentMileage) ) { $this->checkAndUpdateCmd('unitOfLength', $vehicle->status->currentMileage->units);  } else { $this->checkAndUpdateCmd('unitOfLength', 'not available'); }
 						if ( array_key_exists('units', $vehicle->properties->fuelLevel) ) { $this->checkAndUpdateCmd('unitOfFuel', $vehicle->properties->fuelLevel->units); } else { $this->checkAndUpdateCmd('unitOfFuel', 'not available'); }
 						
