@@ -291,8 +291,8 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getVehicles();
 		$bmwCarInfo = json_decode($result->body);
 				
-		if ( $brand == 1 )
-		{
+		//if ( $brand == 1 )
+		//{
 			if ( count($bmwCarInfo) == 0 )
 			{
 				log::add('myBMW', 'debug', '| Result getVehicles() : no vehicle found with services BMWConnectedDrive activated');
@@ -310,9 +310,9 @@ class myBMW extends eqLogic {
 					}
 				}
 			}
-		}
+		//}
 		
-		if ( $brand == 2 )
+		/*if ( $brand == 2 )
 		{
 			if ( empty($bmwCarInfo) == true )
 			{
@@ -325,7 +325,7 @@ class myBMW extends eqLogic {
 				log::add('myBMW', 'debug', '└─End of synchronisation : ['.$result->httpCode.']');
 				return $bmwCarInfo;
 			}
-		}
+		}*/
 	}
 	
 	public function refreshCarInfos()
@@ -334,8 +334,8 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getVehicles();
 		$bmwCarInfo = json_decode($result->body);
 		
-		if ( $this->getConfiguration("vehicle_brand") == 1 )
-		{
+		//if ( $this->getConfiguration("vehicle_brand") == 1 )
+		//{
 			if ( count($bmwCarInfo) == 0 )
 			{
 				log::add('myBMW', 'debug', '| Result getVehicles() : no vehicle found with services BMWConnectedDrive activated');
@@ -406,9 +406,9 @@ class myBMW extends eqLogic {
 					}
 				}
 			}
-		}
+		//}
 			
-		if ( $this->getConfiguration("vehicle_brand") == 2 )
+		/*if ( $this->getConfiguration("vehicle_brand") == 2 )
 		{
 			if ( empty($bmwCarInfo) == true )
 			{
@@ -478,7 +478,7 @@ class myBMW extends eqLogic {
 				log::add('myBMW', 'debug', '└─End of car info refresh : ['.$result->httpCode.']');
 				return $bmwCarInfo;
 			}
-		}
+		}*/
     }
 
 	public function doHornBlow()

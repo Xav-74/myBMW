@@ -111,7 +111,7 @@ $('#bt_Synchronization').on('click',function() {
 				}
 			else  {
 				
-				if ( $('.eqLogicAttr[data-l2key=vehicle_brand]').value() == 1 )	{
+				//if ( $('.eqLogicAttr[data-l2key=vehicle_brand]').value() == 1 )	{
 					//$('#div_brand').append('<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule" value="'+data.result['brand']+'" readonly>'); 
 					$('#div_model').append('<input id="model" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="'+data.result['model']+'" readonly>'); 
 					$('#div_year').append('<input id="year" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="'+data.result['year']+'" readonly>'); 
@@ -120,8 +120,8 @@ $('#bt_Synchronization').on('click',function() {
 					$('#div_img').empty();
 					var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
 					$('#div_img').append(img);
-				}
-				if ( $('.eqLogicAttr[data-l2key=vehicle_brand]').value() == 2 )	{
+				//}
+				/*if ( $('.eqLogicAttr[data-l2key=vehicle_brand]').value() == 2 )	{
 					$('#div_model').append('<input id="model" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="Non communiqué" readonly>'); 
 					$('#div_year').append('<input id="year" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="Non communiquée" readonly>'); 
 					
@@ -140,7 +140,7 @@ $('#bt_Synchronization').on('click',function() {
 					$('#div_img').empty();
 					var img ='<img id="car_img" src="plugins/myBMW/data/' + $('.eqLogicAttr[data-l2key=vehicle_vin]').value() + '.png" style="height:300px" />';
 					$('#div_img').append(img);
-				}
+				}*/
 			}
 			$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
 		}

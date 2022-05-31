@@ -21,10 +21,11 @@ class MiniConnectedDrive_API
     const AUTH_URL = 'https://customer.bmwgroup.com/gcdm/oauth/authenticate';
     const AUTH_TOKEN_URL = 'https://customer.bmwgroup.com/gcdm/oauth/token';
 	const API_URL = 'https://cocoapi.bmwgroup.com';
-    const API_URL_MINI = 'https://b2vapi.bmwgroup.com/api/vehicle';
+    //const API_URL_MINI = 'https://b2vapi.bmwgroup.com/api/vehicle';
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
-	const VEHICLE_INFO = '/dynamic/v1/%s';
+	const VEHICLES = '/eadrax-vcs/v1/vehicles?apptimezone=%s&appDateTime=%s&tireGuardMode=ENABLED';
+	//const VEHICLE_INFO = '/dynamic/v1/%s';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
 	const SERVICES = '/remote-commands/%s/';
@@ -305,8 +306,9 @@ class MiniConnectedDrive_API
 	public function getVehicles()
     {
         $this->_checkAuth();
-		$headers = ['x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row'];
-		return $this->_request($this::API_URL_MINI . sprintf($this::VEHICLE_INFO, $this->auth_config->getVin()), 'GET', null, $headers);
+		$headers = ['x-user-agent: android(SP1A.210812.016.C1);mini;2.5.2(14945);row'];
+		return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
+		//return $this->_request($this::API_URL_MINI . sprintf($this::VEHICLE_INFO, $this->auth_config->getVin()), 'GET', null, $headers);
 	}
 
 
@@ -391,7 +393,7 @@ class MiniConnectedDrive_API
 		$headers = [
 			'Accept: application/json',
 			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+            'x-user-agent: android(SP1A.210812.016.C1);mini;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -406,7 +408,7 @@ class MiniConnectedDrive_API
 		$headers = [
 			'Accept: application/json',
 			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+            'x-user-agent: android(SP1A.210812.016.C1);mini;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -420,7 +422,7 @@ class MiniConnectedDrive_API
 		$headers = [
 			'Accept: application/json',
 			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+            'x-user-agent: android(SP1A.210812.016.C1);mini;2.5.2(14945);row',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
 			'latitude: 0.000000',
