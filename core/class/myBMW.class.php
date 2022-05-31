@@ -386,14 +386,14 @@ class myBMW extends eqLogic {
 							if ( array_key_exists('state', $message) ) { $message_state = $message->state; } else { $message_state = ''; }
 							if ( array_key_exists('title', $message) ) { $message_title = $message->title; } else { $message_title = ''; }
 							if ( array_key_exists('longDescription', $message) ) { $message_description = $message->longDescription; } else { $message_description = ''; }
-							$table_messages[] = array( "type" => "CONTROL ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => $message_description );
+							$table_messages[] = array( "type" => "CONTROL ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 						}
 						foreach ($services_messages as $message) {
 							if ( array_key_exists('subtitle', $message) ) { $message_date = $message->subtitle." "; } else { $message_date = ''; }
 							$message_state = '';
 							if ( array_key_exists('title', $message) ) { $message_title = $message->title; } else { $message_title = ''; }
 							if ( array_key_exists('longDescription', $message) ) { $message_description = $message->longDescription; } else { $message_description = ''; }							
-							$table_messages[] = array( "type" => "SERVICES ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => $message_description );
+							$table_messages[] = array( "type" => "SERVICES ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 						}
 						$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 						
