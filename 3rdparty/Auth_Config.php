@@ -19,18 +19,26 @@ class Auth_Config
      * @var string $password
      */
     protected $password = '';
+	
+	 /**
+     * The brand of the vehicle
+     * @var string $brand
+     */
+    protected $brand = '';	
 
     /**
      * Populate the Config object with the 3 variables
      * @param $vin
      * @param $username
      * @param $password
+	 * @param $brand
      */
-    public function __construct($vin, $username, $password)
+    public function __construct($vin, $username, $password, $brand)
     {
         $this->vin = $vin;
         $this->username = $username;
         $this->password = $password;
+		$this->brand = $brand;
     }
 
     /**
@@ -90,6 +98,26 @@ class Auth_Config
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
+    }
+	
+	 /**
+     * Get the brand
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * Set the brand
+     * @param $brand
+     * @return $this
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
         return $this;
     }
 }

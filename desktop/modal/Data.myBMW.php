@@ -26,7 +26,7 @@ $plugin = plugin::byId('myBMW');
 sendVarToJS('eqType', $plugin->getId());
 $eqLogic = eqLogic::byId($_GET['eqLogicId']);
 
-log::add('myBMW', 'debug', '┌─Command execution : Retrieving raw data - eqLogicId ' . $_GET['eqLogicId']);
+log::add('myBMW', 'debug', '┌─Command execution : retrieving raw data - eqLogicId ' . $_GET['eqLogicId']);
 
 ?>	
 
@@ -38,17 +38,3 @@ log::add('myBMW', 'debug', '┌─Command execution : Retrieving raw data - eqLo
 <h3>{{RefreshCarInfos() :}} </h3>
 <pre id='pre_eventlog' style='overflow: auto; width:100%;height:700px;'><?php echo json_encode($eqLogic->refreshCarInfos(),JSON_PRETTY_PRINT); ?></pre>
 </br>
-
-<!--
-<h3>{{RefreshCarNavigationInfo() :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:90%;height:500px;'><?php //echo json_encode($eqLogic->refreshCarNavigationInfo(),JSON_PRETTY_PRINT); ?></pre>
-</br>
-
-<h3>{{RefreshCarEfficiency() :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:90%;height:500px;'><?php //echo json_encode($eqLogic->refreshCarEfficiency(),JSON_PRETTY_PRINT); ?></pre>
-</br>
-
-<h3>{{GetRemoteServiceStatus() :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:90%;height:500px;'><?php //echo json_encode($eqLogic->GetRemoteServiceStatus(),JSON_PRETTY_PRINT); ?></pre>
-</br>
--->

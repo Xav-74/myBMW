@@ -21,8 +21,12 @@ class BMWConnectedDrive_API
     const AUTH_URL = 'https://customer.bmwgroup.com/gcdm/oauth/authenticate';
     const AUTH_TOKEN_URL = 'https://customer.bmwgroup.com/gcdm/oauth/token';
 	const API_URL = 'https://cocoapi.bmwgroup.com';
-    const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
+    
+	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
+	const USER_AGENT = 'Dart/2.14 (dart:io)';
+	const X_USER_AGENT = 'android(SP1A.210812.016.C1);%s;2.5.2(14945);row'; 
+	
 	const VEHICLES = '/eadrax-vcs/v1/vehicles?apptimezone=%s&appDateTime=%s&tireGuardMode=ENABLED';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
 	const ACTIONS = '/eadrax-vrccs/v2/presentation';
@@ -31,6 +35,7 @@ class BMWConnectedDrive_API
 	const SEND_POI = '/eadrax-dcs/v1/send-to-car/send-to-car';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
+	
 	const REMOTE_DOOR_LOCK= 'door-lock';
     const REMOTE_DOOR_UNLOCK= 'door-unlock';
     const REMOTE_HORN_BLOW = "horn-blow";
@@ -38,7 +43,8 @@ class BMWConnectedDrive_API
     const REMOTE_CLIMATE_NOW = "climate-now";
 	const REMOTE_CHARGE_NOW = "charge-now";
 	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
-    const ERROR_CODE_MAPPING = [
+    
+	const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		201 => 'CREATED',
 		302 => 'FOUND',
@@ -59,14 +65,14 @@ class BMWConnectedDrive_API
     private $auth_token = null;
 
 
-    public function  __construct($vin, $username, $password)
+    public function  __construct($vin, $username, $password, $brand)
     {
-        if (!$vin || !$username || !$password) {
+        if (!$vin || !$username || !$password || !$brand) {
             throw new \Exception('Config parameters missing');
         }
 
 		$this->auth_token = new Auth_Token('', 0, '', 'Bearer', '');
-		$this->_loadConfig($vin, $username, $password);
+		$this->_loadConfig($vin, $username, $password, $brand);
 				
         if (file_exists(dirname(__FILE__).'/../data/auth.json')) {
             $this->auth_token = json_decode(file_get_contents(dirname(__FILE__).'/../data/auth_token.json'), true);
@@ -143,9 +149,9 @@ class BMWConnectedDrive_API
     }
 
 
-    private function _loadConfig($vin, $username, $password)
+    private function _loadConfig($vin, $username, $password, $brand)
     {
-        $this->auth_config = new Auth_Config($vin, $username, $password);
+        $this->auth_config = new Auth_Config($vin, $username, $password, $brand);
     }
 
 
@@ -305,8 +311,7 @@ class BMWConnectedDrive_API
 	public function getVehicles()
     {
         $this->_checkAuth();
-		//$headers = ['x-user-agent: android(v1.07_20200330);bmw;1.7.0(11152)'];
-        $headers = ['x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row'];
+		$headers = [ 'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()) ];
 		return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
 	}
 
@@ -315,11 +320,10 @@ class BMWConnectedDrive_API
     {
 		$this->_checkAuth();
 		$headers = [
-			'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
 			'Accept: image/png'
 		];
 		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'VehicleStatus'), 'GET', null, $headers);
-		
 	}
 
 
@@ -351,8 +355,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = ['Accept: application/json'];
-		log::add('myBMW', 'debug', '| Result doChargeNow ' . $this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW );
-        return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
     }
 	
 
@@ -393,8 +396,8 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+			'user-agent: '. $this::USER_AGENT,
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -408,8 +411,8 @@ class BMWConnectedDrive_API
 		$this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+			'user-agent: '. $this::USER_AGENT,
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
         ];
@@ -422,8 +425,8 @@ class BMWConnectedDrive_API
 		$this->_checkAuth();
 		$headers = [
 			'Accept: application/json',
-			'user-agent: Dart/2.14 (dart:io)',
-            'x-user-agent: android(SP1A.210812.016.C1);bmw;2.5.2(14945);row',
+			'user-agent: '. $this::USER_AGENT,
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'accept-language: en',
 			'latitude: 0.000000',

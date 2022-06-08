@@ -396,7 +396,8 @@
 		
 		
 		jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
-           	$('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>');
+           	if ( _options.display_value == "not available")  { $('.Cmd#lastUpdate_id#').empty().append('<span>'+"inconnue"+'</span>'); }
+			else { $('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>'); }
         }
 		jeedom.cmd.update['#lastUpdate_id#']({display_value:'#lastUpdate#'});
 
