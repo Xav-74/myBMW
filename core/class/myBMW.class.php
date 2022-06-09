@@ -70,7 +70,9 @@ class myBMW extends eqLogic {
 
 	 /* fonction appelée avant le début de la séquence de sauvegarde */
     public function preSave() {
-    }
+    
+		$this->setLogicalId($this->getConfiguration('vehicle_vin'));
+	}
 
 	/* fonction appelée après la fin de la séquence de sauvegarde */
     public function postSave() {
@@ -265,7 +267,7 @@ class myBMW extends eqLogic {
 	
 	public function synchronize($vin, $username, $password, $brand)
     {
-		$eqLogic = self::SetEqLogic($vin);
+		$eqLogic = self::getBMWEqLogic($vin);
 		
 		log::add('myBMW', 'debug', '┌─Command execution : synchronize');
 		if ( $brand == 1 )
@@ -574,7 +576,7 @@ class myBMW extends eqLogic {
 
 	public function sendPOI($vin, $username, $password, $brand, $json_POI)
     {
-		$eqLogic = self::SetEqLogic($vin);
+		$eqLogic = self::getBMWEqLogic($vin);
 		log::add('myBMW', 'debug', '┌─Command execution : sendPOI');
 		
 		if ( $brand == 1 )
@@ -599,7 +601,7 @@ class myBMW extends eqLogic {
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event sendPOI : ['.$result->httpCode.']');
 	}
 	
-	public function SetEqLogic($vehicle_vin)
+	public function getBMWEqLogic($vehicle_vin)
 	{
 		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {
 			if ( $myBMW->getConfiguration('vehicle_vin') == $vehicle_vin )   {
