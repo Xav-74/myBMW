@@ -311,7 +311,10 @@ class BMWConnectedDrive_API
 	public function getVehicles()
     {
         $this->_checkAuth();
-		$headers = [ 'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()) ];
+		$headers = [ 
+			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
+			'accept-language: fr'
+		];
 		return $this->_request($this::API_URL . sprintf($this::VEHICLES, (new \DateTime())->getOffset(), time()), 'GET', null, $headers);
 	}
 

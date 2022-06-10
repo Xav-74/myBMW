@@ -175,16 +175,16 @@
 				
 				
 		jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
-            if ( _options.display_value == "Unlocked" || _options.display_value == "UNLOCKED" )  {
+            if ( _options.display_value == "Unlocked" || _options.display_value == "UNLOCKED" || _options.display_value == "Déverrouillé" )  {
             	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red fas fa-lock-open"></i>');
             }
-          	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SELECTIVELOCKED" )  {
+          	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SELECTIVELOCKED" || _options.display_value == "Verrouillé" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>');
             }
-			if (  _options.display_value == "Secured" || _options.display_value == "SECURED" )  {
+			if (  _options.display_value == "Secured" || _options.display_value == "SECURED" || _options.display_value == "Sécurisé" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>&nbsp<i class="fa-1x icon_green fas fa-shield-alt"></i>');
             }
-			if ( _options.display_value == "Unknown" || _options.display_value == "not available" )  {
+			if ( _options.display_value == "Unknown" || _options.display_value == "not available" || _options.display_value == "Inconnu" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x fas fa-ban"></i>');
             }
         }
