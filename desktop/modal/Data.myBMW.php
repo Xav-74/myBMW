@@ -35,6 +35,16 @@ log::add('myBMW', 'debug', '┌─Command execution : retrieving raw data - eqLo
     font-family: "CamingoCode", monospace !important;
 </style>
 
-<h3>{{RefreshCarInfos() :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:100%;height:700px;'><?php echo json_encode($eqLogic->refreshCarInfos(),JSON_PRETTY_PRINT); ?></pre>
+<h3>{{Vehicles :}} </h3>
+<pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->vehiclesInfos(),JSON_PRETTY_PRINT); ?></pre>
 </br>
+
+<h3>{{VehicleState :}} </h3>
+<pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->vehicleState(),JSON_PRETTY_PRINT); ?></pre>
+</br>
+
+<?php
+
+log::add('myBMW', 'debug', '└─End of retrieving raw data - eqLogicId ' . $_GET['eqLogicId']);
+
+?>

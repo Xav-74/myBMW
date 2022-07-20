@@ -410,7 +410,7 @@
 			
 			table_html += '<ul class="list-group" style="text-align: left">';
 			jQuery.each(messages,function(key,message){
-				table_html += '<li class="list-group-item" style="margin-bottom: 10px"><span class="label cmdName">'+message.type+message.date+message.state+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
+				table_html += '<li class="list-group-item" style="margin-bottom: 10px"><span class="label cmdName">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
 			});
 			table_html += '</ul>';
 			$('.table_message#id#').empty().append(table_html);
