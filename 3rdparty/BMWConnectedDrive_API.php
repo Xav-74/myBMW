@@ -317,7 +317,7 @@ class BMWConnectedDrive_API
 			return $this->getToken();
 		}
 
-		if ($this->auth_token->getToken() && time() > $this->auth_token->getExpires())
+		if ($this->auth_token->getToken() && time() > ($this->auth_token->getExpires()-10))
 		{
             return $this->refreshToken();
         }
