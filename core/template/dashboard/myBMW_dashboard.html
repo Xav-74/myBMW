@@ -175,16 +175,16 @@
 				
 				
 		jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
-            if ( _options.display_value == "Unlocked" || _options.display_value == "UNLOCKED" || _options.display_value == "Déverrouillé" )  {
+            if ( _options.display_value == "UNLOCKED" || _options.display_value == "PARTIALLY_LOCKED" )  {
             	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_red fas fa-lock-open"></i>');
             }
-          	if ( _options.display_value == "Locked" || _options.display_value == "LOCKED" || _options.display_value == "SELECTIVELOCKED" || _options.display_value == "Verrouillé" )  {
+          	if ( _options.display_value == "LOCKED" || _options.display_value == "SELECTIVE_LOCKED" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>');
             }
-			if (  _options.display_value == "Secured" || _options.display_value == "SECURED" || _options.display_value == "Sécurisé" )  {
+			if (  _options.display_value == "SECURED" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x icon_green fas fa-lock"></i>&nbsp<i class="fa-1x icon_green fas fa-shield-alt"></i>');
             }
-			if ( _options.display_value == "Unknown" || _options.display_value == "not available" || _options.display_value == "Inconnu" )  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
               	$('.Cmd#doorLockState_id#').empty().append('<i class="fa-2x fas fa-ban"></i>');
             }
         }
@@ -192,13 +192,13 @@
       	
 		
 		jeedom.cmd.update['#doorDriverFront_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#doorDriverFront_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#doorDriverFront_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -206,13 +206,13 @@
 		
 		
 		jeedom.cmd.update['#doorDriverRear_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#doorDriverRear_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#doorDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -220,13 +220,13 @@
 		
 		
 		jeedom.cmd.update['#doorPassengerFront_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#doorPassengerFront_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -234,13 +234,13 @@
 		
 		
 		jeedom.cmd.update['#doorPassengerRear_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#doorPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -248,13 +248,13 @@
 		
 		
 		jeedom.cmd.update['#windowDriverFront_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#windowDriverFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#windowDriverFront_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -262,13 +262,13 @@
 		
 		
 		jeedom.cmd.update['#windowDriverRear_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#windowDriverRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#windowDriverRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -276,13 +276,13 @@
 		
 		
 		jeedom.cmd.update['#windowPassengerFront_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#windowPassengerFront_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -290,13 +290,13 @@
 		
 		
 		jeedom.cmd.update['#windowPassengerRear_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#windowPassengerRear_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -304,13 +304,13 @@
 				
       
 		jeedom.cmd.update['#trunk_state_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#trunk_state_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#trunk_state_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -318,13 +318,13 @@
 		
       
 		jeedom.cmd.update['#hood_state_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN")  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#hood_state_id#').empty().append('<i class="icon_red jeedom-porte-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED")  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#hood_state_id#').empty().append('<i class="icon_green jeedom-porte-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#hood_state_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
@@ -332,13 +332,13 @@
 		
 		
 		jeedom.cmd.update['#moonroof_state_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN" || _options.display_value != "0" || _options.display_value != "CLOSED" )  {
+            if ( _options.display_value == "OPEN" || _options.display_value = "OPEN_TILT" || _options.display_value = "INTERMEDIATE" )  {
             	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
-          	if ( _options.display_value == "CLOSED" || _options.display_value == "0" )  {
+          	if ( _options.display_value == "CLOSED" )  {
               	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_green jeedom-fenetre-ferme"></i>');
             }
-			if ( _options.display_value == "not available")  {
+			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
               	$('.Cmd#moonroof_state_id#').empty().append('<i class="fas fa-ban"></i>');
             }
 		}
