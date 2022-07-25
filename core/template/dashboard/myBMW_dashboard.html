@@ -22,7 +22,7 @@
 				</div>
 				
 				<div class="row" id="infos">
-					<div class="col-sm-6"><span class="state"><i class="Cmd#doorLockState_id#"></i></span></div>
+					<div class="col-sm-6"><span class="state"><i class="Cmd#doorLockState_id#" title="#doorLockState#"></i></span></div>
 					<div class="col-sm-6"><span class="Cmd#mileage_id# iconCmd"></span></div>
 				</div>
 				
@@ -50,36 +50,36 @@
 				<span class="label cmdName" style="font-weight: bold">Portes & Fenêtres</span>
 				</br>
 				<div class="row" id="doors_windows">
-					<div class="row"><span class="label pull-center">Capot : <i class="Cmd#hood_state_id#"></i></span></div>
+					<div class="row"><span class="label pull-center">Capot : <i class="Cmd#hood_state_id#" title="#hood_state#"></i></span></div>
 					</br>
 					<div class="row">
 						<div class="col-sm-3">
 							</br>
-							<div class="label pull-left" style="margin-left: 30px">Porte : <i class="Cmd#doorDriverFront_id#"></i></div>
+							<div class="label pull-left" style="margin-left: 25px">Porte : <i class="Cmd#doorDriverFront_id#" title="#doorDriverFront#"></i></div>
 							</br>
-							<div class="label pull-left" style="margin-left: 30px">Fenêtre : <i class="Cmd#windowDriverFront_id#"></i></div>
+							<div class="label pull-left" style="margin-left: 20px">Fenêtre : <i class="Cmd#windowDriverFront_id#" title="#windowDriverFront#"></i></div>
 							</br></br></br>
-							<div class="label pull-left" style="margin-left: 30px">Porte : <i class="Cmd#doorDriverRear_id#"></i></div>
+							<div class="label pull-left" style="margin-left: 25px">Porte : <i class="Cmd#doorDriverRear_id#" title="#doorDriverRear#"></i></div>
 							</br>
-							<div class="label pull-left" style="margin-left: 30px">Fenêtre : <i class="Cmd#windowDriverRear_id#"></i></div>
+							<div class="label pull-left" style="margin-left: 20px">Fenêtre : <i class="Cmd#windowDriverRear_id#" title="#windowDriverRear#"></i></div>
 						</div>
 						<div class="col-sm-6">
 							<img src="plugins/myBMW/core/img/widget_car.png" height="150" width="150" />
 						</div>
 						<div class="col-sm-3">
 							</br>
-							<div class="label pull-left" style="margin-left: -30px">Porte : <i class="Cmd#doorPassengerFront_id#"></i></div>
+							<div class="label pull-left" style="margin-left: -25px">Porte : <i class="Cmd#doorPassengerFront_id#" title="#doorPassengerFront#"></i></div>
 							</br>
-							<div class="label pull-left" style="margin-left: -30px">Fenêtre : <i class="Cmd#windowPassengerFront_id#"></i></div>
+							<div class="label pull-left" style="margin-left: -30px">Fenêtre : <i class="Cmd#windowPassengerFront_id#" title="#windowPassengerFront#"></i></div>
 							</br></br></br>
-							<div class="label pull-left" style="margin-left: -30px">Porte : <i class="Cmd#doorPassengerRear_id#"></i></div>
+							<div class="label pull-left" style="margin-left: -25px">Porte : <i class="Cmd#doorPassengerRear_id#" title="#doorPassengerRear#"></i></div>
 							</br>
-							<div class="label pull-left" style="margin-left: -30px">Fenêtre : <i class="Cmd#windowPassengerRear_id#"></i></div>
+							<div class="label pull-left" style="margin-left: -30px">Fenêtre : <i class="Cmd#windowPassengerRear_id#" title="#windowPassengerRear#"></i></div>
 						</div>
 					</div>
 					</br>
-					<div class="row"><span class="label pull-center">Toit ouvrant : <i class="Cmd#moonroof_state_id#"></i></span></div>
-					<div class="row"><span class="label pull-center">Coffre : <i class="Cmd#trunk_state_id#"></i></span></div>				
+					<div class="row"><span class="label pull-center">Toit ouvrant : <i class="Cmd#moonroof_state_id#" title="#moonroof_state#"></i></span></div>
+					<div class="row"><span class="label pull-center">Coffre : <i class="Cmd#trunk_state_id#" title="#trunk_state#"></i></span></div>				
 				</div>
 			</div>
 			
@@ -332,7 +332,7 @@
 		
 		
 		jeedom.cmd.update['#moonroof_state_id#'] = function(_options) {
-            if ( _options.display_value == "OPEN" || _options.display_value = "OPEN_TILT" || _options.display_value = "INTERMEDIATE" )  {
+            if ( _options.display_value == "OPEN" || _options.display_value == "OPEN_TILT" || _options.display_value == "INTERMEDIATE" )  {
             	$('.Cmd#moonroof_state_id#').empty().append('<i class="icon_red jeedom-fenetre-ouverte"></i>');
             }
           	if ( _options.display_value == "CLOSED" )  {
