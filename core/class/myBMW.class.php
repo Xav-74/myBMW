@@ -382,7 +382,8 @@ class myBMW extends eqLogic {
 			if ( array_key_exists('type', $message) ) {
 				if ($message->type == "OIL") { $message_title = "Huile moteur"; }
 				elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
-				elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision du véhicule"; }
+				elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
+				elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
 				else { $message_title = $message->type; }
 			}
 			else { $message_title = ''; }
