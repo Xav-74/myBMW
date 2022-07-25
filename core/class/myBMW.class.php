@@ -372,12 +372,22 @@ class myBMW extends eqLogic {
 			$table_messages[] = array( "type" => "CONTROL ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 		}*/
 		foreach ($services_messages as $message) {
-			if ( array_key_exists('dateTime', $message) ) { $message_date = date('F Y', strtotime($message->dateTime))." "; } else { $message_date = ''; }
+			if ( array_key_exists('dateTime', $message) ) {
+				$mois =array(1=>" - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
+				$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
+			}
+			else { $message_date = ''; }
 			if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
-			$message_state = '';
-			if ( array_key_exists('type', $message) ) { $message_title = $message->type; } else { $message_title = ''; }
+			$message_status = '';
+			if ( array_key_exists('type', $message) ) {
+				if ($message->type == "OIL") { $message_title = "Huile moteur"; }
+				elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
+				elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision du véhicule"; }
+				else { $message_title = $message->type; }
+			}
+			else { $message_title = ''; }
 			if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }							
-			$table_messages[] = array( "type" => "SERVICES ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_state, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
+			$table_messages[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 		}
 		$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 						
