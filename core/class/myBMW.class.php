@@ -363,17 +363,20 @@ class myBMW extends eqLogic {
 					
 		$control_messages = $vehicle->state->checkControlMessages;
 		$services_messages = $vehicle->state->requiredServices;
+		$table_temp = array();
 		$table_messages = array();
-		/*foreach ($control_messages as $message) {
-			if ( array_key_exists('timestamp', $message) ) { $message_date = date('d/m/Y H:i', strtotime($message->timestamp))." "; } else { $message_date = ''; }
-			if ( array_key_exists('state', $message) ) { $message_state = $message->state; } else { $message_state = ''; }
-			if ( array_key_exists('title', $message) ) { $message_title = $message->title; } else { $message_title = ''; }
-			if ( array_key_exists('longDescription', $message) ) { $message_description = $message->longDescription; } else { $message_description = ''; }
-			$table_messages[] = array( "type" => "CONTROL ", "date" => $message_date, "state" => $message_state, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
-		}*/
+		
+		foreach ($control_messages as $message) {
+			if ( array_key_exists('type', $message) ) { $message_type = $message->type; } else { $message_type = ''; }
+			if ( array_key_exists('severity', $message) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
+			$table_temp[] = array( "type" => $message_type, "severity" => $message_severity );
+		}
+		$table_messages['checkControlMessages'] = $table_temp;
+		$table_temp = array();
+		
 		foreach ($services_messages as $message) {
 			if ( array_key_exists('dateTime', $message) ) {
-				$mois =array(1=>" - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
+				$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
 				$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
 			}
 			else { $message_date = ''; }
@@ -388,8 +391,9 @@ class myBMW extends eqLogic {
 			}
 			else { $message_title = ''; }
 			if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }							
-			$table_messages[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
+			$table_temp[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 		}
+		$table_messages['requiredServices'] = $table_temp;
 		$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 						
 		if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
