@@ -81,8 +81,8 @@ function printEqLogic(_eqLogic) {
 };
 
 
-$('#bt_Synchronization').on('click',function() {
- 
+function synchronize()  {
+	
 	//$('#div_brand').empty();
 	$('#div_model').empty();
 	$('#div_year').empty();
@@ -122,6 +122,15 @@ $('#bt_Synchronization').on('click',function() {
 			$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
 		}
 	});
+	
+};
+
+
+$('#bt_Synchronization').on('click',function() {
+ 
+	$('.btn[data-action=save]').click();
+	setTimeout(synchronize,2000);
+	
 });
 
 
