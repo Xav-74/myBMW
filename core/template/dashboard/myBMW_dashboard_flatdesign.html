@@ -1,0 +1,680 @@
+<div id="myBMW_widget_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_widget_flat myBMW_widget_flat_#id# myBMW" style="width:1392px !important; height:830px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-template="default" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="dashboard">
+
+	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" src=""></img><span style="padding-left:10px"> #name_display#</span></a>
+	<span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="Rafraichir" style="margin-right:10px;" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i class="fas fa-sync"></i></span>
+	
+	<div class="container-fluid">
+		
+		<div>
+			
+			<!-- Column N°1 -->
+			<div class="col-sm-4" id="column" style="width:450px;">
+		
+				<div class="col-sm-12" id="tile" style="height:250px; width:440px;">
+					<div id="picture" style="height: 250px; width:440px;">
+						<img id="img_car#id#" src="plugins/myBMW/data/#vehicle_vin#id##.png" style="width:300px; margin-bottom: -40px" />
+					</div>
+				</div>
+				
+				<div class="col-sm-12" id="tile" style="height:50px; width:440px;">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
+					<div class="col-sm-2"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
+					<div class="col-sm-2"><span class="icon_tire#id#"><img src="plugins/myBMW/core/img/tire_grey.png" height="50" title="Pression des pneus OK"/></span></div>
+					<div class="col-sm-2"><span class="icon_vehicle#id#"><img src="plugins/myBMW/core/img/vehicle_grey.png" height="50" title="Statut Véhicule OK"/></span></div>
+					<div class="col-sm-2"></div>
+				</div>
+				
+				<div class="col-sm-4" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kilométrage</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-signs"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#mileage_id#"></span><span id="titre_tile"> kms</span></div>
+				</div>
+				
+				<div class="col-sm-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Volume carburant</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-gas-pump"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#remaining_fuel_id#"></span><span id="titre_tile"> L</span></div>
+				</div>
+				
+				<div class="col-sm-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kms restants (thermique)</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-pin"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#beRemainingRangeFuelKm_id#"></span><span id="titre_tile"> kms</span></div>
+				</div>
+				
+				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Batterie</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-car-battery"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#chargingLevelHv_id#"></span><span id="titre_tile"> %</span></div>				
+				</div>
+				
+				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kms restants (électrique)</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-pin"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#beRemainingRangeElectric_id#"></span><span id="titre_tile"> kms</span></div>				
+				</div>
+				
+				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Prise</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-plug"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#connectorStatus_id#"></span></div>				
+				</div>
+				
+				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+					<div class="col-sm-8" id="titre_tile" style="height:70px;">Recharge</div>
+					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-charging-station"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#chargingStatus_id#"></span></div>				
+				</div>
+						
+			</div>			
+			
+			<!-- Column N°2 -->
+			<div class="col-sm-4" id="column" style="width:450px;">
+				
+				<div class="col-sm-6" id="tile" style="height:100px; width: 215px;">
+					<div class="col-sm-8" id="titre_tile" style="height:50px;">Verrouillage</div>
+					<div class="col-sm-4" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-unlock-alt"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:50px;"><span class="Cmd#doorLockState_id#"></span></div>
+				</div>
+				
+				<div class="col-sm-6" id="tile" style="height:100px; width:215px;">
+					<div class="col-sm-8" id="titre_tile" style="height:50px;">Sécurtité</div>
+					<div class="col-sm-4" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-shield-alt"></i></div>
+					<div class="col-sm-12" id="value_tile" style="height:50px;"><span class="securisedMode#id#"></span></div>
+				</div>
+				
+				<div class="col-sm-6 all_info_display#id#" id="tile" style="height:100px; width:215px;">
+					<div class="col-sm-8" id="titre_tile" style="height:50px;">Toutes les portes</div>
+					<div class="col-sm-4" id="icon_tile" style="height:50px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></img></div>
+					<div class="col-sm-12" id="value_tile" style="height:50px;"><span class="Cmd#allDoorsState_id#"></span></div>
+				</div>
+				
+				<div class="col-sm-6 all_info_display#id#" id="tile" style="height:100px; width:215px;">
+					<div class="col-sm-8" id="titre_tile" style="height:50px;">Toutes les fenêtres</div>
+					<div class="col-sm-4" id="icon_tile" style="height:50px;"><img src="plugins/myBMW/core/img/windows_blue.png" style="height:24px"></img></div>
+					<div class="col-sm-12" id="value_tile" style="height:50px;"><span class="Cmd#allWindowsState_id#"></span></div>
+				</div>
+				
+				<div class="col-sm-12" id="tile" style="height:390px; width:440px;">
+					<div class="col-sm-2" id="icon_tile" style="height:60px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></img></div>
+					<div class="col-sm-10" id="titre_tile_2" style="height:60px;">Portes et fenêtres</div>
+					
+					<div class="col-sm-12" id="row_doors">
+						<div class="col-sm-6" id="text_doors">Capot </div>
+						<div class="col-sm-6" id="value_doors" style="text-align:left"><span class="Cmd#hood_state_id#"></span></div>
+					</div>
+					
+					<div class="col-sm-4" id="column">
+						<div class="col-sm-12" id="row_doors" style="height: 75px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Porte</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorDriverFront_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Fenêtre</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowDriverFront_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 30px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Porte</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorDriverRear_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Fenêtre</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowDriverRear_id#"></span></div>
+						</div>
+					</div>
+					
+					<div class="col-sm-4" id="picture" style="margin:20px 0px 20px 0px">
+						<img src="plugins/myBMW/core/img/widget_car.png" style="height:200px; filter:opacity(50%)"/>
+					</div>
+					
+					<div class="col-sm-4" id="column">
+						<div class="col-sm-12" id="row_doors" style="height: 75px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Porte</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorPassengerFront_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Fenêtre</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowPassengerFront_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 30px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Porte</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorPassengerRear_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Fenêtre</div>
+							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowPassengerRear_id#"></span></div>
+						</div>
+					</div>
+					
+					<div class="col-sm-12" id="row_doors">
+						<div class="col-sm-6" id="text_doors">Toit ouv.</div>
+						<div class="col-sm-6" id="value_doors" style="text-align:left"><span class="Cmd#moonroof_state_id#"></span></div>
+					</div>
+					
+					<div class="col-sm-12" id="row_doors">
+						<div class="col-sm-6" id="text_doors">Coffre</div>
+						<div class="col-sm-6" id="value_doors" style="text-align:left"><span class="Cmd#trunk_state_id#"></span></div>
+					</div>
+								
+				</div>
+				
+				<div class="col-sm-12" id="tile" style="height:115px; width:440px;">
+					
+					<div class="col-sm-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-cogs"></i></div>
+					<div class="col-sm-10" id="titre_tile_2" style="height:50px;">Actions</div>
+					
+					<!-- <button class="btn cmd action" data-cmd_id="#refresh_id#" title="Rafraichir" onclick="jeedom.cmd.execute({id: #refresh_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon jeedomapp-reload"></i></button> -->
+					<button class="btn cmd action" data-cmd_id="#doorLock_id#" title="Verrouiller" onclick="jeedom.cmd.execute({id: #doorLock_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-lock"></i></button>
+					<button class="btn cmd action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-lock-open"></i></button>
+					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-fan"></i></button>
+					<button class="btn cmd action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-ban"></i></button>
+					<!-- <button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-plug"></i></button> -->
+					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-lightbulb"></i></button>
+					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-volume-up"></i></button>
+					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-2x icon fas fa-map-marked" style="color: var(--txt-color) !important;"></i></button>
+					<script>
+						$('.cmd[data-cmd_id=#vehicleFinder_id#]').on('click', function () {
+							$('#md_modal').dialog({title: "Recherche Véhicule"});
+							$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=VehicleFinder.myBMW&eqLogic_id='+'#id#').dialog('open');
+						});
+					</script>
+					<button class="btn cmd action" data-cmd_id="#sendPOI_id#" title="Envoi POI"><i class="fa-2x icon fas fa-map-marker-alt" style="color: var(--txt-color) !important;"></i></button>
+					<script>
+						$('.cmd[data-cmd_id=#sendPOI_id#]').on('click', function () {
+							$('body').append('<div id="mod_sendPOI" style="overflow-x: hidden; overflow-y: hidden;"/>');
+							$("#mod_sendPOI").dialog({
+									title: "Envoi POI",
+									closeText: '',
+									autoOpen: false,
+									modal: true,
+									height: 240,
+									width: 447
+							});
+							jQuery.ajaxSetup({async: false});
+							$('#mod_sendPOI').load('index.php?v=d&plugin=myBMW&modal=SendPOI.myBMW&eqLogic_id='+'#id#');
+							jQuery.ajaxSetup({async: true});
+															
+							$('#mod_sendPOI').dialog('open');
+						});
+					</script>
+				</div>
+				
+			</div>	
+			
+			<!-- Column N°3 -->
+			<div class="col-sm-4" id="column" style="width:450px;">
+				
+				<div class="col-sm-12" id="tile" style="height:400px; width:440px;">
+					<div class="col-sm-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-wrench"></i></div>
+					<div class="col-sm-10" id="titre_tile_2" style="height:50px;">Services</div>
+					<div id="liste_msg" class="label Cmd#vehicleMessages_id# table_message#id#"></div>
+				</div>
+				
+				<div class="col-sm-12" id="tile" style="height:310px; width:440px;">
+					<div class="col-sm-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-location-arrow"></i></div>
+					<div class="col-sm-10" id="titre_tile_2" style="height:50px;">Localisation</div>
+					<div id="location">
+						<iframe class="myMap" id="myFrame#id#" src="https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q=#gps_coordinates#"></iframe>
+					</div>
+				</div>
+			
+			</div>	
+			
+			<!-- Last row -->
+			<div class="col-sm-12" id="column">
+				<div id="last_update">Dernière connexion avec le véhicule : <span class="Cmd#lastUpdate_id# state"></span></div>
+			</div>
+
+		</div>
+		
+	</div>
+	
+	<template>
+		<div>all_info_display (show / hide)</div>
+		<div>doors_windows_display (text / icon)</div>
+		<div>color_icon_closed (green / black / white)</div>
+	</template>
+	
+	<script>
+        
+    //----- Theme colors & optional parameters
+	var theme_jeedom;
+	var color_icon_closed;
+	var color_icon_closed_rgb;
+	
+	function detectTheme#id#() {
+		var theme = "";
+		var link = document.createElement('link');
+		link.type = 'text/css';
+		link.rel = 'stylesheet';
+		var logo = $('.logo_car#id#')[0];
+		var source = "";
+		
+		if ( $('body')[0].hasAttribute('data-theme')) {
+			if ($('body').attr('data-theme').endsWith('Dark')) {
+				link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_dark.css';
+				theme = 'black';
+				if ( '#vehicle_brand#id##' == 1 )  {
+					source = "plugins/myBMW/core/img/logo_bmw_white.png";
+				}
+				if ( '#vehicle_brand#id##' == 2 )  {
+					source = "plugins/myBMW/core/img/logo_mini_white.png";
+				}
+			}
+			else if ($('body').attr('data-theme').endsWith('Light')) {
+				link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_light.css';
+				theme = 'white';
+				if ( '#vehicle_brand#id##' == 1 )  {
+					source = "plugins/myBMW/core/img/logo_bmw_black.png";
+				}
+				if ( '#vehicle_brand#id##' == 2 )  {
+					source = "plugins/myBMW/core/img/logo_mini_black.png";
+				}
+			}
+		}
+		document.head.appendChild(link);
+		logo.src = source;
+		$('.myBMW_widget_flat_#id#')[0].style.setProperty('background-color', theme, 'important');
+		return theme;
+	}
+	
+	function setColorIconClosed#id#(theme)  {
+		var color = "";
+		if ( '#color_icon_closed#' != 'green' )  {
+			if ( theme == 'black' ) {
+				color = 'white';
+			}
+			else if ( theme == 'white' ) {
+				color = 'black';
+			}
+		}
+		else { color = '#color_icon_closed#'; }
+		return color;
+	}
+	
+	function setDoorsWindowsDisplay#id#()  {
+		if ( '#doors_windows_display#' == 'icon' )  {
+		$('.doors_text#id#').hide();
+		}
+		if ( '#doors_windows_display#' == 'text' )  {
+			$('.doors_icon#id#').hide();
+		}
+	}
+	
+	function setAllInfoDisplay#id#()  {
+		if ( '#all_info_display#' == 'hide' )  {
+			$('.all_info_display#id#').hide();
+		}
+	}
+	
+	theme_jeedom = detectTheme#id#();
+	color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
+	if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
+	else { color_icon_closed_rgb = color_icon_closed; }
+	
+	
+	$('body').on('changeThemeEvent', function (event,theme) {
+		theme_jeedom = detectTheme#id#();
+		color_icon_closed = setColorIconClosed#id#(theme_jeedom);
+		if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
+		else { color_icon_closed_rgb = color_icon_closed; }
+		jeedom.cmd.update['#doorDriverFront_id#']({display_value:'#doorDriverFront#'});
+		jeedom.cmd.update['#doorDriverRear_id#']({display_value:'#doorDriverRear#'});
+		jeedom.cmd.update['#doorPassengerFront_id#']({display_value:'#doorPassengerFront#'});
+		jeedom.cmd.update['#doorPassengerRear_id#']({display_value:'#doorPassengerRear#'});
+		jeedom.cmd.update['#trunk_state_id#']({display_value:'#trunk_state#'});
+		jeedom.cmd.update['#hood_state_id#']({display_value:'#hood_state#'});
+		jeedom.cmd.update['#windowDriverFront_id#']({display_value:'#windowDriverFront#'});
+		jeedom.cmd.update['#windowDriverRear_id#']({display_value:'#windowDriverRear#'});
+		jeedom.cmd.update['#windowPassengerFront_id#']({display_value:'#windowPassengerFront#'});
+		jeedom.cmd.update['#windowPassengerRear_id#']({display_value:'#windowPassengerRear#'});
+		jeedom.cmd.update['#moonroof_state_id#']({display_value:'#moonroof_state#'});
+		setDoorsWindowsDisplay#id#();
+	});
+	
+	
+	//----- Electric / Combustion
+	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
+		$('.combustion_engine#id#').hide();
+		$('.myBMW_widget_flat_#id#').css('height', 805);
+	}
+	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
+		$('.electric_engine#id#').hide();
+		$('.myBMW_widget_flat_#id#').css('height', 805);
+	}
+	
+
+	//----- Location
+	jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {
+            var mybmw_cmd  = $('#myFrame#id#')[0];
+			mybmw_cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
+		}
+	jeedom.cmd.update['#gps_coordinates_id#']({display_value: '#gps_coordinates#'});
+	
+	
+	//----- Lockstate
+	jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
+        if ( _options.display_value == "UNLOCKED" || _options.display_value == "PARTIALLY_LOCKED" )  {
+           	$('.Cmd#doorLockState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Déverrouillé</span>');
+			$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
+        }
+       	if ( _options.display_value == "LOCKED" || _options.display_value == "SELECTIVE_LOCKED" )  {
+           	$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
+			$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
+        }
+		if (  _options.display_value == "SECURED" )  {
+           	$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
+			$('.securisedMode#id#').empty().append('<span>Sécurisé</span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+           	$('.Cmd#doorLockState_id#').empty().append('<span> - </span>');
+			$('.securisedMode#id#').empty().append('<span> - </span>');
+        }
+    }
+	jeedom.cmd.update['#doorLockState_id#']({display_value:'#doorLockState#'});	
+
+		
+	//----- Milage
+	jeedom.cmd.update['#mileage_id#'] = function(_options) {
+       $('.Cmd#mileage_id#').empty().append('<span>'+_options.display_value+'</span>');
+    }
+	jeedom.cmd.update['#mileage_id#']({display_value:'#mileage#'});
+
+	
+	//----- Combustion engine
+	jeedom.cmd.update['#beRemainingRangeFuelKm_id#'] = function(_options) {
+       	$('.Cmd#beRemainingRangeFuelKm_id#').empty().append('<span>'+_options.display_value+'</span>');
+    }
+	jeedom.cmd.update['#beRemainingRangeFuelKm_id#']({display_value:'#beRemainingRangeFuelKm#'});
+	
+	jeedom.cmd.update['#remaining_fuel_id#'] = function(_options) {
+       	$('.Cmd#remaining_fuel_id#').empty().append('<span>'+_options.display_value+'</span>');
+    }
+	jeedom.cmd.update['#remaining_fuel_id#']({display_value:'#remaining_fuel#'});	
+		
+	
+	//----- Electric engine
+	jeedom.cmd.update['#beRemainingRangeElectric_id#'] = function(_options) {
+       	$('.Cmd#beRemainingRangeElectric_id#').empty().append('<span>'+_options.display_value+'</span>');
+    }
+	jeedom.cmd.update['#beRemainingRangeElectric_id#']({display_value:'#beRemainingRangeElectric#'});
+		
+	jeedom.cmd.update['#chargingLevelHv_id#'] = function(_options) {
+       	$('.Cmd#chargingLevelHv_id#').empty().append('<span>'+_options.display_value+'</span>');
+    }
+	jeedom.cmd.update['#chargingLevelHv_id#']({display_value:'#chargingLevelHv#'});
+		
+	jeedom.cmd.update['#connectorStatus_id#'] = function(_options) {
+       	if ( _options.display_value == "1" )  {			
+			$('.Cmd#connectorStatus_id#').empty().append('<span>Connectée</span>');
+		}
+		if ( _options.display_value == "0" || _options.display_value == "" )  {			
+			$('.Cmd#connectorStatus_id#').empty().append('<span>Deconnectée</span>');
+		}
+	}
+	jeedom.cmd.update['#connectorStatus_id#']({display_value:'#connectorStatus#'});
+			
+	jeedom.cmd.update['#chargingStatus_id#'] = function(_options) {
+       	if ( _options.display_value == "DEFAULT" || _options.display_value == "ERROR" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Erreur</span>');
+		}
+		if ( _options.display_value == "CHARGING" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>En cours</span>');
+		}
+		if ( _options.display_value == "COMPLETE" || _options.display_value == "FULLY_CHARGED" || _options.display_value == "FINISHED_FULLY_CHARGED" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>Complète</span>');
+		}
+		if ( _options.display_value == "FINISHED_NOT_FULL" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>Interrompue</span>');
+		}
+		if ( _options.display_value == "NOT_CHARGING" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>Aucune</span>');
+		}
+		if ( _options.display_value == "PLUGGED_IN" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>Branchée</span>');
+		}
+		if ( _options.display_value == "WAITING_FOR_CHARGING" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>En attente</span>');
+		}
+		if ( _options.display_value == "TARGET_REACHED" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span>Atteinte</span>');
+		}
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" )  {	
+			$('.Cmd#chargingStatus_id#').empty().append('<span> - </span>');
+		}
+	}
+	jeedom.cmd.update['#chargingStatus_id#']({display_value:'#chargingStatus#'});
+
+	
+    //----- Doors
+	jeedom.cmd.update['#allDoorsState_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" )  {
+           	$('.Cmd#allDoorsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
+		}
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#allDoorsState_id#').empty().append('<span>Fermé</span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+           	$('.Cmd#allDoorsState_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#allDoorsState_id#']({display_value:'#allDoorsState#'});
+		
+	jeedom.cmd.update['#doorDriverFront_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#doorDriverFront_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+		}
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#doorDriverFront_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#doorDriverFront_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#doorDriverFront_id#']({display_value:'#doorDriverFront#'});
+
+	jeedom.cmd.update['#doorDriverRear_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#doorDriverRear_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+		}
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#doorDriverRear_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#doorDriverRear_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#doorDriverRear_id#']({display_value:'#doorDriverRear#'});
+
+	jeedom.cmd.update['#doorPassengerFront_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#doorPassengerFront_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#doorPassengerFront_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#doorPassengerFront_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#doorPassengerFront_id#']({display_value:'#doorPassengerFront#'});
+	
+	jeedom.cmd.update['#doorPassengerRear_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#doorPassengerRear_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#doorPassengerRear_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#doorPassengerRear_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#doorPassengerRear_id#']({display_value:'#doorPassengerRear#'});
+
+	jeedom.cmd.update['#trunk_state_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#trunk_state_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#trunk_state_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#trunk_state_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#trunk_state_id#']({display_value:'#trunk_state#'});
+
+	jeedom.cmd.update['#hood_state_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#trunk_state_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#hood_state_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#hood_state_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#hood_state_id#']({display_value:'#hood_state#'});
+
+
+	//----- Windows
+	jeedom.cmd.update['#allWindowsState_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" )  {
+           	$('.Cmd#allWindowsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
+		}
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#allWindowsState_id#').empty().append('<span>Fermé</span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+           	$('.Cmd#allWindowsState_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#allWindowsState_id#']({display_value:'#allWindowsState#'});
+
+	jeedom.cmd.update['#windowDriverFront_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#windowDriverFront_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#windowDriverFront_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#windowDriverFront_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#windowDriverFront_id#']({display_value:'#windowDriverFront#'});
+
+	jeedom.cmd.update['#windowDriverRear_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#windowDriverRear_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#windowDriverRear_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#windowDriverRear_id#').empty().append('<span> - </span>');
+		}
+	}
+	jeedom.cmd.update['#windowDriverRear_id#']({display_value:'#windowDriverRear#'});
+
+	jeedom.cmd.update['#windowPassengerFront_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#windowPassengerFront_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#windowPassengerFront_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#windowPassengerFront_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#windowPassengerFront_id#']({display_value:'#windowPassengerFront#'});
+	
+	jeedom.cmd.update['#windowPassengerRear_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#windowPassengerRear_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#windowPassengerRear_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#windowPassengerRear_id#').empty().append('<span> - </span>');
+		}
+	}
+	jeedom.cmd.update['#windowPassengerRear_id#']({display_value:'#windowPassengerRear#'});
+
+	jeedom.cmd.update['#moonroof_state_id#'] = function(_options) {
+        if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
+           	$('.Cmd#moonroof_state_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_red.png" height="20px"></img></span>');
+        }
+       	if ( _options.display_value == "CLOSED" )  {
+           	$('.Cmd#moonroof_state_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/windows_'+color_icon_closed+'.png" height="20px"></img></span>');
+        }
+		if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" || _options.display_value == "not available" )  {
+           	$('.Cmd#moonroof_state_id#').empty().append('<span> - </span>');
+        }
+	}
+	jeedom.cmd.update['#moonroof_state_id#']({display_value:'#moonroof_state#'});
+
+	
+	//----- Messages
+	jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
+       	var messages = jQuery.parseJSON(_options.display_value);
+		
+		jQuery.each(messages.checkControlMessages,function(key,message){
+			if ( message.type == "ENGINE_OIL" ) {
+				//if ( message.severity == "OK" || message.severity == "LOW" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_grey.png" height="40" width="40" title="Huile moteur - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "MEDIUM" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_orange.png" height="40" width="40" title="Huile moteur - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_red.png" height="40" width="40" title="Huile moteur - Criticité : '+message.severity+'"/>'); }
+			}
+			if ( message.type == "BRAKE_FLUID" ) {
+				//if ( message.severity == "OK" || message.severity == "LOW" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_grey.png" height="40" width="40" title="Freins - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "MEDIUM" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_orange.png" height="40" width="40" title="Freins - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_red.png" height="40" width="40" title="Freins - Criticité : '+message.severity+'"/>'); }
+			}
+			if ( message.type == "TIRE_PRESSURE" ) {
+				//if ( message.severity == "OK" || message.severity == "LOW" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_grey.png" height="40" width="40" title="Pression des pneus - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="40" width="40" title="Pression des pneus - Criticité : '+message.severity+'"/>'); }
+				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_red.png" height="40" width="40" title="Pression des pneus - Criticité : '+message.severity+'"/>'); }
+			}
+			if ( message.type == "VEHICLE_CHECK" ) {
+				//if ( message.severity == "OK" || message.severity == "LOW" ) { $('.icon_vehicle#id#').empty().append('<span><i class="fas fa-2x icon_green fa-car" style="padding-top:10px" title="Véhicule - Criticité : '+message.severity+'"></i></span>'); }
+				if ( message.severity == "MEDIUM" ) { $('.icon_vehicle#id#').empty().append('<span><i class="fas fa-2x icon_orange fa-car" style="padding-top:10px" title="Véhicule - Criticité : '+message.severity+'"></i></span>'); }
+				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_vehicle#id#').empty().append('<span><i class="fas fa-2x icon_rouge fa-car" style="padding-top:10px" title="Véhicule - Criticité : '+message.severity+'"></i></span>'); }
+			}
+		});
+			
+		var table_html= "";
+		$('.nb_message#id#').empty().append('<span>'+'('+Object.keys(messages.requiredServices).length+')'+'</span>');
+		table_html += '<ul class="list-group" style="text-align: left">';
+		jQuery.each(messages.requiredServices,function(key,message){
+			table_html += '<li class="list-group-item" style="margin-bottom: 10px; padding: 0px 0px 5px 0px"><span class="label cmdName">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
+		});
+		table_html += '</ul>';
+		$('.table_message#id#').empty().append(table_html);
+	}
+	jeedom.cmd.update['#vehicleMessages_id#']({display_value:'#vehicleMessages#'});
+	
+	
+	//----- Last update
+	jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
+       	if ( _options.display_value == "not available")  { $('.Cmd#lastUpdate_id#').empty().append('<span>'+"inconnue"+'</span>'); }
+		else { $('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>'); }
+    }
+	jeedom.cmd.update['#lastUpdate_id#']({display_value:'#lastUpdate#'});	
+
+
+	//----- Optional parameters
+	setDoorsWindowsDisplay#id#();
+	setAllInfoDisplay#id#();
+		
+	</script>
+
+</div>

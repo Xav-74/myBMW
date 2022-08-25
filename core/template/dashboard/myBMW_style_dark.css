@@ -1,0 +1,128 @@
+.myBMW_widget_flat .container-fluid {
+	margin : 5px 5px 5px 20px !important;
+	padding : 0px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat #titre {
+	font-size : 14px;
+	text-align:center;
+    color : #FFFFFF !important;
+}
+
+.myBMW_widget_flat #logo {
+	height: 1.5em;
+}
+
+.myBMW_widget_flat #column {
+    margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat #tile {
+    margin : 5px 5px 5px 5px !important;
+	padding : 0px 0px 0px 0px !important;
+	background-color : rgb(var(--bg-color)) !important;
+	filter : contrast(105%);
+}
+
+.myBMW_widget_flat #picture {
+	display: table-cell;
+	vertical-align : middle;
+}
+
+.myBMW_widget_flat #location {
+	padding : 20px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat .myMap {
+	width: 400px;
+	height: 240px;
+	border: 0px;
+	filter: grayscale(100%) invert(90%);
+}
+
+.myBMW_widget_flat #titre_tile {
+	font-size : 14px;
+	color : var(--txt-color) !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 15px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat #icon_tile {
+	margin : 0px 0px 0px 0px !important;
+	padding : 12px 0px 0px 0px !important;
+	color: rgb(60,120,170) !important;
+}
+
+.myBMW_widget_flat #value_tile {
+	font-size : 22px;
+	color : #FFFFFF !important;
+	text-align: center;
+	margin : 0px 0px 0px 0px !important;
+	padding : 5px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat #titre_tile_2 {
+	font-size : 22px;
+	color : #FFFFFF !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 6px 0px 0px 15px !important;
+	text-align : left; 
+}
+
+.myBMW_widget_flat #titre_doors {
+	font-size : 20px;
+	color : var(--txt-color) !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 11px 0px 0px 0px !important;
+	text-align : left; 
+}
+
+.myBMW_widget_flat #row_doors {
+    margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 0px !important;
+}
+
+.myBMW_widget_flat #icon_doors {
+	margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 0px !important;
+	text-align : right;
+}
+
+.myBMW_widget_flat #text_doors {
+	font-size : 14px;
+	color : var(--txt-color) !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 0px 5px 0px 0px !important;
+	text-align : right; 
+}
+
+.myBMW_widget_flat #value_doors {
+	font-size : 14px;
+	color : #FFFFFF !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 10px !important;
+	text-align : left; 
+}
+
+.myBMW_widget_flat .btn {
+	margin: 10px 0px 0px 0px !important;
+	width: 40px !important;
+	height: 40px !important;
+	max-width: 40px !important;
+	max-height: 40px !important;
+	filter : contrast(135%);
+}
+
+.myBMW_widget_flat #liste_msg {
+	width: 440px;
+	height: 340px;
+	overflow: auto;
+}
+
+.myBMW_widget_flat #last_update {
+	font-size : 12px;
+	text-align:center;
+    color : #FFFFFF !important;
+	margin : 10px 0px 5px 0px !important;
+}

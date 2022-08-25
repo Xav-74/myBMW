@@ -40,13 +40,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		</div>	
 		<div class="eqLogicThumbnailContainer">
 			<?php
-			foreach ($eqLogics as $eqLogic)	{
-				$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
-				echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-				echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
-				echo '<br/>';
-				echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
-				echo '</div>';
+				foreach ($eqLogics as $eqLogic)	{
+					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
+					echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
+					echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+					echo '<br/>';
+					echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+					echo '</div>';
 				}
 			?>
 		</div>
@@ -165,7 +165,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-6 control-label">{{Widget personnalisé :}}</label>
 									<div class="col-sm-6">
-										<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>
+										<select id="sel_widget" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="widget_template">
+											<option value="1">Aucun</option>
+											<option value="2" selected>Widget Flat Design</option>
+											<option value="3">Widget Legacy</option>
+										</select>
+										<!--<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>-->
 									</div>
 								</div>
 								
