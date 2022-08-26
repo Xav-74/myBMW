@@ -166,9 +166,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="col-sm-6 control-label">{{Widget personnalisé :}}</label>
 									<div class="col-sm-6">
 										<select id="sel_widget" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="widget_template">
-											<option value="1">Aucun</option>
-											<option value="2" selected>Widget Flat Design</option>
-											<option value="3">Widget Legacy</option>
+											<option value="0">Aucun</option>
+											<option value="1" selected>Widget Flat Design</option>
+											<option value="2">Widget Legacy</option>
 										</select>
 										<!--<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>-->
 									</div>

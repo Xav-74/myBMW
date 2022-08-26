@@ -168,7 +168,7 @@ class myBMW extends eqLogic {
     /* Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin */
     public function toHtml($_version = 'dashboard') {
     	
-		if ($this->getConfiguration('widget_template') == 1) {
+		if ($this->getConfiguration('widget_template') == 0) {
 			return parent::toHtml($_version);
 		}
 		
@@ -217,8 +217,8 @@ class myBMW extends eqLogic {
 		
 		// On definit le template à appliquer par rapport à la version Jeedom utilisée
 		if (version_compare(jeedom::version(), '4.0.0') >= 0) {
-			if ($this->getConfiguration('widget_template') == 2) { $template = 'myBMW_dashboard_flatdesign'; }
-			if ($this->getConfiguration('widget_template') == 3) { $template = 'myBMW_dashboard_legacy'; }
+			if ($this->getConfiguration('widget_template') == 1) { $template = 'myBMW_dashboard_flatdesign'; }
+			if ($this->getConfiguration('widget_template') == 2) { $template = 'myBMW_dashboard_legacy'; }
 		}
 		$replace['#template#'] = $template;
 

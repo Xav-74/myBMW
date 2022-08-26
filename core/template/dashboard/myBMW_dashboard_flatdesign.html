@@ -1,6 +1,6 @@
-<div id="myBMW_widget_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_widget_flat myBMW_widget_flat_#id# myBMW" style="width:1392px !important; height:830px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-template="default" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="dashboard">
+<div id="myBMW_widget_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_widget_flat myBMW_widget_flat_#id# myBMW" style="width:1392px !important; height:830px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="dashboard">
 
-	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" src=""></img><span style="padding-left:10px"> #name_display#</span></a>
+	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" src=""></img><span style="padding-left:10px;"> #name_display#</span></a>
 	<span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="Rafraichir" style="margin-right:10px;" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i class="fas fa-sync"></i></span>
 	
 	<div class="container-fluid">
@@ -234,11 +234,7 @@
 		
 	</div>
 	
-	<template>
-		<div>all_info_display (show / hide)</div>
-		<div>doors_windows_display (text / icon)</div>
-		<div>color_icon_closed (green / black / white)</div>
-	</template>
+	#divGraphInfo#
 	
 	<script>
         
@@ -247,39 +243,38 @@
 	var color_icon_closed;
 	var color_icon_closed_rgb;
 	
-	function detectTheme#id#() {
+	function setTheme#id#() {
 		var theme = "";
+		var logo = $('.logo_car#id#')[0];
+		var source = "";
 		var link = document.createElement('link');
 		link.type = 'text/css';
 		link.rel = 'stylesheet';
-		var logo = $('.logo_car#id#')[0];
-		var source = "";
 		
-		if ( $('body')[0].hasAttribute('data-theme')) {
-			if ($('body').attr('data-theme').endsWith('Dark')) {
-				link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_dark.css';
-				theme = 'black';
-				if ( '#vehicle_brand#id##' == 1 )  {
-					source = "plugins/myBMW/core/img/logo_bmw_white.png";
-				}
-				if ( '#vehicle_brand#id##' == 2 )  {
-					source = "plugins/myBMW/core/img/logo_mini_white.png";
-				}
+		if ($('body').attr('data-theme').endsWith('Dark')) {
+			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_dark.css';
+			theme = 'black';
+			if ( '#vehicle_brand#id##' == 1 )  {
+				source = "plugins/myBMW/core/img/logo_bmw_white.png";
 			}
-			else if ($('body').attr('data-theme').endsWith('Light')) {
-				link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_light.css';
-				theme = 'white';
-				if ( '#vehicle_brand#id##' == 1 )  {
-					source = "plugins/myBMW/core/img/logo_bmw_black.png";
-				}
-				if ( '#vehicle_brand#id##' == 2 )  {
-					source = "plugins/myBMW/core/img/logo_mini_black.png";
-				}
+			if ( '#vehicle_brand#id##' == 2 )  {
+				source = "plugins/myBMW/core/img/logo_mini_white.png";
+			}
+		}
+		else if ($('body').attr('data-theme').endsWith('Light')) {
+			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_style_light.css';
+			theme = 'white';
+			if ( '#vehicle_brand#id##' == 1 )  {
+				source = "plugins/myBMW/core/img/logo_bmw_black.png";
+			}
+			if ( '#vehicle_brand#id##' == 2 )  {
+				source = "plugins/myBMW/core/img/logo_mini_black.png";
 			}
 		}
 		document.head.appendChild(link);
 		logo.src = source;
 		$('.myBMW_widget_flat_#id#')[0].style.setProperty('background-color', theme, 'important');
+		console.log('myBMW '+theme+' '+source)
 		return theme;
 	}
 	
@@ -312,14 +307,17 @@
 		}
 	}
 	
-	theme_jeedom = detectTheme#id#();
+	if ( $('body')[0].hasAttribute('data-theme') == true )  {
+		theme_jeedom = setTheme#id#();
+	} 
+	else {  setTimeout(() => {  theme_jeedom = setTheme#id#(); }, 15000);  }
+	
 	color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
 	if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
 	else { color_icon_closed_rgb = color_icon_closed; }
-	
-	
+		
 	$('body').on('changeThemeEvent', function (event,theme) {
-		theme_jeedom = detectTheme#id#();
+		theme_jeedom = setTheme#id#();
 		color_icon_closed = setColorIconClosed#id#(theme_jeedom);
 		if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
 		else { color_icon_closed_rgb = color_icon_closed; }
