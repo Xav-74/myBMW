@@ -28,8 +28,13 @@
 				<div class="col-sm-4" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kilométrage</div>
 					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-signs"></i></div>
-					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#mileage_id#"></span><span id="titre_tile"> kms</span></div>
+					<div class="col-sm-12" id="value_tile" style="height:70px;" data-cmd_id="#mileage_id#"><span class="Cmd#mileage_id# cmd-widget #mileage_history#"></span><span id="titre_tile"> kms</span></div>
 				</div>
+				<script>
+					$('.cmd[data-cmd_id=#mileage_id#]').on('click', function () {
+						$('#md_modal2').dialog({title: "Historique kilométrage"}).load('index.php?v=d&modal=cmd.history&id=#mileage_id#').dialog('open');
+					});
+				</script>
 				
 				<div class="col-sm-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Volume carburant</div>
@@ -46,9 +51,14 @@
 				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Batterie</div>
 					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-car-battery"></i></div>
-					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#chargingLevelHv_id#"></span><span id="titre_tile"> %</span></div>				
+					<div class="col-sm-12" id="value_tile" style="height:70px;" data-cmd_id="#chargingLevelHv_id#"><span class="Cmd#chargingLevelHv_id# cmd-widget #chargingLevelHv_history#"></span><span id="titre_tile"> %</span></div>				
 				</div>
-				
+				<script>
+					$('.cmd[data-cmd_id=#chargingLevelHv_id#]').on('click', function () {
+						$('#md_modal2').dialog({title: "Historique charge batterie"}).load('index.php?v=d&modal=cmd.history&id=#chargingLevelHv_id#').dialog('open');
+					});
+				</script>
+								
 				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kms restants (électrique)</div>
 					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-pin"></i></div>

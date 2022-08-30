@@ -31,7 +31,20 @@ class myBMW extends eqLogic {
 	public static $_widgetPossibility = array(
 		'custom' => true,
 		//'custom::layout' => false,
-		'parameters' => array(),
+		'parameters' => array(
+			'info' => array(
+                'name' => 'Les différents paramètres optionnels sont les suivant :',
+            ),
+			'param_1' => array(
+                'name' => ' - doors_windows_display (text /icon) : affiche l\'état des portes / fenêtres sous forme de texte ou icône',
+            ),
+			'param_2' => array(
+                'name' => ' - all_info_display (show / hide) : affiche ou non les tuiles "Toutes les portes / fenêtres"',
+            ),
+			'param_3' => array(
+                'name' => ' - color_icon_closed (green) : affiche l\'état "fermé" des portes / fenêtres en vert',
+            ),
+		),
 	);
 	
 	public function decrypt() {
@@ -191,8 +204,8 @@ class myBMW extends eqLogic {
 			$replace['#' . $cmd->getLogicalId() . '_name#'] = $cmd->getName();
 			$replace['#' . $cmd->getLogicalId() . '#'] = $cmd->execCmd();
 			$replace['#' . $cmd->getLogicalId() . '_visible#'] = $cmd->getIsVisible();
-			//$replace['#' . $cmd->getLogicalId() . '_collect#'] = $cmd->getCollectDate();
-			//if ($cmd->getIsHistorized() == 1) { $replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor'; }
+			$replace['#' . $cmd->getLogicalId() . '_collect#'] = $cmd->getCollectDate();
+			if ($cmd->getIsHistorized() == 1) { $replace['#' . $cmd->getLogicalId() . '_history#'] = 'history cursor'; }
 		}
 
 		// Traitement des commandes actions
