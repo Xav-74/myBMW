@@ -145,6 +145,8 @@ class myBMW extends eqLogic {
         $this->createCmd('hornBlow_status', 'Statut klaxonner', 47, 'info', 'string');
 		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 48, 'info', 'string');
 		$this->createCmd('sendPOI_status', 'Statut envoi POI', 49, 'info', 'string');
+		
+		$this->createCmd('presence', 'Présence domicile', 50, 'info', 'binary');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -336,13 +338,6 @@ class myBMW extends eqLogic {
 		}
 	}
 	
-	public function getIcon()
-	{
-		$filename = 'plugins/myBMW/data/'.$this->getConfiguration("vehicle_vin").'.png';
-		if ( file_exists($filename) ) { return $filename; }
-		else { return 'plugins/myBMW/plugin_info/myBMW_icon.png'; }
-	}
-	
 	public function vehiclesInfos()
     {
 		$myConnection = $this->getConnection();
@@ -367,6 +362,7 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getVehicleState();
 		$vehicle = json_decode($result->body);
 		
+		//States
 		if ( array_key_exists('currentMileage', $vehicle->state) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
 					
 		if ( array_key_exists('combinedSecurityState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
@@ -391,7 +387,8 @@ class myBMW extends eqLogic {
 				
 		if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
 		if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
-					
+		
+		//Messages
 		$control_messages = $vehicle->state->checkControlMessages;
 		$services_messages = $vehicle->state->requiredServices;
 		$table_temp = array();
@@ -426,15 +423,22 @@ class myBMW extends eqLogic {
 		}
 		$table_messages['requiredServices'] = $table_temp;
 		$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
-						
+		
+		//Location - Presence
 		if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
+		$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude, $this->getConfiguration("home_lat"), $this->getConfiguration("home_long") );
+		if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
+		else { $this->checkAndUpdateCmd('presence', 0); }
+		
+		//Last update
 		if ( array_key_exists('lastUpdatedAt', $vehicle->state) ) { 
 			if ( $vehicle->state->lastUpdatedAt == "0001-01-01T00:00:00Z" ) { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
 			else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
 		}
 		else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
-						
+				
 		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
+		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance);
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
 	}
@@ -663,6 +667,28 @@ class myBMW extends eqLogic {
 	{
 		return ($httpStatus == $success) ? 'debug' : 'error'; 
 	}
+	
+	public function getIcon()
+	{
+		$filename = 'plugins/myBMW/data/'.$this->getConfiguration("vehicle_vin").'.png';
+		if ( file_exists($filename) ) { return $filename; }
+		else { return 'plugins/myBMW/plugin_info/myBMW_icon.png'; }
+	}
+	
+	public function getDistanceLocation($lat1, $lng1, $lat2, $lng2)
+	{
+		$earth_radius = 6378.137; // Terre = sphère de 6378km de rayon
+		$rlo1 = deg2rad( floatval($lng1) );
+		$rla1 = deg2rad( floatval($lat1) );
+		$rlo2 = deg2rad( floatval($lng2) );
+		$rla2 = deg2rad( floatval($lat2) );
+		$dlo = ($rlo2 - $rlo1) / 2;
+		$dla = ($rla2 - $rla1) / 2;
+		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
+		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
+		return round(($earth_radius * $d), 2);
+	}
+
 }
 
 

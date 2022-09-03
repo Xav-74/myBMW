@@ -16,7 +16,11 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-12" id="tile" style="height:50px; width:440px;">
+				<div class="col-sm-2" id="tile" style="height:50px; width:50px;">
+					<div id="picture" style="height:50px; width:50px;"><i class="Cmd#presence_id#"></i></div>
+				</div>
+				
+				<div class="col-sm-10" id="tile" style="height:50px; width:380px;">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-2"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
 					<div class="col-sm-2"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
@@ -348,10 +352,22 @@
 
 	//----- Location
 	jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {
-            var mybmw_cmd  = $('#myFrame#id#')[0];
-			mybmw_cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
-		}
+        var mybmw_cmd  = $('#myFrame#id#')[0];
+		mybmw_cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
+	}
 	jeedom.cmd.update['#gps_coordinates_id#']({display_value: '#gps_coordinates#'});
+	
+	
+	//----- Presence
+	jeedom.cmd.update['#presence_id#'] =function(_options) {
+        if ( _options.display_value == 1 )  {
+           	$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.75em; color:white;" title="Présence domicile<br/> Oui"></i>');
+		}
+		if ( _options.display_value == 0 )  {
+           	$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.75em; color:rgb(185,58,62);" title="Présence domicile<br/> Non"></i>');
+		}
+	}
+	jeedom.cmd.update['#presence_id#']({display_value: '#presence#'});
 	
 	
 	//----- Lockstate

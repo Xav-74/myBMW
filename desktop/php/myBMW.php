@@ -162,15 +162,34 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								
+								</br></br>
+								
 								<div class="form-group">
 									<label class="col-sm-6 control-label">{{Widget personnalisé}}</label>
 									<div class="col-sm-6">
-										<select id="sel_widget" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="widget_template">
+										<select id="sel_widget" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="widget_template">
 											<option value="0">Aucun</option>
 											<option value="1" selected>Widget Flat Design</option>
 											<option value="2">Widget Legacy</option>
 										</select>
 										<!--<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>-->
+									</div>
+								</div>
+								
+								<div class="form-group">		
+									<label class="col-sm-6 control-label">{{Domicile (présence)}}</label>
+									<div class="col-sm-3">
+										<input id="home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
+									</div>
+									<div class="col-sm-3">
+										<input id="home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Longitude de votre domicile">
+									</div>
+								</div>
+															
+								<div class="form-group">	
+									<label class="col-sm-6 control-label">{{Distance max (en m)}}</label>
+									<div class="col-sm-6">
+										<input id="home_distance"type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_distance" placeholder="Distance max avec votre domicile (en m)">
 									</div>
 								</div>
 								
@@ -186,7 +205,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Année}}</label>
 									<div id="div_year" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
+										<input type="text" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
 									</div>
 								</div>
 								
@@ -241,8 +260,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			<script>
 			
-						
-				
+
 			</script>			
 			
 						
