@@ -147,6 +147,7 @@ class myBMW extends eqLogic {
 		$this->createCmd('sendPOI_status', 'Statut envoi POI', 49, 'info', 'string');
 		
 		$this->createCmd('presence', 'Présence domicile', 50, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 51, 'info', 'numeric');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -197,6 +198,7 @@ class myBMW extends eqLogic {
 		$replace['#vehicle_vin'.$this->getId().'#'] = $this->getConfiguration('vehicle_vin');
 		$replace['#vehicle_brand'.$this->getId().'#'] = $this->getConfiguration('vehicle_brand');
 		$replace['#vehicle_type'.$this->getId().'#'] = $this->getConfiguration('vehicle_type');
+		$replace['#home_distance'.$this->getId().'#'] = $this->getConfiguration('home_distance');
 							
 		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
 
@@ -427,6 +429,7 @@ class myBMW extends eqLogic {
 		//Location - Presence
 		if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
 		$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude, $this->getConfiguration("home_lat"), $this->getConfiguration("home_long") );
+		$this->checkAndUpdateCmd('distance', $distance);
 		if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
 		else { $this->checkAndUpdateCmd('presence', 0); }
 		
@@ -686,7 +689,7 @@ class myBMW extends eqLogic {
 		$dla = ($rla2 - $rla1) / 2;
 		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
 		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
-		return round(($earth_radius * $d), 2);
+		return round(($earth_radius * $d), 0);
 	}
 
 }
