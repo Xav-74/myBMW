@@ -96,58 +96,56 @@ class myBMW extends eqLogic {
 		$this->createCmd('type', 'Type', 4, 'info', 'string');
 		
 		$this->createCmd('mileage', 'Kilométrage', 5, 'info', 'numeric');
-		$this->createCmd('unitOfLength', 'Unité de distance', 6, 'info', 'string');
-		$this->createCmd('unitOfFuel', 'Unité de carburant', 7, 'info', 'string');
+				
+		$this->createCmd('doorLockState', 'Verrouillage', 6, 'info', 'string');
+		$this->createCmd('allDoorsState', 'Toutes les portes', 7, 'info', 'string');
+		$this->createCmd('allWindowsState', 'Toutes les fenêtres', 8, 'info', 'string');
+		$this->createCmd('doorDriverFront', 'Porte Conducteur Avant', 9, 'info', 'string');
+        $this->createCmd('doorDriverRear', 'Porte Conducteur Arrière', 10, 'info', 'string');
+        $this->createCmd('doorPassengerFront', 'Porte Passager Avant', 11, 'info', 'string');
+        $this->createCmd('doorPassengerRear', 'Porte Passager Arrière', 12, 'info', 'string');
+        $this->createCmd('windowDriverFront', 'Fenêtre Conducteur Avant', 13, 'info', 'string');
+        $this->createCmd('windowDriverRear', 'Fenêtre Conducteur Arrière', 14, 'info', 'string');
+        $this->createCmd('windowPassengerFront', 'Fenêtre Passager Avant', 15, 'info', 'string');
+        $this->createCmd('windowPassengerRear', 'Fenêtre Passager Arrière', 16, 'info', 'string');
+		$this->createCmd('trunk_state', 'Coffre', 17, 'info', 'string');
+        $this->createCmd('hood_state', 'Capot Moteur', 18, 'info', 'string');
+		$this->createCmd('moonroof_state', 'Toit ouvrant', 19, 'info', 'string');
 		
-		$this->createCmd('doorLockState', 'Verrouillage', 8, 'info', 'string');
-		$this->createCmd('allDoorsState', 'Toutes les portes', 9, 'info', 'string');
-		$this->createCmd('allWindowsState', 'Toutes les fenêtres', 10, 'info', 'string');
-		$this->createCmd('doorDriverFront', 'Porte Conducteur Avant', 11, 'info', 'string');
-        $this->createCmd('doorDriverRear', 'Porte Conducteur Arrière', 12, 'info', 'string');
-        $this->createCmd('doorPassengerFront', 'Porte Passager Avant', 13, 'info', 'string');
-        $this->createCmd('doorPassengerRear', 'Porte Passager Arrière', 14, 'info', 'string');
-        $this->createCmd('windowDriverFront', 'Fenêtre Conducteur Avant', 15, 'info', 'string');
-        $this->createCmd('windowDriverRear', 'Fenêtre Conducteur Arrière', 16, 'info', 'string');
-        $this->createCmd('windowPassengerFront', 'Fenêtre Passager Avant', 17, 'info', 'string');
-        $this->createCmd('windowPassengerRear', 'Fenêtre Passager Arrière', 18, 'info', 'string');
-		$this->createCmd('trunk_state', 'Coffre', 19, 'info', 'string');
-        $this->createCmd('hood_state', 'Capot Moteur', 20, 'info', 'string');
-		$this->createCmd('moonroof_state', 'Toit ouvrant', 21, 'info', 'string');
-		
-		$this->createCmd('chargingStatus', 'Etat de la charge', 22, 'info', 'string');
-		$this->createCmd('connectorStatus', 'Etat de la prise', 23, 'info', 'string');
-		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 24, 'info', 'numeric');
-        $this->createCmd('chargingLevelHv', 'Charge restante', 25, 'info', 'numeric');
+		$this->createCmd('chargingStatus', 'Etat de la charge', 20, 'info', 'string');
+		$this->createCmd('connectorStatus', 'Etat de la prise', 21, 'info', 'string');
+		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 22, 'info', 'numeric');
+        $this->createCmd('chargingLevelHv', 'Charge restante', 23, 'info', 'numeric');
         
-		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 26, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 27, 'info', 'numeric');
+		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 24, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 25, 'info', 'numeric');
 		
-        $this->createCmd('vehicleMessages', 'Messages', 28, 'info', 'string');
-        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 29, 'info', 'string');
+        $this->createCmd('vehicleMessages', 'Messages', 26, 'info', 'string');
+        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 27, 'info', 'string');
       	
-        $this->createCmd('refresh', 'Rafraichir', 30, 'action', 'other');
-        $this->createCmd('climateNow', 'Climatiser', 31, 'action', 'other');
-		$this->createCmd('stopClimateNow', 'Stop Climatiser', 32, 'action', 'other');
-		$this->createCmd('chargeNow', 'Charger', 33, 'action', 'other');
-		$this->createCmd('doorLock', 'Verrouiller', 34, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 35, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 36, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 37, 'action', 'other');
-		$this->createCmd('vehicleFinder', 'Recherche véhicule', 38, 'action', 'other');
-		$this->createCmd('sendPOI', 'Envoi POI', 39, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 40, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 41, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 42, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 43, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 44, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 45, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 46, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 47, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 48, 'info', 'string');
-		$this->createCmd('sendPOI_status', 'Statut envoi POI', 49, 'info', 'string');
+        $this->createCmd('refresh', 'Rafraichir', 28, 'action', 'other');
+        $this->createCmd('climateNow', 'Climatiser', 29, 'action', 'other');
+		$this->createCmd('stopClimateNow', 'Stop Climatiser', 30, 'action', 'other');
+		$this->createCmd('chargeNow', 'Charger', 31, 'action', 'other');
+		$this->createCmd('doorLock', 'Verrouiller', 32, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 33, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 34, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 35, 'action', 'other');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 36, 'action', 'other');
+		$this->createCmd('sendPOI', 'Envoi POI', 37, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 38, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 39, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 40, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 41, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 42, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 43, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 44, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 45, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 46, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 47, 'info', 'string');
 		
-		$this->createCmd('presence', 'Présence domicile', 50, 'info', 'binary');
-		$this->createCmd('distance', 'Distance domicile', 51, 'info', 'numeric');
+		$this->createCmd('presence', 'Présence domicile', 48, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 49, 'info', 'numeric');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -408,15 +406,20 @@ class myBMW extends eqLogic {
 			if ( array_key_exists('dateTime', $message) ) {
 				$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
 				$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
+				if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
 			}
-			else { $message_date = ''; }
-			if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
+			else { 
+				$message_date = '';
+				if ( array_key_exists('mileage', $message) ) { $message_mileage = $message->mileage." kms "; } else { $message_mileage = ''; }
+			}
 			$message_status = '';
 			if ( array_key_exists('type', $message) ) {
 				if ($message->type == "OIL") { $message_title = "Huile moteur"; }
 				elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
 				elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
 				elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
+				elseif ($message->type == "BRAKE_PADS_FRONT") { $message_title = "Plaquettes de frein avant"; }
+				elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
 				else { $message_title = $message->type; }
 			}
 			else { $message_title = ''; }
@@ -680,7 +683,7 @@ class myBMW extends eqLogic {
 	
 	public function getDistanceLocation($lat1, $lng1, $lat2, $lng2)
 	{
-		$earth_radius = 6378.137; // Terre = sphère de 6378km de rayon
+		$earth_radius = 6371; // Terre = sphère de 6371km de rayon
 		$rlo1 = deg2rad( floatval($lng1) );
 		$rla1 = deg2rad( floatval($lat1) );
 		$rlo2 = deg2rad( floatval($lng2) );
@@ -689,7 +692,7 @@ class myBMW extends eqLogic {
 		$dla = ($rla2 - $rla1) / 2;
 		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
 		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
-		return round(($earth_radius * $d), 0);
+		return round(($earth_radius * $d), 1);
 	}
 
 }

@@ -371,7 +371,7 @@
 	jeedom.cmd.update['#presence_id#']({display_value: '#presence#'});
 	
 	jeedom.cmd.update['#distance_id#'] =function(_options) {
-		if ( parseInt(_options.display_value) <= parseInt('#home_distance#id##' ) )  {
+		if ( parseFloat(_options.display_value) <= parseFloat('#home_distance#id##' ) )  {
            $('.Cmd#distance_id#').empty().append('<span>'+_options.display_value+' m</span>');
 		}
 		else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+_options.display_value+' m</span>'); }
