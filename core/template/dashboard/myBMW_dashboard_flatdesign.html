@@ -16,17 +16,17 @@
 					</div>
 				</div>
 				
-				<div class="col-sm-2" id="tile" style="height:50px; width:50px;">
-					<div id="picture" style="height:35px; width:50px; padding-top: 5px;"><i class="Cmd#presence_id#"></i></div>
-					<div id="distance" style="height:15px; width:50px;"><span class="Cmd#distance_id#"></span></div>
+				<div class="col-sm-2" id="tile" style="height:50px; width:75px;">
+					<div id="picture" style="height:35px; width:75px; padding-top: 5px;"><i class="Cmd#presence_id#"></i></div>
+					<div id="distance" style="height:15px; width:75px;"><span class="Cmd#distance_id#"></span></div>
 				</div>
 				
-				<div class="col-sm-10" id="tile" style="height:50px; width:380px;">
+				<div class="col-sm-10" id="tile" style="height:50px; width:355px;">
 					<div class="col-sm-2"></div>
-					<div class="col-sm-2"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
-					<div class="col-sm-2"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
-					<div class="col-sm-2"><span class="icon_tire#id#"><img src="plugins/myBMW/core/img/tire_grey.png" height="50" title="Pression des pneus OK"/></span></div>
-					<div class="col-sm-2"><span class="icon_vehicle#id#"><img src="plugins/myBMW/core/img/vehicle_grey.png" height="50" title="Statut Véhicule OK"/></span></div>
+					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
+					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
+					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_tire#id#"><img src="plugins/myBMW/core/img/tire_grey.png" height="50" title="Pression des pneus OK"/></span></div>
+					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_vehicle#id#"><img src="plugins/myBMW/core/img/vehicle_grey.png" height="50" title="Statut Véhicule OK"/></span></div>
 					<div class="col-sm-2"></div>
 				</div>
 				
@@ -84,7 +84,7 @@
 				</div>
 				
 				<div class="col-sm-6" id="tile" style="height:100px; width:215px;">
-					<div class="col-sm-8" id="titre_tile" style="height:50px;">Sécurtité</div>
+					<div class="col-sm-8" id="titre_tile" style="height:50px;">Sécurité</div>
 					<div class="col-sm-4" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-shield-alt"></i></div>
 					<div class="col-sm-12" id="value_tile" style="height:50px;"><span class="securisedMode#id#"></span></div>
 				</div>
@@ -372,9 +372,13 @@
 	
 	jeedom.cmd.update['#distance_id#'] =function(_options) {
 		if ( parseFloat(_options.display_value) <= parseFloat('#home_distance#id##' ) )  {
-           $('.Cmd#distance_id#').empty().append('<span>'+_options.display_value+' m</span>');
+			if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span>'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
+			else { $('.Cmd#distance_id#').empty().append('<span>'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' kms</span>'); }
 		}
-		else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+_options.display_value+' m</span>'); }
+		else { 
+			if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
+			else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' kms</span>'); }
+		}
 	}
 	jeedom.cmd.update['#distance_id#']({display_value: '#distance#'});
 	

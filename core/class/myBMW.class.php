@@ -410,7 +410,7 @@ class myBMW extends eqLogic {
 			}
 			else { 
 				$message_date = '';
-				if ( array_key_exists('mileage', $message) ) { $message_mileage = $message->mileage." kms "; } else { $message_mileage = ''; }
+				if ( array_key_exists('mileage', $message) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
 			}
 			$message_status = '';
 			if ( array_key_exists('type', $message) ) {
@@ -444,7 +444,7 @@ class myBMW extends eqLogic {
 		else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
 				
 		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
-		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance);
+		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
 	}
@@ -692,7 +692,7 @@ class myBMW extends eqLogic {
 		$dla = ($rla2 - $rla1) / 2;
 		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
 		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
-		return round(($earth_radius * $d), 1);
+		return round(($earth_radius * $d * 1000), 1); //retour en m
 	}
 
 }
