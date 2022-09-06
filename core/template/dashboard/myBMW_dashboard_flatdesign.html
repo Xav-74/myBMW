@@ -33,7 +33,7 @@
 				<div class="col-sm-4" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Kilométrage</div>
 					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-signs"></i></div>
-					<div class="col-sm-12 #mileage_history#" id="value_tile" style="height:70px;" data-cmd_id="#mileage_id#"><span class="Cmd#mileage_id#"></span><span id="titre_tile"> kms</span></div>
+					<div class="col-sm-12 #mileage_history#" id="value_tile" style="height:70px;" data-cmd_id="#mileage_id#"><span class="Cmd#mileage_id#"></span><span id="titre_tile"> km</span></div>
 				</div>
 				
 				<div class="col-sm-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
@@ -373,11 +373,11 @@
 	jeedom.cmd.update['#distance_id#'] =function(_options) {
 		if ( parseFloat(_options.display_value) <= parseFloat('#home_distance#id##' ) )  {
 			if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span>'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
-			else { $('.Cmd#distance_id#').empty().append('<span>'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' kms</span>'); }
+			else { $('.Cmd#distance_id#').empty().append('<span>'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
 		}
 		else { 
 			if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
-			else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' kms</span>'); }
+			else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
 		}
 	}
 	jeedom.cmd.update['#distance_id#']({display_value: '#distance#'});
