@@ -177,7 +177,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 								
 								<div class="form-group">		
-									<label class="col-sm-6 control-label help" data-help="{{au format 12.345678  et pas 12°34'56.7''N}}">{{Domicile (présence)}}</label>
+									<label class="col-sm-6 control-label help" data-help="{{Coordonnées GPS au format 12.345678  et pas 12°34'56.7''N}}">{{Domicile (présence)}}</label>
 									<div class="col-sm-3">
 										<input id="home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
 									</div>
