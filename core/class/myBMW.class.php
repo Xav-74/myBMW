@@ -431,7 +431,7 @@ class myBMW extends eqLogic {
 		
 		//Location - Presence
 		if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
-		$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude, $this->getConfiguration("home_lat"), $this->getConfiguration("home_long") );
+		$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude );
 		$this->checkAndUpdateCmd('distance', $distance);
 		if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
 		else { $this->checkAndUpdateCmd('presence', 0); }
@@ -681,13 +681,26 @@ class myBMW extends eqLogic {
 		else { return 'plugins/myBMW/plugin_info/myBMW_icon.png'; }
 	}
 	
-	public function getDistanceLocation($lat1, $lng1, $lat2, $lng2)
+	public function getDistanceLocation($lat1, $lng1)
 	{
+		if ( $this->getConfiguration("option_localisation") == "jeedom" ) {
+			$lat2 = config::byKey('info::latitude','core','0');
+			$lng2 = config::byKey('info::longitude','core','0');
+		}
+		else if ( $this->getConfiguration("option_localisation") == "manual" ) {
+			$lat2 = $this->getConfiguration("home_lat");
+			$lng2 = $this->getConfiguration("home_long");
+		}	
+		else {
+			$lat2 = 0;
+			$lng2 = 0;
+		}
+		
 		$earth_radius = 6371; // Terre = sphère de 6371km de rayon
-		$rlo1 = deg2rad( floatval($lng1) );
 		$rla1 = deg2rad( floatval($lat1) );
-		$rlo2 = deg2rad( floatval($lng2) );
+		$rlo1 = deg2rad( floatval($lng1) );
 		$rla2 = deg2rad( floatval($lat2) );
+		$rlo2 = deg2rad( floatval($lng2) );
 		$dlo = ($rlo2 - $rlo1) / 2;
 		$dla = ($rla2 - $rla1) / 2;
 		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));

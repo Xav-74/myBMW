@@ -39,6 +39,9 @@ function addCmdToTable(_cmd) {
 	tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
 	tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
 	tr += '</td>';
+	/*tr += '<td>';
+	tr += '<span class="cmdAttr" data-l1key="htmlstate"></span>';
+	tr += '</td>';*/
 	tr += '<td>';
 	if (init(_cmd.type) == 'info') {
 		tr += '<span><input type="checkbox" class="cmdAttr" data-l1key="isVisible"/>{{Affichage}}<br/></span>';

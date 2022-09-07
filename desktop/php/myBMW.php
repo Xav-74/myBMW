@@ -176,8 +176,30 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								
-								<div class="form-group">		
-									<label class="col-sm-6 control-label help" data-help="{{Coordonnées GPS au format 12.345678  et pas 12°34'56.7''N}}">{{Domicile (présence)}}</label>
+								</br></br>
+								
+								<div class="form-group">
+									<label class="col-sm-6 control-label">{{Domicile (présence)}}</label>
+									<div class="col-sm-6">
+										<select id="sel_option_localisation" class="eqLogicAttr form-control" style="margin-bottom: 1px;" data-l1key="configuration" data-l2key="option_localisation">
+											<?php
+												if ( (config::byKey('info::latitude','core','0') != '0') && (config::byKey('info::longitude','core','0') != '0') ) {
+													echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
+													echo '<option value="jeedom">{{Configuration Jeedom}}</option>';
+													echo '<option value="manual">{{Configuration manuelle}}</option>';
+												} 
+												else {
+													echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
+													echo '<option value="manual">{{Configuration manuelle}}</option>';
+													echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
+												}
+											?>
+										</select>
+									</div>
+								</div>
+								
+								<div class="form-group" id="gps_coordinates">		
+									<label class="col-sm-6 control-label help" data-help="{{Coordonnées GPS au format xx.xxxxxx  et pas xx°xx'xx.x''N}}">{{Coordonnées GPS}}</label>
 									<div class="col-sm-3">
 										<input id="home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
 									</div>
@@ -260,6 +282,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			<script>
 			
+			if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() != "manual" ) { $('#gps_coordinates').hide(); }
+			
+			$('#sel_option_localisation').on("change",function (){
+				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "jeedom" ) { $('#gps_coordinates').hide(); }
+				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "manual" ) { $('#gps_coordinates').show(); }
+			});	
 
 			</script>			
 			
