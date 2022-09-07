@@ -191,7 +191,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												else {
 													echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
 													echo '<option value="manual">{{Configuration manuelle}}</option>';
-													echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
+													//echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
 												}
 											?>
 										</select>
