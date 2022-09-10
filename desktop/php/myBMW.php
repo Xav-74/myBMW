@@ -183,16 +183,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-sm-6">
 										<select id="sel_option_localisation" class="eqLogicAttr form-control" style="margin-bottom: 1px;" data-l1key="configuration" data-l2key="option_localisation">
 											<?php
-												if ( (config::byKey('info::latitude','core','0') != '0') && (config::byKey('info::longitude','core','0') != '0') ) {
-													echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
-													echo '<option value="jeedom">{{Configuration Jeedom}}</option>';
-													echo '<option value="manual">{{Configuration manuelle}}</option>';
-												} 
-												else {
-													echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
-													echo '<option value="manual">{{Configuration manuelle}}</option>';
-													//echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
-												}
+											if ( (config::byKey('info::latitude','core','0') != '0') && (config::byKey('info::longitude','core','0') != '0') ) {
+												echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
+												echo '<option value="jeedom">{{Configuration Jeedom}}</option>';
+												echo '<option value="manual">{{Configuration manuelle}}</option>';
+											} 
+											else {
+												echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
+												echo '<option value="manual">{{Configuration manuelle}}</option>';
+												//echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
+											}
 											?>
 										</select>
 									</div>

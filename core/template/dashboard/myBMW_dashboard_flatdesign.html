@@ -281,6 +281,28 @@
 		$('.myBMW_widget_flat_#id#')[0].style.setProperty('background-color', theme, 'important');
 		return theme;
 	}
+
+	function timedSetTheme#id#(occurence = 0){
+		if ($('.myBMW_widget_flat_#id#').length == 0) {
+			return;
+		}
+		if ( $('body')[0].hasAttribute('data-theme') != true )  {
+			occurence++;
+			if (occurence > 40){
+				return;
+			}
+			setTimeout( () => { timedSetTheme#id#(occurence); }, 500 );
+			return
+		}
+		theme_jeedom = setTheme#id#();
+		color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
+		if (color_icon_closed == 'green') {
+			color_icon_closed_rgb = 'rgb(150,201,39)';
+		}
+		else  {
+			color_icon_closed_rgb = color_icon_closed;
+		}
+	}
 	
 	function setColorIconClosed#id#(theme)  {
 		var color = "";
@@ -310,15 +332,29 @@
 			$('.all_info_display#id#').hide();
 		}
 	}
-	
+
 	if ( $('body')[0].hasAttribute('data-theme') == true )  {
+		theme_jeedom = setTheme#id#();
+		color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
+		if ( color_icon_closed == 'green' ) {
+			color_icon_closed_rgb = 'rgb(150,201,39)';
+		}
+		else  {
+			color_icon_closed_rgb = color_icon_closed;
+		}
+	}
+	else  {
+		timedSetTheme#id#(0);
+	}	
+		
+	/*if ( $('body')[0].hasAttribute('data-theme') == true )  {
 		theme_jeedom = setTheme#id#();
 	} 
 	else {  setTimeout(() => {  theme_jeedom = setTheme#id#(); }, 20000);  }
 	
 	color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
 	if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
-	else { color_icon_closed_rgb = color_icon_closed; }
+	else { color_icon_closed_rgb = color_icon_closed; }*/
 		
 	$('body').on('changeThemeEvent', function (event,theme) {
 		theme_jeedom = setTheme#id#();
