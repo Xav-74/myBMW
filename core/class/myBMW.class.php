@@ -397,7 +397,8 @@ class myBMW extends eqLogic {
 		foreach ($control_messages as $message) {
 			if ( array_key_exists('type', $message) ) { $message_type = $message->type; } else { $message_type = ''; }
 			if ( array_key_exists('severity', $message) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
-			$table_temp[] = array( "type" => $message_type, "severity" => $message_severity );
+			if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }
+			$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
 		}
 		$table_messages['checkControlMessages'] = $table_temp;
 		$table_temp = array();
