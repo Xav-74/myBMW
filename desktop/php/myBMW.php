@@ -186,10 +186,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											if ( (config::byKey('info::latitude','core','0') != '0') && (config::byKey('info::longitude','core','0') != '0') ) {
 												echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
 												echo '<option value="jeedom">{{Configuration Jeedom}}</option>';
+												echo '<option value="vehicle">{{Configuration position actuelle du véhicule}}</option>';
 												echo '<option value="manual">{{Configuration manuelle}}</option>';
 											} 
 											else {
 												echo '<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>';
+												echo '<option value="vehicle">{{Configuration position actuelle du véhicule}}</option>';
 												echo '<option value="manual">{{Configuration manuelle}}</option>';
 												//echo '<option value="jeedom">{{Configuration Jeedom indisponible}}</option>';
 											}
@@ -200,14 +202,17 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<div class="form-group" id="gps_coordinates">		
 									<label class="col-sm-6 control-label help" data-help="{{Coordonnées GPS au format xx.xxxxxx  et pas xx°xx'xx.x''N}}">{{Coordonnées GPS}}</label>
-									<div class="col-sm-3">
-										<input id="home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
+									<div class="col-sm-2" id="div_home_lat">
+										<input id="input_home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
 									</div>
-									<div class="col-sm-3">
-										<input id="home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Longitude de votre domicile">
+									<div class="col-sm-2" id="div_home_long">
+										<input id="input_home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Longitude de votre domicile">
 									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-primary btn-sm cmdAction" id="bt_gps" style="height:32px; width:32px; padding-top:8px" title="{{Récupérer la position actuelle du véhicule}}"><i class="fas fa-location-arrow"></i></a>
+									</div>	
 								</div>
-															
+																							
 								<div class="form-group">	
 									<label class="col-sm-6 control-label">{{Distance max (en m)}}</label>
 									<div class="col-sm-6">
@@ -282,12 +287,29 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			<script>
 			
-			if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() != "manual" ) { $('#gps_coordinates').hide(); }
+			setDisplayGPS();
 			
 			$('#sel_option_localisation').on("change",function (){
-				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "jeedom" ) { $('#gps_coordinates').hide(); }
-				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "manual" ) { $('#gps_coordinates').show(); }
-			});	
+				setDisplayGPS();
+			});
+
+			function setDisplayGPS() {
+				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "jeedom" || $('.eqLogicAttr[data-l2key=option_localisation]').value() == null) {
+					$('#gps_coordinates').hide();
+				}
+				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "manual" ) {
+					$('#gps_coordinates').show();
+					$('#bt_gps').hide();
+					$('#input_home_lat').attr('readonly', false);
+					$('#input_home_long').attr('readonly', false);
+				}
+				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "vehicle" ) {
+					$('#gps_coordinates').show();
+					$('#bt_gps').show();
+					$('#input_home_lat').attr('readonly', true);
+					$('#input_home_long').attr('readonly', true);
+				}
+			}
 
 			</script>			
 			

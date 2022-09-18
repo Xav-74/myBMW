@@ -39,6 +39,11 @@ try {
 		$result = myBMW::synchronize(init('vin'),init('username'),init('pwd'),init('brand'));
 		ajax::success($result);
 	}
+	
+	if (init('action') == 'gps') {
+		$result = myBMW::getGPSCoordinates(init('vin'));
+		ajax::success($result);
+	}
 		
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */

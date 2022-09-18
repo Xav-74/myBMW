@@ -421,6 +421,8 @@ class myBMW extends eqLogic {
 				elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
 				elseif ($message->type == "BRAKE_PADS_FRONT") { $message_title = "Plaquettes de frein avant"; }
 				elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
+				elseif ($message->type == "TIRE_WEAR_FRONT") { $message_title = "Usure pneus avant"; }
+				elseif ($message->type == "TIRE_WEAR_REAR") { $message_title = "Usure pneus arrière"; }
 				else { $message_title = $message->type; }
 			}
 			else { $message_title = ''; }
@@ -688,7 +690,7 @@ class myBMW extends eqLogic {
 			$lat2 = config::byKey('info::latitude','core','0');
 			$lng2 = config::byKey('info::longitude','core','0');
 		}
-		else if ( $this->getConfiguration("option_localisation") == "manual" ) {
+		else if ( $this->getConfiguration("option_localisation") == "manual" || $this->getConfiguration("option_localisation") == "vehicle") {
 			$lat2 = $this->getConfiguration("home_lat");
 			$lng2 = $this->getConfiguration("home_long");
 		}	
@@ -707,6 +709,23 @@ class myBMW extends eqLogic {
 		$a = (sin($dla) * sin($dla)) + cos($rla1) * cos($rla2) * (sin($dlo) * sin($dlo));
 		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
 		return round(($earth_radius * $d * 1000), 1); //retour en m
+	}
+	
+	public function getGPSCoordinates($vin)
+	{
+		$eqLogic = self::getBMWEqLogic($vin);
+		$cmd = $eqLogic->getCmd(null, 'gps_coordinates');
+		
+		if ( is_object($cmd) )  {
+			$coordinates = explode(",", $cmd->execCmd());
+			$gps = array( "latitude" => $coordinates[0], "longitude" => $coordinates[1] );
+		}
+		else  {
+			$gps = array( "latitude" => "", "longitude" => "" );
+		}
+		
+		//log::add('myBMW', 'debug', json_encode($gps));
+		return $gps;
 	}
 
 }
