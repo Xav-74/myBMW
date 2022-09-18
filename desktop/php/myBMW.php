@@ -203,10 +203,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group" id="gps_coordinates">		
 									<label class="col-sm-6 control-label help" data-help="{{Coordonnées GPS au format xx.xxxxxx  et pas xx°xx'xx.x''N}}">{{Coordonnées GPS}}</label>
 									<div class="col-sm-2" id="div_home_lat">
-										<input id="input_home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile">
+										<input id="input_home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Lat. domicile">
 									</div>
 									<div class="col-sm-2" id="div_home_long">
-										<input id="input_home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Longitude de votre domicile">
+										<input id="input_home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Long. domicile">
 									</div>
 									<div class="col-sm-2">
 										<a class="btn btn-primary btn-sm cmdAction" id="bt_gps" style="height:32px; width:32px; padding-top:8px" title="{{Récupérer la position actuelle du véhicule}}"><i class="fas fa-location-arrow"></i></a>
