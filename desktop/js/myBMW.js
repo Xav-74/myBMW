@@ -37,7 +37,7 @@ function addCmdToTable(_cmd) {
 	tr += '<td style="width:20%">';
 	tr += '<input class="cmdAttr form-control input-sm" style="width:80%" data-l1key="name" placeholder="{{Nom de la commande}}">';
 	tr += '</td>';
-	tr += '<td style="width:10%">';
+	tr += '<td style="width:10%; padding:5px 0px">';
 	tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
 	tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
 	tr += '</td>';

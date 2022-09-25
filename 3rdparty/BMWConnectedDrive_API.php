@@ -434,7 +434,7 @@ class BMWConnectedDrive_API
 
 	public function getRemoteServiceStatus($event_id)
 	{
-		$this->_checkAuth();
+		//$this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_STATUS, $event_id), 'POST', null, $headers);
 	}
@@ -442,7 +442,7 @@ class BMWConnectedDrive_API
 	
 	public function getEventPosition($event_id)
 	{
-		$this->_checkAuth();
+		//$this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'latitude: 0.000000';
 		$headers[] = 'longitude: 0.000000';
