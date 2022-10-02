@@ -69,6 +69,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				<br/>
                            			
 				<div class="row">
+					
 					<div class="col-sm-6">  
 						<form class="form-horizontal">
 							<fieldset>

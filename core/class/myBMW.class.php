@@ -116,36 +116,37 @@ class myBMW extends eqLogic {
 		$this->createCmd('connectorStatus', 'Etat de la prise', 21, 'info', 'string');
 		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 22, 'info', 'numeric');
         $this->createCmd('chargingLevelHv', 'Charge restante', 23, 'info', 'numeric');
+		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 24, 'info', 'string');
         
-		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 24, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 25, 'info', 'numeric');
+		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 25, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 26, 'info', 'numeric');
 		
-        $this->createCmd('vehicleMessages', 'Messages', 26, 'info', 'string');
-        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 27, 'info', 'string');
+        $this->createCmd('vehicleMessages', 'Messages', 27, 'info', 'string');
+        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 28, 'info', 'string');
       	
-        $this->createCmd('refresh', 'Rafraichir', 28, 'action', 'other');
-        $this->createCmd('climateNow', 'Climatiser', 29, 'action', 'other');
-		$this->createCmd('stopClimateNow', 'Stop Climatiser', 30, 'action', 'other');
-		$this->createCmd('chargeNow', 'Charger', 31, 'action', 'other');
-		$this->createCmd('doorLock', 'Verrouiller', 32, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 33, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 34, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 35, 'action', 'other');
-		$this->createCmd('vehicleFinder', 'Recherche véhicule', 36, 'action', 'other');
-		$this->createCmd('sendPOI', 'Envoi POI', 37, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 38, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 39, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 40, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 41, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 42, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 43, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 44, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 45, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 46, 'info', 'string');
-		$this->createCmd('sendPOI_status', 'Statut envoi POI', 47, 'info', 'string');
+        $this->createCmd('refresh', 'Rafraichir', 29, 'action', 'other');
+        $this->createCmd('climateNow', 'Climatiser', 30, 'action', 'other');
+		$this->createCmd('stopClimateNow', 'Stop Climatiser', 31, 'action', 'other');
+		$this->createCmd('chargeNow', 'Charger', 32, 'action', 'other');
+		$this->createCmd('doorLock', 'Verrouiller', 33, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 34, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 35, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 36, 'action', 'other');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 37, 'action', 'other');
+		$this->createCmd('sendPOI', 'Envoi POI', 38, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 39, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 40, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 41, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 42, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 43, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 44, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 45, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 46, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 47, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 48, 'info', 'string');
 		
-		$this->createCmd('presence', 'Présence domicile', 48, 'info', 'binary');
-		$this->createCmd('distance', 'Distance domicile', 49, 'info', 'numeric');
+		$this->createCmd('presence', 'Présence domicile', 49, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 50, 'info', 'numeric');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -384,6 +385,13 @@ class myBMW extends eqLogic {
 		if ( array_key_exists('isChargerConnected', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
 		if ( array_key_exists('range', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
 		if ( array_key_exists('chargingLevelPercent', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
+		if ( array_key_exists('remainingChargingMinutes', $vehicle->state->electricChargingState) ) { 
+			$remainingMinutes = $vehicle->state->electricChargingState->remainingChargingMinutes;
+			$currentTime = $vehicle->state->lastUpdatedAt;
+			$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
+			$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
+		}
+		else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 				
 		if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
 		if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }

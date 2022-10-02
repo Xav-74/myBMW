@@ -69,7 +69,8 @@
 				<div class="col-sm-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
 					<div class="col-sm-8" id="titre_tile" style="height:70px;">Recharge</div>
 					<div class="col-sm-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-charging-station"></i></div>
-					<div class="col-sm-12" id="value_tile" style="height:70px;"><span class="Cmd#chargingStatus_id#"></span></div>				
+					<div class="col-sm-12" id="value_tile" style="height:40px;"><span class="Cmd#chargingStatus_id#"></span></div>
+					<div class="col-sm-12" id="value_tile_2" style="height:30px;"><span class="Cmd#chargingEndTime_id#"></span></div>					
 				</div>
 						
 			</div>			
@@ -511,7 +512,17 @@
 		}
 	}
 	jeedom.cmd.update['#chargingStatus_id#']({display_value:'#chargingStatus#'});
-
+	
+	jeedom.cmd.update['#chargingEndTime_id#'] = function(_options) {
+		if ( _options.display_value != "not available" )  {
+           	$('.Cmd#chargingEndTime_id#').empty().append('<span>Fin à '+_options.display_value+'</span>');
+        }
+		else  {
+			$('.Cmd#chargingEndTime_id#').empty().append('<span></span>');		
+		}
+	}
+	jeedom.cmd.update['#chargingEndTime_id#']({display_value:'#chargingEndTime#'});
+	
 	
     //----- Doors
 	jeedom.cmd.update['#allDoorsState_id#'] = function(_options) {
