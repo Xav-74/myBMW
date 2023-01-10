@@ -24,15 +24,15 @@ class BMWConnectedDrive_API
     
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
-	const USER_AGENT = 'Dart/2.14 (dart:io)';
-	const X_USER_AGENT = 'android(SP1A.210812.016.C1);%s;2.5.2(14945);row'; 
+	const USER_AGENT = 'Dart/2.16 (dart:io)';
+	const X_USER_AGENT = 'android(SP1A.210812.016.C1);%s;2.12.0(19883);row';
 	
-	const VEHICLES = '/eadrax-vcs/v2/vehicles';
-	const VEHICLE_STATE = '/%s/state';
+	const VEHICLES = '/eadrax-vcs/v4/vehicles';
+	const VEHICLE_STATE = '/state';
 	const PICTURES = '/eadrax-ics/v3/presentation/vehicles/%s/images?carView=%s';
-	const ACTIONS = '/eadrax-vrccs/v2/presentation';
+	const ACTIONS = '/eadrax-vrccs/v3/presentation';
 	const SERVICES = '/remote-commands/%s/';
-	const STATUS = '/eadrax-vrccs/v2/presentation/remote-commands';
+	const STATUS = '/eadrax-vrccs/v3/presentation/remote-commands';
 	const SEND_POI = '/eadrax-dcs/v1/send-to-car/send-to-car';
 	const REMOTE_SERVICE_STATUS = '/eventStatus?eventId=%s';
 	const REMOTE_SERVICE_POSITION = '/eventPosition?eventId=%s';
@@ -338,6 +338,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::VEHICLES, 'GET', null, $headers);
 	}
 	
@@ -346,7 +347,10 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
-		return $this->_request($this::API_URL . $this::VEHICLES . sprintf($this::VEHICLE_STATE, $this->auth_config->getVin()), 'GET', null, $headers);
+		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		return $this->_request($this::API_URL . $this::VEHICLES . $this::VEHICLE_STATE, 'GET', null, $headers);
+		//return $this->_request($this::API_URL . $this::VEHICLES . sprintf($this::VEHICLE_STATE, $this->auth_config->getVin()), 'GET', null, $headers);
 	}
 
 
@@ -355,6 +359,7 @@ class BMWConnectedDrive_API
 		$this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'Accept: image/png';
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'VehicleStatus'), 'GET', null, $headers);
 	}
 
@@ -363,6 +368,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_LIGHT_FLASH, 'POST', null, $headers);
     }
 
@@ -371,6 +377,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=START', 'POST', null, $headers);
     }
 
@@ -379,6 +386,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CLIMATE_NOW.'?action=STOP', 'POST', null, $headers);
     }
 	
@@ -387,6 +395,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
     }
 	
@@ -395,6 +404,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_LOCK, 'POST', null, $headers);
     }
 
@@ -403,6 +413,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_DOOR_UNLOCK, 'POST', null, $headers);
     }
 
@@ -411,6 +422,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_HORN_BLOW, 'POST', null, $headers);
     }
 
@@ -419,6 +431,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
         return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_VEHICLE_FINDER, 'POST', null, $headers);
     }
 	
@@ -428,6 +441,7 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
         $data = $json_POI;
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::SEND_POI, 'POST', $data, $headers);
     }
 	
@@ -446,6 +460,7 @@ class BMWConnectedDrive_API
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'latitude: 0.000000';
 		$headers[] = 'longitude: 0.000000';
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
        	return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_POSITION, $event_id), 'POST', null, $headers);
 	}	
 	

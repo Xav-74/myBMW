@@ -103,8 +103,9 @@
 				</div>
 				
 				<div class="col-sm-12" id="tile" style="height:390px; width:440px;">
-					<div class="col-sm-2" id="icon_tile" style="height:60px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></div>
-					<div class="col-sm-10" id="titre_tile_2" style="height:60px;">Portes et fenêtres</div>
+					<!-- <div class="col-sm-2" id="icon_tile" style="height:60px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></div> -->
+					<div class="col-sm-2" id="icon_tile" style="height:60px;"><i class="fas fa-lg fa-info"></i></div>
+					<div class="col-sm-10" id="titre_tile_2" style="height:60px;">Informations</div>
 					
 					<div class="col-sm-12" id="row_doors">
 						<div class="col-sm-6" id="text_doors">Capot </div>
@@ -112,7 +113,12 @@
 					</div>
 					
 					<div class="col-sm-4" id="column">
-						<div class="col-sm-12" id="row_doors" style="height: 75px;"></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Pneu</div>
+							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
 							<div class="col-sm-6" id="text_doors">Porte</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorDriverFront_id#"></span></div>
@@ -121,7 +127,7 @@
 							<div class="col-sm-6" id="text_doors">Fenêtre</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowDriverFront_id#"></span></div>
 						</div>
-						<div class="col-sm-12" id="row_doors" style="height: 30px;"></div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
 							<div class="col-sm-6" id="text_doors">Porte</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorDriverRear_id#"></span></div>
@@ -130,6 +136,11 @@
 							<div class="col-sm-6" id="text_doors">Fenêtre</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowDriverRear_id#"></span></div>
 						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Pneu</div>
+							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						</div>
 					</div>
 					
 					<div class="col-sm-4" id="picture" style="margin:20px 0px 20px 0px">
@@ -137,7 +148,12 @@
 					</div>
 					
 					<div class="col-sm-4" id="column">
-						<div class="col-sm-12" id="row_doors" style="height: 75px;"></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Pneu</div>
+							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
 							<div class="col-sm-6" id="text_doors">Porte</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorPassengerFront_id#"></span></div>
@@ -146,7 +162,7 @@
 							<div class="col-sm-6" id="text_doors">Fenêtre</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowPassengerFront_id#"></span></div>
 						</div>
-						<div class="col-sm-12" id="row_doors" style="height: 30px;"></div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
 							<div class="col-sm-6" id="text_doors">Porte</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#doorPassengerRear_id#"></span></div>
@@ -154,6 +170,11 @@
 						<div class="col-sm-12" id="row_doors">
 							<div class="col-sm-6" id="text_doors">Fenêtre</div>
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowPassengerRear_id#"></span></div>
+						</div>
+						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
+						<div class="col-sm-12" id="row_doors">
+							<div class="col-sm-6" id="text_doors">Pneu</div>
+							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
 						</div>
 					</div>
 					
@@ -515,7 +536,7 @@
 	
 	jeedom.cmd.update['#chargingEndTime_id#'] = function(_options) {
 		if ( _options.display_value != "not available" )  {
-           	$('.Cmd#chargingEndTime_id#').empty().append('<span>Fin à '+_options.display_value+'</span>');
+           	$('.Cmd#chargingEndTime_id#').empty().append('<span>Recharge terminée</br>(100%) à '+_options.display_value+'</span>');
         }
 		else  {
 			$('.Cmd#chargingEndTime_id#').empty().append('<span></span>');		

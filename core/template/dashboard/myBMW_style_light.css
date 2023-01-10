@@ -74,10 +74,10 @@
 }
 
 .myBMW_widget_flat #value_tile_2 {
-	font-size : 12px;
+	font-size : 11px;
 	color : #000000 !important;
-	margin : 0px 0px 0px 0px !important;
-	padding : 5px 0px 0px 0px !important;
+	margin : -5px 0px 0px 0px !important;
+	padding : 0px 0px 0px 0px !important;
 }
 
 .myBMW_widget_flat #titre_tile_2 {
