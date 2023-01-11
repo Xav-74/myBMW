@@ -256,7 +256,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         		
 								<div class="form-group">
 									<div id="div_img" class="col-sm-6">
-										<img id="car_img" src="" style="height:300px" />
+										<img id="car_img" src=""/>
 									</div>
 								</div>
 								

@@ -360,7 +360,8 @@ class BMWConnectedDrive_API
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'Accept: image/png';
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'VehicleStatus'), 'GET', null, $headers);
+		return $this->_request($this::API_URL . sprintf($this::PICTURES, $this->auth_config->getVin(), 'AngleSideViewForty'), 'GET', null, $headers);
+		//FRONT = 'FrontView' | FRONTSIDE = 'AngleSideViewForty' | SIDE = 'SideViewLeft'
 	}
 
 
