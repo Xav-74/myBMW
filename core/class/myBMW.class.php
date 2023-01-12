@@ -431,6 +431,7 @@ class myBMW extends eqLogic {
 				elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
 				elseif ($message->type == "TIRE_WEAR_FRONT") { $message_title = "Usure pneus avant"; }
 				elseif ($message->type == "TIRE_WEAR_REAR") { $message_title = "Usure pneus arrière"; }
+				elseif ($message->type == "WASHING_FLUID") { $message_title = "Liquide de lave-glace"; }
 				else { $message_title = $message->type; }
 			}
 			else { $message_title = ''; }

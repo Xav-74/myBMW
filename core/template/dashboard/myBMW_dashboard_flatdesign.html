@@ -22,12 +22,13 @@
 				</div>
 				
 				<div class="col-sm-10" id="tile" style="height:50px; width:355px;">
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
 					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
 					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_tire#id#"><img src="plugins/myBMW/core/img/tire_grey.png" height="50" title="Pression des pneus OK"/></span></div>
+					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_washingfluid#id#"><img src="plugins/myBMW/core/img/washingfluid_grey.png" height="50" title="Liquide de lave-glace OK"/></span></div>
 					<div class="col-sm-2" style="padding:0px !important;"><span class="icon_vehicle#id#"><img src="plugins/myBMW/core/img/vehicle_grey.png" height="50" title="Statut Véhicule OK"/></span></div>
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 				</div>
 				
 				<div class="col-sm-4" id="tile" style="height:140px; width:140px;">
@@ -103,7 +104,6 @@
 				</div>
 				
 				<div class="col-sm-12" id="tile" style="height:390px; width:440px;">
-					<!-- <div class="col-sm-2" id="icon_tile" style="height:60px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></div> -->
 					<div class="col-sm-2" id="icon_tile" style="height:60px;"><i class="fas fa-lg fa-info"></i></div>
 					<div class="col-sm-10" id="titre_tile_2" style="height:60px;">Informations</div>
 					
@@ -735,8 +735,13 @@
 			}
 			if ( message.type == "TIRE_PRESSURE" ) {
 				//if ( message.severity == "OK" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_grey.png" height="50" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
-				if ( message.severity == "LOW" || message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="50" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="50" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
 				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_red.png" height="50" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+			}
+			if ( message.type == "WASHING_FLUID" ) {
+				//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_grey.png" height="50" title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( message.severity == "LOW" || message.severity == "MEDIUM" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_orange.png" height="50"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_red.png" height="50"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
 			}
 			if ( message.type == "VEHICLE_CHECK" ) {
 				//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_grey.png" height="50" title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
