@@ -112,41 +112,50 @@ class myBMW extends eqLogic {
         $this->createCmd('hood_state', 'Capot Moteur', 18, 'info', 'string');
 		$this->createCmd('moonroof_state', 'Toit ouvrant', 19, 'info', 'string');
 		
-		$this->createCmd('chargingStatus', 'Etat de la charge', 20, 'info', 'string');
-		$this->createCmd('connectorStatus', 'Etat de la prise', 21, 'info', 'string');
-		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 22, 'info', 'numeric');
-        $this->createCmd('chargingLevelHv', 'Charge restante', 23, 'info', 'numeric');
-		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 24, 'info', 'string');
+		$this->createCmd('tireFrontLeft_pressure', 'Pression pneu avant gauche', 20, 'info', 'numeric');
+		$this->createCmd('tireFrontLeft_target', 'Consigne pneu avant gauche', 21, 'info', 'numeric');
+		$this->createCmd('tireFrontRight_pressure', 'Pression pneu avant droit', 22, 'info', 'numeric');
+		$this->createCmd('tireFrontRight_target', 'Consigne pneu avant droit', 23, 'info', 'numeric');		
+		$this->createCmd('tireRearLeft_pressure', 'Pression pneu arrière gauche', 24, 'info', 'numeric');
+		$this->createCmd('tireRearLeft_target', 'Consigne pneu arrière gauche', 25, 'info', 'numeric');		
+		$this->createCmd('tireRearRight_pressure', 'Pression pneu arrière droit', 26, 'info', 'numeric');
+		$this->createCmd('tireRearRight_target', 'Consigne pneu arrière droit', 27, 'info', 'numeric');		
+		
+		$this->createCmd('chargingStatus', 'Etat de la charge', 28, 'info', 'string');
+		$this->createCmd('connectorStatus', 'Etat de la prise', 29, 'info', 'string');
+		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 30, 'info', 'numeric');
+        $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric');
+		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
         
-		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 25, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 26, 'info', 'numeric');
+		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 33, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 34, 'info', 'numeric');
 		
-        $this->createCmd('vehicleMessages', 'Messages', 27, 'info', 'string');
-        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 28, 'info', 'string');
+        $this->createCmd('vehicleMessages', 'Messages', 35, 'info', 'string');
+        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 36, 'info', 'string');
       	
-        $this->createCmd('refresh', 'Rafraichir', 29, 'action', 'other');
-        $this->createCmd('climateNow', 'Climatiser', 30, 'action', 'other');
-		$this->createCmd('stopClimateNow', 'Stop Climatiser', 31, 'action', 'other');
-		$this->createCmd('chargeNow', 'Charger', 32, 'action', 'other');
-		$this->createCmd('doorLock', 'Verrouiller', 33, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 34, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 35, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 36, 'action', 'other');
-		$this->createCmd('vehicleFinder', 'Recherche véhicule', 37, 'action', 'other');
-		$this->createCmd('sendPOI', 'Envoi POI', 38, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 39, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 40, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 41, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 42, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 43, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 44, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 45, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 46, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 47, 'info', 'string');
-		$this->createCmd('sendPOI_status', 'Statut envoi POI', 48, 'info', 'string');
+        $this->createCmd('refresh', 'Rafraichir', 37, 'action', 'other');
+        $this->createCmd('climateNow', 'Climatiser', 38, 'action', 'other');
+		$this->createCmd('stopClimateNow', 'Stop Climatiser', 39, 'action', 'other');
+		$this->createCmd('chargeNow', 'Charger', 40, 'action', 'other');
+		$this->createCmd('doorLock', 'Verrouiller', 41, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 42, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 43, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 44, 'action', 'other');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 45, 'action', 'other');
+		$this->createCmd('sendPOI', 'Envoi POI', 46, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 47, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 48, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 49, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 50, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 51, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 52, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 53, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 54, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 55, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 56, 'info', 'string');
 		
-		$this->createCmd('presence', 'Présence domicile', 49, 'info', 'binary');
-		$this->createCmd('distance', 'Distance domicile', 50, 'info', 'numeric');
+		$this->createCmd('presence', 'Présence domicile', 57, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 58, 'info', 'numeric');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -380,7 +389,16 @@ class myBMW extends eqLogic {
 		if ( array_key_exists('trunk', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
 		if ( array_key_exists('hood', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
 		if ( array_key_exists('roofState', $vehicle->state) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
-					
+		
+		if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
+		if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
+		if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
+		if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
+		if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
+		if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
+		if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
+		if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
+				
 		if ( array_key_exists('chargingStatus', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
 		if ( array_key_exists('isChargerConnected', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
 		if ( array_key_exists('range', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }

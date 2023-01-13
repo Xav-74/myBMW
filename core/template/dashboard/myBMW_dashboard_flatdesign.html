@@ -114,9 +114,9 @@
 					
 					<div class="col-sm-4" id="column">
 						<div class="col-sm-12" id="row_doors" style="height: 20px;"></div>
-						<div class="col-sm-12" id="row_doors">
-							<div class="col-sm-6" id="text_doors">Pression</div>
-							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;">
+							<div class="col-sm-6 pressure_info#id#" id="text_doors">Pression</div>
+							<div class="col-sm-6 pressure_info#id#" id="value_doors"><span class="Cmd#tireFrontLeft_target_id#"><span class="Cmd#tireFrontLeft_pressure_id#"></span></span></div>
 						</div>
 						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
@@ -137,9 +137,9 @@
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowDriverRear_id#"></span></div>
 						</div>
 						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
-						<div class="col-sm-12" id="row_doors">
-							<div class="col-sm-6" id="text_doors">Pression</div>
-							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;">
+							<div class="col-sm-6 pressure_info#id#" id="text_doors">Pression</div>
+							<div class="col-sm-6 pressure_info#id#" id="value_doors"><span class="Cmd#tireRearLeft_target_id#"><span class="Cmd#tireRearLeft_pressure_id#"></span></span></div>
 						</div>
 					</div>
 					
@@ -149,9 +149,9 @@
 					
 					<div class="col-sm-4" id="column">
 						<div class="col-sm-12" id="row_doors" style="height: 20px;"></div>
-						<div class="col-sm-12" id="row_doors">
-							<div class="col-sm-6" id="text_doors">Pression</div>
-							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;">
+							<div class="col-sm-6 pressure_info#id#" id="text_doors">Pression</div>
+							<div class="col-sm-6 pressure_info#id#" id="value_doors"><span class="Cmd#tireFrontRight_target_id#"><span class="Cmd#tireFrontRight_pressure_id#"></span></span></div>
 						</div>
 						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
 						<div class="col-sm-12" id="row_doors">
@@ -172,9 +172,9 @@
 							<div class="col-sm-6" id="value_doors"><span class="Cmd#windowPassengerRear_id#"></span></div>
 						</div>
 						<div class="col-sm-12" id="row_doors" style="height: 25px;"></div>
-						<div class="col-sm-12" id="row_doors">
-							<div class="col-sm-6" id="text_doors">Pression</div>
-							<div class="col-sm-6" id="value_doors"><span class="">-</span></div>
+						<div class="col-sm-12" id="row_doors" style="height: 20px;">
+							<div class="col-sm-6 pressure_info#id#" id="text_doors">Pression</div>
+							<div class="col-sm-6 pressure_info#id#" id="value_doors"><span class="Cmd#tireRearRight_target_id#"><span class="Cmd#tireRearRight_pressure_id#"></span></span></div>
 						</div>
 					</div>
 					
@@ -718,6 +718,53 @@
 	jeedom.cmd.update['#moonroof_state_id#']({display_value:'#moonroof_state#'});
 
 	
+	//----- Tires
+	jeedom.cmd.update['#tireFrontLeft_target_id#'] = function(_options) {
+        $('.Cmd#tireFrontLeft_target_id#').empty().append('<span title="Consigne gonflage : '+_options.display_value+' bar"><span class="Cmd#tireFrontLeft_pressure_id#"></span></span>');
+    }
+	jeedom.cmd.update['#tireFrontLeft_target_id#']({display_value:'#tireFrontLeft_target#'});
+	
+	jeedom.cmd.update['#tireFrontLeft_pressure_id#'] = function(_options) {
+        if ( _options.display_value == 0 )  {
+			$('.pressure_info#id#').hide();
+		}
+		else  { 
+			$('.Cmd#tireFrontLeft_pressure_id#').empty().append('<span>'+_options.display_value+' bar</span>');
+		}
+    }
+	jeedom.cmd.update['#tireFrontLeft_pressure_id#']({display_value:'#tireFrontLeft_pressure#'});
+	
+	jeedom.cmd.update['#tireFrontRight_target_id#'] = function(_options) {
+        $('.Cmd#tireFrontRight_target_id#').empty().append('<span title="Consigne gonflage : '+_options.display_value+' bar"><span class="Cmd#tireFrontRight_pressure_id#"></span></span>');
+    }
+	jeedom.cmd.update['#tireFrontRight_target_id#']({display_value:'#tireFrontRight_target#'});
+	
+	jeedom.cmd.update['#tireFrontRight_pressure_id#'] = function(_options) {
+        $('.Cmd#tireFrontRight_pressure_id#').empty().append('<span>'+_options.display_value+' bar</span>');
+    }
+	jeedom.cmd.update['#tireFrontRight_pressure_id#']({display_value:'#tireFrontRight_pressure#'});
+	
+	jeedom.cmd.update['#tireRearLeft_target_id#'] = function(_options) {
+        $('.Cmd#tireRearLeft_target_id#').empty().append('<span title="Consigne gonflage : '+_options.display_value+' bar"><span class="Cmd#tireRearLeft_pressure_id#"></span></span>');
+    }
+	jeedom.cmd.update['#tireRearLeft_target_id#']({display_value:'#tireRearLeft_target#'});
+	
+	jeedom.cmd.update['#tireRearLeft_pressure_id#'] = function(_options) {
+        $('.Cmd#tireRearLeft_pressure_id#').empty().append('<span>'+_options.display_value+' bar</span>');
+    }
+	jeedom.cmd.update['#tireRearLeft_pressure_id#']({display_value:'#tireRearLeft_pressure#'});
+	
+	jeedom.cmd.update['#tireRearRight_target_id#'] = function(_options) {
+        $('.Cmd#tireRearRight_target_id#').empty().append('<span title="Consigne gonflage : '+_options.display_value+' bar"><span class="Cmd#tireRearRight_pressure_id#"></span></span>');
+    }
+	jeedom.cmd.update['#tireRearRight_target_id#']({display_value:'#tireRearRight_target#'});
+	
+	jeedom.cmd.update['#tireRearRight_pressure_id#'] = function(_options) {
+        $('.Cmd#tireRearRight_pressure_id#').empty().append('<span>'+_options.display_value+' bar</span>');
+    }
+	jeedom.cmd.update['#tireRearRight_pressure_id#']({display_value:'#tireRearRight_pressure#'});
+
+
 	//----- Messages
 	jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
        	var messages = jQuery.parseJSON(_options.display_value);
