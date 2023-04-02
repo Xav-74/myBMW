@@ -137,25 +137,27 @@ class myBMW extends eqLogic {
         $this->createCmd('climateNow', 'Climatiser', 38, 'action', 'other');
 		$this->createCmd('stopClimateNow', 'Stop Climatiser', 39, 'action', 'other');
 		$this->createCmd('chargeNow', 'Charger', 40, 'action', 'other');
-		$this->createCmd('doorLock', 'Verrouiller', 41, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 42, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 43, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 44, 'action', 'other');
-		$this->createCmd('vehicleFinder', 'Recherche véhicule', 45, 'action', 'other');
-		$this->createCmd('sendPOI', 'Envoi POI', 46, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 47, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 48, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 49, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 50, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 51, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 52, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 53, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 54, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 55, 'info', 'string');
-		$this->createCmd('sendPOI_status', 'Statut envoi POI', 56, 'info', 'string');
+		$this->createCmd('stopChargeNow', 'Stop Charger', 41, 'action', 'other');
+		$this->createCmd('doorLock', 'Verrouiller', 42, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 43, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 44, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 45, 'action', 'other');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 46, 'action', 'other');
+		$this->createCmd('sendPOI', 'Envoi POI', 47, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 48, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 49, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 50, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 51, 'info', 'string');
+		$this->createCmd('stopChargeNow_status', 'Statut stop charger', 52, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 53, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 54, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 55, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 56, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 57, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 58, 'info', 'string');
 		
-		$this->createCmd('presence', 'Présence domicile', 57, 'info', 'binary');
-		$this->createCmd('distance', 'Distance domicile', 58, 'info', 'numeric');
+		$this->createCmd('presence', 'Présence domicile', 59, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 60, 'info', 'numeric');
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -626,6 +628,27 @@ class myBMW extends eqLogic {
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
+	public function stopChargeNow()
+    {
+        $myConnection = $this->getConnection();
+		$result = $myConnection->stopChargeNow();
+        $response = json_decode($result->body);
+		
+		$eventStatus = 'PENDING';
+		$this->checkAndUpdateCmd('stopChargeNow_status', $eventStatus);
+		$retry = 24;
+		while ($retry > 0 && $eventStatus == 'PENDING')
+		{
+			$status = $myConnection->getRemoteServiceStatus($response->eventId);
+			$eventStatus = json_decode($status->body)->eventStatus;
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
+			sleep(5);
+			$retry--;
+		}	
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event stopChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+	}
+
 	public function vehicleFinder()
 	{
 		$myConnection = $this->getConnection();
@@ -805,6 +828,9 @@ class myBMWCmd extends cmd {
 				case 'chargeNow':
                     $eqLogic->doChargeNow();
                     break;
+				case 'stopChargeNow':
+					$eqLogic->stopChargeNow();
+					break;
 				default:
                     throw new \Exception("Unknown command", 1);
                     break;

@@ -200,7 +200,8 @@
 					<button class="btn cmd action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-lock-open"></i></button>
 					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-fan"></i></button>
 					<button class="btn cmd action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-ban"></i></button>
-					<!-- <button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-plug"></i></button> -->
+					<button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-charging-station"></i></button>
+					<button id="stopcharge_btn#id#" class="btn cmd action" data-cmd_id="#stopChargeNow_id#" title="Stop Charger" onclick="jeedom.cmd.execute({id: #stopChargeNow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-power-off"></i></button>
 					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-lightbulb"></i></button>
 					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});" style="color: var(--txt-color) !important;"><i class="fa-2x icon fas fa-volume-up"></i></button>
 					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-2x icon fas fa-map-marked" style="color: var(--txt-color) !important;"></i></button>
@@ -398,7 +399,7 @@
 	});
 	
 	
-	//----- Electric / Combustion
+	//----- Electric / Combustion / Hybrid
 	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
 		$('.combustion_engine#id#').hide();
 		$('.myBMW_widget_flat_#id#').css('height', 805);
@@ -406,6 +407,10 @@
 	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
 		$('.electric_engine#id#').hide();
 		$('.myBMW_widget_flat_#id#').css('height', 805);
+	}
+	if ( '#vehicle_type#id##' != 'ELECTRIC' && '#vehicle_type#id##' != 'PLUGIN_HYBRID' )  {
+		$('#charge_btn#id#').hide();
+		$('#stopcharge_btn#id#').hide();
 	}
 	
 

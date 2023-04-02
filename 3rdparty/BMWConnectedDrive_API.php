@@ -42,9 +42,18 @@ class BMWConnectedDrive_API
     const REMOTE_HORN_BLOW = "horn-blow";
     const REMOTE_LIGHT_FLASH = "light-flash";
     const REMOTE_CLIMATE_NOW = "climate-now";
-	const REMOTE_CHARGE_NOW = "CHARGE_NOW";
+	const REMOTE_CHARGE_START = "start-charging";
+	const REMOTE_CHARGE_STOP = "stop-charging";
 	const REMOTE_VEHICLE_FINDER = "vehicle-finder";
     
+	const VEHICLE_CHARGING_URL = "/eadrax-crccs/v1/vehicles/%s/";
+	const VEHICLE_CHARGING_DETAILS_URL = "/eadrax-crccs/v2/vehicles";
+	const VEHICLE_CHARGING_STATISTICS_URL = "/eadrax-chs/v1/charging-statistics";
+	const VEHICLE_CHARGING_SESSIONS_URL = "/eadrax-chs/v1/charging-sessions";
+	const SERVICE_CHARGING_STATISTICS_URL = "CHARGING_STATISTICS";
+	const SERVICE_CHARGING_SESSIONS_URL = "CHARGING_SESSIONS";
+	const SERVICE_CHARGING_PROFILE = "CHARGING_PROFILE";
+	
 	const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		201 => 'CREATED',
@@ -392,12 +401,23 @@ class BMWConnectedDrive_API
     }
 	
 	
-	 public function doChargeNow()
+	public function doChargeNow()
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_NOW, 'POST', null, $headers);
+		log::add('myBMW', 'debug', '| Url :  '.$this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP);
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_START, 'POST', null, $headers);
+    }
+
+
+	public function stopChargeNow()
+    {
+        $this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		log::add('myBMW', 'debug', '| Url :  '.$this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP);
+		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP, 'POST', null, $headers);
     }
 	
 
@@ -463,7 +483,41 @@ class BMWConnectedDrive_API
 		$headers[] = 'longitude: 0.000000';
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
        	return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_POSITION, $event_id), 'POST', null, $headers);
-	}	
+	}
+
+	
+	public function getChargingSessions()
+    {
+        $this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		$headers[] = 'bmw-current-date: '.date("Y-m-d\TH:i:s.u");
+		$data = [
+			//'vin' => $this->auth_config->getVin(),
+            //'maxResults' => 40,
+            //'include_date_picker' => "true"
+			'fields' => "charging-profile",
+			'has_charging_settings_capabilities' => true
+		];
+		log::add('myBMW', 'debug', '| URL : '. $this::API_URL . '/eadrax-crccs/v1/vehicles/' . $this->auth_config->getVin(). '/');
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		log::add('myBMW', 'debug', '| Data : '. json_encode($data,JSON_UNESCAPED_SLASHES));
+		return $this->_request($this::API_URL . '/eadrax-crccs/v1/vehicles/' . $this->auth_config->getVin(). '/', 'GET', $data, $headers);
+	}
+	
+	
+	public function getChargingStatistics()
+    {
+        $this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		$data = [
+			'vin' => $this->auth_config->getVin(),
+            'currentDate' => date("Y-m-d\TH:i:s.u")
+        ];
+		log::add('myBMW', 'debug', '| URL : '. $this::API_URL . $this::VEHICLE_CHARGING_STATISTICS_URL);
+		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		log::add('myBMW', 'debug', '| Data : '. json_encode($data,JSON_UNESCAPED_SLASHES));
+		return $this->_request($this::API_URL . $this::VEHICLE_CHARGING_STATISTICS_URL, 'GET', $data, $headers);
+	}
 	
 }
 
