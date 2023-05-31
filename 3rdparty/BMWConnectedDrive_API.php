@@ -406,7 +406,6 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Url :  '.$this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP);
 		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_START, 'POST', null, $headers);
     }
 
@@ -416,7 +415,6 @@ class BMWConnectedDrive_API
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Url :  '.$this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP);
 		return $this->_request($this::API_URL . $this::ACTIONS . sprintf($this::SERVICES, $this->auth_config->getVin()) . $this::REMOTE_CHARGE_STOP, 'POST', null, $headers);
     }
 	

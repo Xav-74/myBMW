@@ -122,7 +122,7 @@ class myBMW extends eqLogic {
 		$this->createCmd('tireRearRight_target', 'Consigne pneu arrière droit', 27, 'info', 'numeric');		
 		
 		$this->createCmd('chargingStatus', 'Etat de la charge', 28, 'info', 'string');
-		$this->createCmd('connectorStatus', 'Etat de la prise', 29, 'info', 'string');
+		$this->createCmd('connectorStatus', 'Etat de la prise', 29, 'info', 'binary');
 		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 30, 'info', 'numeric');
         $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric');
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');

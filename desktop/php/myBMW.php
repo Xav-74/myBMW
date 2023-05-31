@@ -140,8 +140,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									
 								<div id="div_pwd" class="form-group">		
 									<label class="col-sm-6 control-label">{{Mot de passe}}</label>
-									<div class="col-sm-6">
-										<input type="password" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password" placeholder="Mot de passe utilisé pour vous connecter à votre compte My BMW">
+									<div class="col-sm-6 pass_show">
+										<input type="password" id="pwd" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password" placeholder="Mot de passe utilisé pour vous connecter à votre compte My BMW" style="margin-bottom:0px !important">
+										<span class="eye fa fa-fw fa-eye toggle-pwd"></span>
 									</div>
 								</div>
 								
@@ -312,8 +313,35 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				}
 			}
 
-			</script>			
+			$('body').off('click', '.toggle-pwd').on('click', '.toggle-pwd', function () {
+				$(this).toggleClass("fa-eye fa-eye-slash");
+				var input = $("#pwd");
+				if (input.attr("type") === "password") {
+				input.attr("type", "text");
+				} else {
+				input.attr("type", "password");
+				}
+			});
+
+			</script>
 			
+			<style>
+				
+				.pass_show {
+					position: relative
+				}
+
+				.pass_show .eye {
+					position: absolute;
+					top: 60% !important;
+					right: 20px;
+					z-index: 1;
+					margin-top: -10px;
+					cursor: pointer;
+					transition: .3s ease all;
+				}
+
+			</style>			
 						
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<!--<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>-->
