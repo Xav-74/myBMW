@@ -24,8 +24,8 @@ class BMWConnectedDrive_API
     
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
-	const USER_AGENT = 'Dart/2.16 (dart:io)';
-	const X_USER_AGENT = 'android(SP1A.210812.016.C1);%s;2.12.0(19883);row';
+	const USER_AGENT = 'Dart/2.18 (dart:io)';
+	const X_USER_AGENT = 'android(TQ2A.230405.003.B2);%s;3.3.1(22418);row';
 	
 	const VEHICLES = '/eadrax-vcs/v4/vehicles';
 	const VEHICLE_STATE = '/state';
