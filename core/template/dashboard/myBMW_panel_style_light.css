@@ -1,94 +1,94 @@
-.myBMW_widget_flat .container-fluid {
+.myBMW_panel_flat .container-fluid {
 	margin : 5px 5px 5px 20px !important;
 	padding : 0px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #titre {
+.myBMW_panel_flat #titre {
 	font-size : 14px;
 	text-align:center;
-    color : #FFFFFF !important;
+    color : #000000 !important;
 }
 
-.myBMW_widget_flat #refresh {
-    color : #FFFFFF !important;
+.myBMW_panel_flat #refresh {
+    color : #000000 !important;
 }
 
-.myBMW_widget_flat #logo {
+.myBMW_panel_flat #logo {
 	height: 1.5em;
 }
 
-.myBMW_widget_flat #column {
+.myBMW_panel_flat #column {
     margin : 0px 0px 0px 0px !important;
 	padding : 0px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #tile {
+.myBMW_panel_flat #tile {
     margin : 5px 5px 5px 5px !important;
 	padding : 0px 0px 0px 0px !important;
 	background-color : rgb(var(--bg-color)) !important;
-	filter : contrast(105%);
+	filter : contrast(100%);
 }
 
-.myBMW_widget_flat #picture {
+.myBMW_panel_flat #picture {
 	display: table-cell;
 	vertical-align : middle;
-	color : #FFFFFF !important;
+	color : #000000 !important;
 }
 
-.myBMW_widget_flat #location {
+.myBMW_panel_flat #location {
 	padding: 20px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #distance {
+.myBMW_panel_flat #distance {
 	font-size: 10px;
-	color : #FFFFFF;
+	color : #000000;
 	font-weight: bold;
 }
 
-.myBMW_widget_flat .myMap {
+.myBMW_panel_flat .myMap {
 	width: 400px;
 	height: 240px;
 	border: 0px;
-	filter: grayscale(100%) invert(90%);
+	filter: grayscale(100%);
 }
 
-.myBMW_widget_flat #titre_tile {
+.myBMW_panel_flat #titre_tile {
 	font-size : 14px;
 	color : var(--txt-color) !important;
 	margin : 0px 0px 0px 0px !important;
 	padding : 15px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #icon_tile {
+.myBMW_panel_flat #icon_tile {
 	margin : 0px 0px 0px 0px !important;
 	padding : 12px 0px 0px 0px !important;
 	color: rgb(80,120,170) !important;
 }
 
-.myBMW_widget_flat #value_tile {
+.myBMW_panel_flat #value_tile {
 	font-size : 22px;
-	color : #FFFFFF !important;
+	color : #000000 !important;
 	text-align: center;
 	margin : 0px 0px 0px 0px !important;
 	padding : 5px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #value_tile_2 {
+.myBMW_panel_flat #value_tile_2 {
 	font-size : 11px;
-	color : #FFFFFF !important;
+	color : #000000 !important;
 	margin : -5px 0px 0px 0px !important;
 	padding : 0px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #titre_tile_2 {
+.myBMW_panel_flat #titre_tile_2 {
 	font-size : 22px;
-	color : #FFFFFF !important;
+	color : #000000 !important;
 	margin : 0px 0px 0px 0px !important;
 	padding : 6px 0px 0px 15px !important;
 	text-align : left; 
 }
 
-.myBMW_widget_flat #titre_doors {
+.myBMW_panel_flat #titre_doors {
 	font-size : 20px;
 	color : var(--txt-color) !important;
 	margin : 0px 0px 0px 0px !important;
@@ -96,18 +96,18 @@
 	text-align : left; 
 }
 
-.myBMW_widget_flat #row_doors {
+.myBMW_panel_flat #row_doors {
     margin : 0px 0px 0px 0px !important;
 	padding : 0px 0px 0px 0px !important;
 }
 
-.myBMW_widget_flat #icon_doors {
+.myBMW_panel_flat #icon_doors {
 	margin : 0px 0px 0px 0px !important;
 	padding : 0px 0px 0px 0px !important;
 	text-align : right;
 }
 
-.myBMW_widget_flat #text_doors {
+.myBMW_panel_flat #text_doors {
 	font-size : 14px;
 	color : var(--txt-color) !important;
 	margin : 0px 0px 0px 0px !important;
@@ -115,32 +115,55 @@
 	text-align : right; 
 }
 
-.myBMW_widget_flat #value_doors {
+.myBMW_panel_flat #value_doors {
 	font-size : 14px;
-	color : #FFFFFF !important;
+	color : #000000 !important;
 	margin : 0px 0px 0px 0px !important;
 	padding : 0px 0px 0px 10px !important;
 	text-align : left; 
 }
 
-.myBMW_widget_flat .btn {
+.myBMW_panel_flat .btn {
 	margin: 10px 0px 0px 0px !important;
-	width: 38px !important;
-	height: 38px !important;
-	max-width: 38px !important;
-	max-height: 38px !important;
-	filter : contrast(135%);
+	width: 35px !important;
+	height: 35px !important;
+	max-width: 35px !important;
+	max-height: 35px !important;
+	filter : contrast(125%);
 }
 
-.myBMW_widget_flat #liste_msg {
+.myBMW_panel_flat #liste_msg {
 	width: 440px;
 	height: 340px;
 	overflow: auto;
 }
 
-.myBMW_widget_flat #last_update {
+.myBMW_panel_flat #last_update {
 	font-size : 12px;
 	text-align:center;
-    color : #FFFFFF !important;
+    color : #000000 !important;
 	margin : 10px 0px 5px 0px !important;
+}
+
+.myBMW_panel_flat #titre_graph {
+	font-size : 22px;
+	color : #000000 !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 20px !important;
+	text-align : left; 
+}
+
+.myBMW_panel_flat #soustitre_graph {
+	font-size : 14px;
+	color : var(--txt-color) !important;
+	margin : 0px 0px 0px 0px !important;
+	padding : 0px 0px 0px 20px !important;
+	text-align : left; 
+}
+
+.myBMW_panel_flat #table_sessions {
+	margin : 15px 0px 0px 0px !important;
+	width: 665px;
+	height: 325px;
+	overflow: auto;
 }

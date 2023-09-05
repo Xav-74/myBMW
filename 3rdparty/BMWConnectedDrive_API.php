@@ -1,10 +1,10 @@
 <?php
 
-/**
-A PHP Client for BMW Connected Drive API
-Origin: https://github.com/bluewalk/BMWConnecteDrive
-Modified by Xav-74
-**/
+/*
+* A PHP Client for BMW Connected Drive API
+* Origin: https://github.com/bluewalk/BMWConnecteDrive
+* Modified by Xav-74
+*/
 
 if (!class_exists('Auth_Token')) {
 	require_once dirname(__FILE__) . '/Auth_Token.php';
@@ -50,10 +50,7 @@ class BMWConnectedDrive_API
 	const VEHICLE_CHARGING_DETAILS_URL = "/eadrax-crccs/v2/vehicles";
 	const VEHICLE_CHARGING_STATISTICS_URL = "/eadrax-chs/v1/charging-statistics";
 	const VEHICLE_CHARGING_SESSIONS_URL = "/eadrax-chs/v1/charging-sessions";
-	const SERVICE_CHARGING_STATISTICS_URL = "CHARGING_STATISTICS";
-	const SERVICE_CHARGING_SESSIONS_URL = "CHARGING_SESSIONS";
-	const SERVICE_CHARGING_PROFILE = "CHARGING_PROFILE";
-	
+		
 	const ERROR_CODE_MAPPING = [
         200 => 'OK',
 		201 => 'CREATED',
@@ -69,9 +66,9 @@ class BMWConnectedDrive_API
         503 => 'SERVICE_MAINTENANCE'
     ];
 
-    /** @var Auth_Config $auth_config  */
+    /* @var Auth_Config $auth_config */
     private $auth_config = null;
-    /** @var Auth_Token $auth_token  */
+    /* @var Auth_Token $auth_token */
     private $auth_token = null;
 
 
@@ -159,7 +156,7 @@ class BMWConnectedDrive_API
 
 	private function _setDefaultHeaders()   {				//Define default headers
 		
-		//$datetime = (new \DateTime("now", new DateTimeZone(config::byKey('timezone'))))->format('c');
+		// $datetime = (new \DateTime("now", new DateTimeZone(config::byKey('timezone'))))->format('c');
 		$headers = [
 			'Accept: application/json',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
@@ -168,7 +165,7 @@ class BMWConnectedDrive_API
 			'accept-language: fr',
 			'bmw-units-preferences: d=KM;v=L',	 			//else d=MI;v=G,
             '24-hour-format: true',
-			//'bmw-current-date: '. $datetime
+			// 'bmw-current-date: '. $datetime
         ];
      	return $headers;
 	}	
@@ -484,39 +481,23 @@ class BMWConnectedDrive_API
 	}
 
 	
-	public function getChargingSessions()
-    {
-        $this->_checkAuth();
-		$headers = $this->_setDefaultHeaders();
-		$headers[] = 'bmw-current-date: '.date("Y-m-d\TH:i:s.u");
-		$data = [
-			//'vin' => $this->auth_config->getVin(),
-            //'maxResults' => 40,
-            //'include_date_picker' => "true"
-			'fields' => "charging-profile",
-			'has_charging_settings_capabilities' => true
-		];
-		log::add('myBMW', 'debug', '| URL : '. $this::API_URL . '/eadrax-crccs/v1/vehicles/' . $this->auth_config->getVin(). '/');
-		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Data : '. json_encode($data,JSON_UNESCAPED_SLASHES));
-		return $this->_request($this::API_URL . '/eadrax-crccs/v1/vehicles/' . $this->auth_config->getVin(). '/', 'GET', $data, $headers);
-	}
-	
-	
 	public function getChargingStatistics()
     {
-        $this->_checkAuth();
+        //$this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
-		$data = [
-			'vin' => $this->auth_config->getVin(),
-            'currentDate' => date("Y-m-d\TH:i:s.u")
-        ];
-		log::add('myBMW', 'debug', '| URL : '. $this::API_URL . $this::VEHICLE_CHARGING_STATISTICS_URL);
-		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Data : '. json_encode($data,JSON_UNESCAPED_SLASHES));
-		return $this->_request($this::API_URL . $this::VEHICLE_CHARGING_STATISTICS_URL, 'GET', $data, $headers);
+		$url = $this::API_URL . $this::VEHICLE_CHARGING_STATISTICS_URL . '?vin='. $this->auth_config->getVin() . '&currentDate='. date("Y-m-d\TH:i:s.u");
+		return $this->_request($url, 'GET', null, $headers);
 	}
-	
+
+
+	public function getChargingSessions()
+    {
+        //$this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		$url = $this::API_URL . $this::VEHICLE_CHARGING_SESSIONS_URL . '?vin='.$this->auth_config->getVin().'&maxResults=50&include_date_picker=true';
+		return $this->_request($url, 'GET', null, $headers);
+	}
+			
 }
 
 ?>

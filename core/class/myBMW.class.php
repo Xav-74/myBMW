@@ -32,7 +32,7 @@ class myBMW extends eqLogic {
 		'custom' => true,
 		//'custom::layout' => false,
 		'parameters' => array(
-			'info' => array(
+			/*'info' => array(
                 'name' => 'Les différents paramètres optionnels sont les suivant :',
             ),
 			'param_1' => array(
@@ -43,7 +43,7 @@ class myBMW extends eqLogic {
             ),
 			'param_3' => array(
                 'name' => ' - color_icon_closed (green) : affiche l\'état "fermé" des portes / fenêtres en vert',
-            ),
+            ),*/
 		),
 	);
 	
@@ -158,6 +158,10 @@ class myBMW extends eqLogic {
 		
 		$this->createCmd('presence', 'Présence domicile', 59, 'info', 'binary');
 		$this->createCmd('distance', 'Distance domicile', 60, 'info', 'numeric');
+
+		$this->createCmd('totalEnergyCharged', 'Charge électrique totale', 61, 'info', 'numeric');
+		$this->createCmd('chargingSessions', 'Sessions de charge', 62, 'info', 'string');
+
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
@@ -194,14 +198,23 @@ class myBMW extends eqLogic {
     /* Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin */
     public function toHtml($_version = 'dashboard') {
     	
-		if ($this->getConfiguration('widget_template') == 0) {
-			return parent::toHtml($_version);
+		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
+				
+		$panel = false;
+		if ($_version == 'panel') {
+			$panel = true;
+			$_version = 'dashboard';
 		}
 		
+		/*if ($this->getConfiguration('widget_template') == 0) {
+			return parent::toHtml($_version);
+		}*/
+			
 		$replace = $this->preToHtml($_version);
 		if (!is_array($replace)) {
 			return $replace;
 		}
+		
 		$version = jeedom::versionAlias($_version);
 		$replace['#version#'] = $_version;
 		
@@ -209,9 +222,9 @@ class myBMW extends eqLogic {
 		$replace['#vehicle_brand'.$this->getId().'#'] = $this->getConfiguration('vehicle_brand');
 		$replace['#vehicle_type'.$this->getId().'#'] = $this->getConfiguration('vehicle_type');
 		$replace['#home_distance'.$this->getId().'#'] = $this->getConfiguration('home_distance');
+		$replace['#panel_doors_windows_display'.$this->getId().'#'] = $this->getConfiguration('panel_doors_windows_display');
+		$replace['#panel_color_icon_closed'.$this->getId().'#'] = $this->getConfiguration('panel_color_icon_closed');
 							
-		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
-
 		// Traitement des commandes infos
 		foreach ($this->getCmd('info') as $cmd) {
 			$replace['#' . $cmd->getLogicalId() . '_id#'] = $cmd->getId();
@@ -238,14 +251,16 @@ class myBMW extends eqLogic {
 		}
 		
 		//Traitement des paramètres optionnels
-		if (!key_exists('#all_info_display#', $replace)) $replace['#all_info_display#'] = 'show';
+		/*if (!key_exists('#all_info_display#', $replace)) $replace['#all_info_display#'] = 'show';
 		if (!key_exists('#doors_windows_display#', $replace)) $replace['#doors_windows_display#'] = 'text';
-		if (!key_exists('#color_icon_closed#', $replace)) $replace['#color_icon_closed#'] = '';
+		if (!key_exists('#color_icon_closed#', $replace)) $replace['#color_icon_closed#'] = '';*/
 		
 		// On definit le template à appliquer par rapport à la version Jeedom utilisée
-		if (version_compare(jeedom::version(), '4.0.0') >= 0) {
-			if ($this->getConfiguration('widget_template') == 1) { $template = 'myBMW_dashboard_flatdesign'; }
-			if ($this->getConfiguration('widget_template') == 2) { $template = 'myBMW_dashboard_legacy'; }
+		if ($panel == true) { $template = 'myBMW_panel_flatdesign'; }
+		elseif (version_compare(jeedom::version(), '4.0.0') >= 0) {
+			$template = 'myBMW_dashboard_flatdesign';
+			//if ($this->getConfiguration('widget_template') == 1) { $template = 'myBMW_dashboard_flatdesign'; }
+			//if ($this->getConfiguration('widget_template') == 2) { $template = 'myBMW_dashboard_legacy'; }
 		}
 		$replace['#template#'] = $template;
 
@@ -372,111 +387,137 @@ class myBMW extends eqLogic {
     {
 		$myConnection = $this->getConnection();
 		$result = $myConnection->getVehicleState();
+		$result2 = $myConnection->getChargingStatistics();
+		$result3 = $myConnection->getChargingSessions();
 		$vehicle = json_decode($result->body);
+		$statistics = json_decode($result2->body);
+		$sessions = json_decode($result3->body);
 		
-		//States
-		if ( array_key_exists('currentMileage', $vehicle->state) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
+		if ($vehicle != null) {
+
+			//States
+			if ( array_key_exists('currentMileage', $vehicle->state) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
+						
+			if ( array_key_exists('combinedSecurityState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
+			if ( array_key_exists('combinedState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('allDoorsState', $vehicle->state->doorsState->combinedState); } else { $this->checkAndUpdateCmd('allDoorsState', 'not available'); }
+			if ( array_key_exists('combinedState', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('allWindowsState', $vehicle->state->windowsState->combinedState); } else { $this->checkAndUpdateCmd('allWindowsState', 'not available'); }
+			if ( array_key_exists('leftFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverFront', $vehicle->state->doorsState->leftFront); } else { $this->checkAndUpdateCmd('doorDriverFront', 'not available'); }
+			if ( array_key_exists('leftRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverRear', $vehicle->state->doorsState->leftRear); } else { $this->checkAndUpdateCmd('doorDriverRear', 'not available'); }
+			if ( array_key_exists('rightFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerFront', $vehicle->state->doorsState->rightFront); } else { $this->checkAndUpdateCmd('doorPassengerFront', 'not available'); }
+			if ( array_key_exists('rightRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerRear', $vehicle->state->doorsState->rightRear); } else { $this->checkAndUpdateCmd('doorPassengerRear', 'not available'); }
+			if ( array_key_exists('leftFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverFront', $vehicle->state->windowsState->leftFront); } else { $this->checkAndUpdateCmd('windowDriverFront', 'not available'); }
+			if ( array_key_exists('leftRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverRear', $vehicle->state->windowsState->leftRear); } else { $this->checkAndUpdateCmd('windowDriverRear', 'not available'); }
+			if ( array_key_exists('rightFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerFront', $vehicle->state->windowsState->rightFront); } else { $this->checkAndUpdateCmd('windowPassengerFront', 'not available'); }
+			if ( array_key_exists('rightRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerRear', $vehicle->state->windowsState->rightRear); } else { $this->checkAndUpdateCmd('windowPassengerRear', 'not available'); }
+			if ( array_key_exists('trunk', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
+			if ( array_key_exists('hood', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
+			if ( array_key_exists('roofState', $vehicle->state) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
+			
+			if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
+			if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
+			if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
+			if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
+			if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
+			if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
+			if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
+			if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
 					
-		if ( array_key_exists('combinedSecurityState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
-		if ( array_key_exists('combinedState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('allDoorsState', $vehicle->state->doorsState->combinedState); } else { $this->checkAndUpdateCmd('allDoorsState', 'not available'); }
-		if ( array_key_exists('combinedState', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('allWindowsState', $vehicle->state->windowsState->combinedState); } else { $this->checkAndUpdateCmd('allWindowsState', 'not available'); }
-		if ( array_key_exists('leftFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverFront', $vehicle->state->doorsState->leftFront); } else { $this->checkAndUpdateCmd('doorDriverFront', 'not available'); }
-		if ( array_key_exists('leftRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverRear', $vehicle->state->doorsState->leftRear); } else { $this->checkAndUpdateCmd('doorDriverRear', 'not available'); }
-		if ( array_key_exists('rightFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerFront', $vehicle->state->doorsState->rightFront); } else { $this->checkAndUpdateCmd('doorPassengerFront', 'not available'); }
-		if ( array_key_exists('rightRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerRear', $vehicle->state->doorsState->rightRear); } else { $this->checkAndUpdateCmd('doorPassengerRear', 'not available'); }
-		if ( array_key_exists('leftFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverFront', $vehicle->state->windowsState->leftFront); } else { $this->checkAndUpdateCmd('windowDriverFront', 'not available'); }
-		if ( array_key_exists('leftRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverRear', $vehicle->state->windowsState->leftRear); } else { $this->checkAndUpdateCmd('windowDriverRear', 'not available'); }
-		if ( array_key_exists('rightFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerFront', $vehicle->state->windowsState->rightFront); } else { $this->checkAndUpdateCmd('windowPassengerFront', 'not available'); }
-		if ( array_key_exists('rightRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerRear', $vehicle->state->windowsState->rightRear); } else { $this->checkAndUpdateCmd('windowPassengerRear', 'not available'); }
-		if ( array_key_exists('trunk', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
-		if ( array_key_exists('hood', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
-		if ( array_key_exists('roofState', $vehicle->state) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
-		
-		if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
-		if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
-		if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
-		if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
-		if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
-		if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
-		if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
-		if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
-				
-		if ( array_key_exists('chargingStatus', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
-		if ( array_key_exists('isChargerConnected', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
-		if ( array_key_exists('range', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
-		if ( array_key_exists('chargingLevelPercent', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
-		if ( array_key_exists('remainingChargingMinutes', $vehicle->state->electricChargingState) ) { 
-			$remainingMinutes = $vehicle->state->electricChargingState->remainingChargingMinutes;
-			$currentTime = $vehicle->state->lastUpdatedAt;
-			$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
-			$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
-		}
-		else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
-				
-		if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-		if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
-		
-		//Messages
-		$control_messages = $vehicle->state->checkControlMessages;
-		$services_messages = $vehicle->state->requiredServices;
-		$table_temp = array();
-		$table_messages = array();
-		
-		foreach ($control_messages as $message) {
-			if ( array_key_exists('type', $message) ) { $message_type = $message->type; } else { $message_type = ''; }
-			if ( array_key_exists('severity', $message) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
-			if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }
-			$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
-		}
-		$table_messages['checkControlMessages'] = $table_temp;
-		$table_temp = array();
-		
-		foreach ($services_messages as $message) {
-			if ( array_key_exists('dateTime', $message) ) {
-				$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
-				$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
-				if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
+			if ( array_key_exists('chargingStatus', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
+			if ( array_key_exists('isChargerConnected', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
+			if ( array_key_exists('range', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
+			if ( array_key_exists('chargingLevelPercent', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
+			if ( array_key_exists('remainingChargingMinutes', $vehicle->state->electricChargingState) ) { 
+				$remainingMinutes = $vehicle->state->electricChargingState->remainingChargingMinutes;
+				$currentTime = $vehicle->state->lastUpdatedAt;
+				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
+				$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
 			}
-			else { 
-				$message_date = '';
-				if ( array_key_exists('mileage', $message) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
+			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
+					
+			if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
+			if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
+			
+			//Messages
+			$control_messages = $vehicle->state->checkControlMessages;
+			$services_messages = $vehicle->state->requiredServices;
+			$table_temp = array();
+			$table_messages = array();
+			
+			foreach ($control_messages as $message) {
+				if ( array_key_exists('type', $message) ) { $message_type = $message->type; } else { $message_type = ''; }
+				if ( array_key_exists('severity', $message) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
+				if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }
+				$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
 			}
-			$message_status = '';
-			if ( array_key_exists('type', $message) ) {
-				if ($message->type == "OIL") { $message_title = "Huile moteur"; }
-				elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
-				elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
-				elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
-				elseif ($message->type == "BRAKE_PADS_FRONT") { $message_title = "Plaquettes de frein avant"; }
-				elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
-				elseif ($message->type == "TIRE_WEAR_FRONT") { $message_title = "Usure pneus avant"; }
-				elseif ($message->type == "TIRE_WEAR_REAR") { $message_title = "Usure pneus arrière"; }
-				elseif ($message->type == "WASHING_FLUID") { $message_title = "Liquide de lave-glace"; }
-				else { $message_title = $message->type; }
+			$table_messages['checkControlMessages'] = $table_temp;
+			$table_temp = array();
+			
+			foreach ($services_messages as $message) {
+				if ( array_key_exists('dateTime', $message) ) {
+					$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
+					$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
+					if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
+				}
+				else { 
+					$message_date = '';
+					if ( array_key_exists('mileage', $message) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
+				}
+				$message_status = '';
+				if ( array_key_exists('type', $message) ) {
+					if ($message->type == "OIL") { $message_title = "Huile moteur"; }
+					elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
+					elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
+					elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
+					elseif ($message->type == "BRAKE_PADS_FRONT") { $message_title = "Plaquettes de frein avant"; }
+					elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
+					elseif ($message->type == "TIRE_WEAR_FRONT") { $message_title = "Usure pneus avant"; }
+					elseif ($message->type == "TIRE_WEAR_REAR") { $message_title = "Usure pneus arrière"; }
+					elseif ($message->type == "WASHING_FLUID") { $message_title = "Liquide de lave-glace"; }
+					else { $message_title = $message->type; }
+				}
+				else { $message_title = ''; }
+				if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }							
+				$table_temp[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 			}
-			else { $message_title = ''; }
-			if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }							
-			$table_temp[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
-		}
-		$table_messages['requiredServices'] = $table_temp;
-		$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
+			$table_messages['requiredServices'] = $table_temp;
+			$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
+			
+			//Location - Presence
+			if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
+			$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude );
+			$this->checkAndUpdateCmd('distance', $distance);
+			if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
+			else { $this->checkAndUpdateCmd('presence', 0); }
+			
+			//Last update
+			if ( array_key_exists('lastUpdatedAt', $vehicle->state) ) { 
+				if ( $vehicle->state->lastUpdatedAt == "0001-01-01T00:00:00Z" ) { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
+				else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
+			}
+			else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
+
+			//Charging statistics
+			if ( array_key_exists('totalEnergyCharged', $statistics->statistics) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
+			
+			//Charging sessions
+			if ( array_key_exists('sessions', $sessions->chargingSessions) ) { 
+				$tab_sessions = $sessions->chargingSessions->sessions;
+				$tab_temp = array();
+				foreach ($tab_sessions as $session) {
+					$date = substr($session->id, 0, 10);
+					$tab_info = explode('•', $session->subtitle);
+					$tab_temp[] = array( "date" => $date, "energyCharged" => $session->energyCharged, "time" => $tab_info[1], "cost" => $tab_info[2], "address" => str_replace("'", " ", $tab_info[0]));
+				}
+				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
+			}
+			else { $this->checkAndUpdateCmd('chargingSessions', 'not available'); }
 		
-		//Location - Presence
-		if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
-		$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude );
-		$this->checkAndUpdateCmd('distance', $distance);
-		if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
-		else { $this->checkAndUpdateCmd('presence', 0); }
-		
-		//Last update
-		if ( array_key_exists('lastUpdatedAt', $vehicle->state) ) { 
-			if ( $vehicle->state->lastUpdatedAt == "0001-01-01T00:00:00Z" ) { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
-			else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
 		}
-		else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
-				
+		
 		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
 		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
+		log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
+		log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
 	}
@@ -609,7 +650,7 @@ class myBMW extends eqLogic {
 
     public function doChargeNow()
     {
-        $myConnection = $this->getConnection();
+       	$myConnection = $this->getConnection();
 		$result = $myConnection->doChargeNow();
         $response = json_decode($result->body);
 		
@@ -711,6 +752,24 @@ class myBMW extends eqLogic {
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 201), '└─End of car event sendPOI : ['.$result->httpCode.']');
 	}
 	
+	public function chargingStatistics()
+    {
+		$myConnection = $this->getConnection();
+		$result = $myConnection->getChargingStatistics();
+		$statistics = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
+		return $statistics;
+	}
+
+	public function chargingSessions()
+    {
+		$myConnection = $this->getConnection();
+		$result = $myConnection->getChargingSessions();
+		$sessions = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
+		return $sessions;
+	}
+
 	public function getBMWEqLogic($vehicle_vin)
 	{
 		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {

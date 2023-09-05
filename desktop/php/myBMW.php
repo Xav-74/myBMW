@@ -13,23 +13,54 @@ $eqLogics = eqLogic::byType($plugin->getId());
 <div class="row row-overflow">
 
 	<div class="col-xs-12 eqLogicThumbnailDisplay">
-		<legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
-		<div class="eqLogicThumbnailContainer">
-			
-			<div class="cursor eqLogicAction logoPrimary" style="color:#002A4A" data-action="add">
-				<i class="fas fa-plus-circle"></i>
-				<br/>
-				<span>{{Ajouter}}</span>
-			</div>
-			
-			<div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf">
-				<i class="fas fa-wrench"></i>
-				<br/>
-				<span>{{Configuration}}</span>
-			</div>
 		
+		<div class="row">
+
+			<div class="col-xs-10">
+				<legend><i class="fas fa-cog"></i> {{Gestion}}</legend>
+				<div class="eqLogicThumbnailContainer">
+					
+					<div class="cursor eqLogicAction logoPrimary" style="color:#002A4A" data-action="add">
+						<i class="fas fa-plus-circle"></i>
+						<br/>
+						<span>{{Ajouter}}</span>
+					</div>
+					
+					<div class="cursor eqLogicAction logoSecondary" data-action="gotoPluginConf">
+						<i class="fas fa-wrench"></i>
+						<br/>
+						<span>{{Configuration}}</span>
+					</div>
+				
+				</div>
+			</div>
+
+			<div class="col-xs-2">
+				<!--Bouton Community-->
+				<?php
+					// uniquement si on est en version 4.4 ou supérieur
+					$jeedomVersion  = jeedom::version() ?? '0';
+					$displayInfoValue = version_compare($jeedomVersion, '4.4.0', '>=');
+					if($displayInfoValue){
+				?>
+				<legend><i class=" fas fa-comments"></i> {{Community}}</legend>
+				<div class="eqLogicThumbnailContainer">
+					
+					<div class="cursor eqLogicAction logoSecondary" style="color:#002A4A" data-action="createCommunityPost">
+						<i class="fas fa-ambulance"></i>
+						<br>
+						<span>{{Créer un post Community}}</span>
+					</div>
+
+				</div>
+				<?php
+					}
+				?>
+			</div>
+
 		</div>
-		
+
+
 		<legend><i class="fas fa-table"></i> {{Mes véhicules}}</legend>
 		<div class="input-group" style="margin-bottom:5px;">
 			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
@@ -74,6 +105,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						<form class="form-horizontal">
 							<fieldset>
 						 		
+								<legend><i class="fas fa-wrench"></i> {{Paramètres généraux}}</legend>
+								
 								<div class="form-group">
 									<label class="col-sm-6 control-label">{{Nom de l'équipement}}</label>
 									<div class="col-sm-6">
@@ -119,7 +152,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 							
-								<br/><br/>  
+								<br/> 
                         
  							</fieldset>
 						</form>
@@ -131,6 +164,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						<form class="form-horizontal">
 							<fieldset>    
 								
+								<legend><i class="fas fa-cogs"></i> {{Paramètres du compte et du véhicule}}</legend>
 								<div id="div_user" class="form-group">						
 									<label class="col-sm-6 control-label">{{Identifiant}}</label>
 									<div class="col-sm-6">
@@ -163,23 +197,63 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_vin" placeholder="Numéro d'identification de votre véhicule disponible sur la carte grise (E)">
 									</div>
 								</div>
-								
-								</br></br>
-								
-								<div class="form-group">
-									<label class="col-sm-6 control-label">{{Widget personnalisé}}</label>
-									<div class="col-sm-6">
-										<select id="sel_widget" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="widget_template">
-											<option value="0">Aucun</option>
-											<option value="1" selected>Widget Flat Design</option>
-											<option value="2">Widget Legacy</option>
-										</select>
-										<!--<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="widget_template" checked/>{{Activer}}</label>-->
+
+								<div class="form-group">		
+									<label class="col-sm-6 control-label">{{Modèle}}</label>
+									<div id="div_model" class="col-sm-6">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="" readonly>
 									</div>
 								</div>
 								
-								</br></br>
+								<div class="form-group">		
+									<label class="col-sm-6 control-label">{{Année}}</label>
+									<div id="div_year" class="col-sm-6">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
+									</div>
+								</div>
 								
+								<div class="form-group">		
+									<label class="col-sm-6 control-label">{{Type}}</label>
+									<div id="div_type" class="col-sm-6">
+										<input type="text" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
+									</div>
+								</div>
+
+								</br>
+
+								<div id="div_actions" class="form-group">						
+									<label class="col-sm-6 control-label">{{Actions}}</label>	
+									<div class="col-sm-6">
+										<a class="btn btn-danger btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
+										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
+									</div>	
+								</div>
+							
+								</br>
+								
+								<legend><i class="fas fa-palette"></i> {{Paramètres d'affichage du panel}}</legend>
+								<div class="form-group">
+									<label class="col-sm-6 control-label">{{Affichage état portes / fenêtres}}</label>
+									<div class="col-sm-6">
+										<select id="sel_panel_icon" class="eqLogicAttr form-control" style="margin-bottom: 3px;" data-l1key="configuration" data-l2key="panel_doors_windows_display">
+											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>	
+											<option value="text">Texte</option>
+											<option value="icon">Icône</option>
+										</select>
+									</div>
+									<label class="col-sm-6 control-label help" data-help="{{Si l'option précédente est réglée sur Icône, vous pouvez choisir la couleur souhaitée}}"">{{Couleur des icônes portes / fenêtres}}</label>
+									<div class="col-sm-6">
+										<select id="sel_panel_color" class="eqLogicAttr form-control" style="margin-bottom: 3px;" data-l1key="configuration" data-l2key="panel_color_icon_closed">
+											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
+											<option value="default">Noir & blanc</option>
+											<option value="green">Vert</option>
+										</select>
+									</div>
+								</div>
+								
+								</br>
+								
+								<legend><i class="fas fa-location-arrow"></i> {{Paramètres de localisation}}</legend>
 								<div class="form-group">
 									<label class="col-sm-6 control-label">{{Domicile (présence)}}</label>
 									<div class="col-sm-6">
@@ -224,29 +298,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								</br></br>
 								
-								<div class="form-group">		
-									<label class="col-sm-6 control-label">{{Modèle}}</label>
-									<div id="div_model" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="" readonly>
-									</div>
-								</div>
-								
-								<div class="form-group">		
-									<label class="col-sm-6 control-label">{{Année}}</label>
-									<div id="div_year" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
-									</div>
-								</div>
-								
-								<div class="form-group">		
-									<label class="col-sm-6 control-label">{{Type}}</label>
-									<div id="div_type" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
-									</div>
-								</div>
-								
-								</br></br>
-																
 							</fieldset>
 						</form>  
                     </div>
@@ -256,7 +307,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<fieldset>	
                         		
 								<div class="form-group">
-									<div id="div_img" class="col-sm-6">
+									<div id="div_img" class="col-sm-6" style="padding-top: 20px;">
 										<img id="car_img" src=""/>
 									</div>
 								</div>
@@ -266,50 +317,50 @@ $eqLogics = eqLogic::byType($plugin->getId());
                     </div>
 					
 				</div>
-				
-				<div class="row">
-					<div class="col-sm-6">
-						<form class="form-horizontal">
-							<fieldset>
-								
-								<div id="div_actions" class="form-group">						
-									<label class="col-sm-6 control-label">{{Actions}}</label>	
-									<div class="col-sm-6">
-										<a class="btn btn-danger btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
-										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
-									</div>	
-								</div>
 							
-							</fieldset>
-						</form>  
-					</div>
-                </div>
-				
 			</div>
 			
 			<script>
 			
 			setDisplayGPS();
+			setDisplayPanel();
 			
 			$('#sel_option_localisation').on("change",function (){
 				setDisplayGPS();
 			});
 
+			$('#sel_panel_icon').on("change",function (){
+				setDisplayPanel();
+			});
+
 			function setDisplayGPS() {
 				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "jeedom" || $('.eqLogicAttr[data-l2key=option_localisation]').value() == null) {
 					$('#gps_coordinates').hide();
+					$('#home_distance').css('margin', '0px 0px');
 				}
 				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "manual" ) {
 					$('#gps_coordinates').show();
 					$('#bt_gps').hide();
 					$('#input_home_lat').attr('readonly', false);
 					$('#input_home_long').attr('readonly', false);
+					$('#home_distance').css('margin', '1px 0px');
 				}
 				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "vehicle" ) {
 					$('#gps_coordinates').show();
 					$('#bt_gps').show();
 					$('#input_home_lat').attr('readonly', true);
 					$('#input_home_long').attr('readonly', true);
+					$('#home_distance').css('margin', '1px 0px');
+				}
+			}
+
+			function setDisplayPanel() {
+				if ( $('.eqLogicAttr[data-l2key=panel_doors_windows_display]').value() == "text") {
+					$('#sel_panel_color option[value=""]').prop('selected', true);
+					$('#sel_panel_color').attr('disabled', true);
+				}
+				if ( $('.eqLogicAttr[data-l2key=panel_doors_windows_display]').value() == "icon") {
+					$('#sel_panel_color').attr('disabled', false);
 				}
 			}
 

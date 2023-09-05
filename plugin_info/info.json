@@ -6,6 +6,7 @@
 	"author" : "Xav-74",
 	"require" : "4.0",
 	"category" : "devicecommunication",
+	"display": "panel",
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
