@@ -386,13 +386,10 @@ class myBMW extends eqLogic {
 	public function refreshVehicleInfos()
     {
 		$myConnection = $this->getConnection();
-		$result = $myConnection->getVehicleState();
-		$result2 = $myConnection->getChargingStatistics();
-		$result3 = $myConnection->getChargingSessions();
-		$vehicle = json_decode($result->body);
-		$statistics = json_decode($result2->body);
-		$sessions = json_decode($result3->body);
 		
+		$result = $myConnection->getVehicleState();
+		$vehicle = json_decode($result->body);
+				
 		if ($vehicle != null) {
 
 			//States
@@ -495,29 +492,46 @@ class myBMW extends eqLogic {
 				else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
 			}
 			else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
-
-			//Charging statistics
-			if ( array_key_exists('totalEnergyCharged', $statistics->statistics) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
-			
-			//Charging sessions
-			if ( array_key_exists('sessions', $sessions->chargingSessions) ) { 
-				$tab_sessions = $sessions->chargingSessions->sessions;
-				$tab_temp = array();
-				foreach ($tab_sessions as $session) {
-					$date = substr($session->id, 0, 10);
-					$tab_info = explode('•', $session->subtitle);
-					$tab_temp[] = array( "date" => $date, "energyCharged" => $session->energyCharged, "time" => $tab_info[1], "cost" => $tab_info[2], "address" => str_replace("'", " ", $tab_info[0]));
-				}
-				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
-			}
-			else { $this->checkAndUpdateCmd('chargingSessions', 'not available'); }
-		
 		}
-		
+
 		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
 		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
-		log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
-		log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
+				
+		if ( $this->getConfiguration("vehicle_type") == 'ELECTRIC' || $this->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' ) {
+
+			$result2 = $myConnection->getChargingStatistics();
+			$statistics = json_decode($result2->body);
+
+			if ($statistics != null) {
+				
+				//Charging statistics
+				if ( array_key_exists('totalEnergyCharged', $statistics->statistics) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
+			}
+
+			log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
+
+			$result3 = $myConnection->getChargingSessions();
+			$sessions = json_decode($result3->body);
+			
+			if ($sessions != null) {
+
+				//Charging sessions
+				if ( array_key_exists('sessions', $sessions->chargingSessions) ) { 
+					$tab_sessions = $sessions->chargingSessions->sessions;
+					$tab_temp = array();
+					foreach ($tab_sessions as $session) {
+						$date = substr($session->id, 0, 10);
+						$tab_info = explode('•', $session->subtitle);
+						$tab_temp[] = array( "date" => $date, "energyCharged" => $session->energyCharged, "time" => $tab_info[1], "cost" => $tab_info[2], "address" => str_replace("'", " ", $tab_info[0]));
+					}
+					$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
+				}
+				else { $this->checkAndUpdateCmd('chargingSessions', 'not available'); }
+			}
+
+			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
+		}
+
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
 	}
