@@ -228,6 +228,7 @@ class BMWConnectedDrive_API
         ];
         
 		$result = $this->_request($this::AUTH_URL, 'POST', $data, $headers);
+		log::add('myBMW', 'debug', '| Result getToken Stage 1 : ' . $result->body);
 		
 		if (!preg_match('/.*authorization=(.*)/im', json_decode($result->body)->redirect_to, $matches))
 		{
@@ -252,6 +253,7 @@ class BMWConnectedDrive_API
 		];
 
 		$result = $this->_request($this::AUTH_URL, 'POST', $data, $headers);
+		log::add('myBMW', 'debug', '| Result getToken Stage 2 : ' . $result->headers);
 
 		if (!preg_match('/.*location:.*code=(.*?)&/im', $result->headers, $matches))
 		{	  
@@ -274,6 +276,8 @@ class BMWConnectedDrive_API
 		];
 		
 		$result = $this->_request($this::AUTH_TOKEN_URL, 'POST', $data, $headers);
+		log::add('myBMW', 'debug', '| Result getToken Stage 3 : ' . $result->body);
+
 		$token = json_decode($result->body);
 		
 		$this->auth_token->setToken($token->access_token);
