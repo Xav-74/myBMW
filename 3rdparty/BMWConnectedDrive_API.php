@@ -287,7 +287,7 @@ class BMWConnectedDrive_API
 
 		$this->_saveAuth();
 
-		log::add('myBMW', 'debug', '| Result ' . 'getToken() OK at time ' . time() . ' and expires in : '. $token->expires_in.' s'  );
+		log::add('myBMW', 'debug', '| Result authentication() : token OK at time ' . time() . ' and expires in : '. $token->expires_in.' s'  );
 
 		return true;
     }
@@ -318,7 +318,7 @@ class BMWConnectedDrive_API
 
 		$this->_saveAuth();
 
-		log::add('myBMW', 'debug', '| Result ' . 'refrehToken() OK at time ' . time() . ' and expires in : '. $token->expires_in.' s' );
+		log::add('myBMW', 'debug', '| Result authentication() : token OK at time ' . time() . ' and expires in : '. $token->expires_in.' s' );
 	}
     
 	
@@ -336,7 +336,7 @@ class BMWConnectedDrive_API
         }
 		
 		$expire_in = $this->auth_token->getExpires() - time();
-		log::add('myBMW', 'debug', '| Result ' . 'token OK at time ' . time() . ' and expires in : '. $expire_in .' s' );
+		log::add('myBMW', 'debug', '| Result authentication() : token OK at time ' . time() . ' and expires in : '. $expire_in .' s' );
     }
 
     

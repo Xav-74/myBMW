@@ -526,7 +526,7 @@ class myBMW extends eqLogic {
 					}
 					$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 				}
-				else { $this->checkAndUpdateCmd('chargingSessions', 'not available'); }
+				else { $this->checkAndUpdateCmd('chargingSessions', json_encode('')); }
 			}
 
 			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
