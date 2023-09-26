@@ -432,7 +432,7 @@ class myBMW extends eqLogic {
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 					
 			if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-			if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
+			if ( array_key_exists('remainingFuelPercent', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelPercent); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
 			
 			//Messages
 			$control_messages = $vehicle->state->checkControlMessages;
@@ -516,9 +516,10 @@ class myBMW extends eqLogic {
 			if ($sessions != null) {
 
 				//Charging sessions
+				$tab_temp = array();
 				if ( array_key_exists('sessions', $sessions->chargingSessions) ) { 
 					$tab_sessions = $sessions->chargingSessions->sessions;
-					$tab_temp = array();
+										
 					foreach ($tab_sessions as $session) {
 						$date = substr($session->id, 0, 10);
 						$tab_info = explode('•', $session->subtitle);
@@ -526,7 +527,7 @@ class myBMW extends eqLogic {
 					}
 					$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 				}
-				else { $this->checkAndUpdateCmd('chargingSessions', json_encode('')); }
+				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 			}
 
 			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
