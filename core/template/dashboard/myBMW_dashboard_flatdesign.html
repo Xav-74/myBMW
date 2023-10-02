@@ -361,6 +361,41 @@
 		}
 		jeedom.cmd.update['#allWindowsState_id#']({display_value:'#allWindowsState#'});
 
+
+		//----- Messages
+		jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
+			var messages = jQuery.parseJSON(_options.display_value);
+			
+			jQuery.each(messages.checkControlMessages,function(key,message){
+				if ( message.type == "ENGINE_OIL" ) {
+					//if ( message.severity == "OK" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_grey.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_orange.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_red.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				}
+				if ( message.type == "BRAKE_FLUID" ) {
+					//if ( message.severity == "OK" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_grey.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
+					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_orange.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_red.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				}
+				if ( message.type == "TIRE_PRESSURE" ) {
+					//if ( message.severity == "OK" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_grey.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
+					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_red.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				}
+				if ( message.type == "WASHING_FLUID" ) {
+					//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_grey.png" height="40" title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_orange.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_red.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				}
+				if ( message.type == "VEHICLE_CHECK" ) {
+					//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_grey.png" height="40" title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_orange.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_red.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				}
+			});
+		}
+		jeedom.cmd.update['#vehicleMessages_id#']({display_value:'#vehicleMessages#'});
+		
 		
 		//----- Last update
 		jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
