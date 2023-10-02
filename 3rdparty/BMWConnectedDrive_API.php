@@ -476,12 +476,12 @@ class BMWConnectedDrive_API
 	}
 	
 	
-	public function getEventPosition($event_id)
+	public function getEventPosition($event_id, $lat, $long)
 	{
 		//$this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
-		$headers[] = 'latitude: 0.000000';
-		$headers[] = 'longitude: 0.000000';
+		$headers[] = 'latitude: '.$lat;
+		$headers[] = 'longitude: '.$long;
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
        	return $this->_request($this::API_URL . $this::STATUS . sprintf($this::REMOTE_SERVICE_POSITION, $event_id), 'POST', null, $headers);
 	}

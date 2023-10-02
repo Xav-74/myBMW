@@ -726,7 +726,8 @@ class myBMW extends eqLogic {
 		
 		if ( $eventStatus == 'EXECUTED' )
 		{
-			$position = $myConnection->getEventPosition($response->eventId);
+			$gps_source = $this->getGPSCoordinates($this->getConfiguration('vehicle_vin'));
+			$position = $myConnection->getEventPosition($response->eventId, $gps_source['latitude'], $gps_source['longitude']);
 			$eventPosition = json_decode($position->body);
 			$gps_coordinates = $eventPosition->positionData->position->latitude.','.$eventPosition->positionData->position->longitude;
 			log::add('myBMW', $this->getLogLevelFromHttpStatus($position->httpCode, 200), '| Result getEventPosition() : ['.$position->httpCode.'] - '.$position->body);
@@ -845,10 +846,10 @@ class myBMW extends eqLogic {
 			$gps = array( "latitude" => $coordinates[0], "longitude" => $coordinates[1] );
 		}
 		else  {
-			$gps = array( "latitude" => "", "longitude" => "" );
+			$gps = array( "latitude" => '0.000000', "longitude" => '0.000000' );
 		}
 		
-		//log::add('myBMW', 'debug', json_encode($gps));
+		log::add('myBMW', 'debug', '| Result getGPSCoordinates() : '.json_encode($gps));
 		return $gps;
 	}
 
