@@ -40,7 +40,7 @@
 				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Niveau carburant</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-gas-pump"></i></div>
-					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#remaining_fuel_id#"></span><span id="titre_tile"> %</span></div>
+					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#remaining_fuel_id#"></span><span id="titre_tile"> #fuel_value_unit#id##</span></div>
 				</div>
 				
 				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
@@ -957,7 +957,7 @@
         },
         yAxis: {
             title: {
-	            text: "%"
+	            text: '#fuel_value_unit#id##'
             }
         },
         xAxis: {
@@ -1000,7 +1000,7 @@
 				name: "Niveau carburant",
 				data: [],
 				tooltip: {
-					valueSuffix: ' %'
+					valueSuffix: ' #fuel_value_unit#id##'
           		}
        		}
         ],

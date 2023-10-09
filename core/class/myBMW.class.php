@@ -224,6 +224,7 @@ class myBMW extends eqLogic {
 		$replace['#home_distance'.$this->getId().'#'] = $this->getConfiguration('home_distance');
 		$replace['#panel_doors_windows_display'.$this->getId().'#'] = $this->getConfiguration('panel_doors_windows_display');
 		$replace['#panel_color_icon_closed'.$this->getId().'#'] = $this->getConfiguration('panel_color_icon_closed');
+		$replace['#fuel_value_unit'.$this->getId().'#'] = $this->getConfiguration('fuel_value_unit');
 							
 		// Traitement des commandes infos
 		foreach ($this->getCmd('info') as $cmd) {
@@ -432,7 +433,17 @@ class myBMW extends eqLogic {
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 					
 			if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-			if ( array_key_exists('remainingFuelPercent', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelPercent); } else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
+			if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) {
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters);
+				$this->setConfiguration('fuel_value_unit','L');
+				$this->save(true);
+			}
+			else if ( array_key_exists('remainingFuelPercent', $vehicle->state->combustionFuelLevel) ) {
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelPercent);
+				$this->setConfiguration('fuel_value_unit','%');
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
 			
 			//Messages
 			$control_messages = $vehicle->state->checkControlMessages;
