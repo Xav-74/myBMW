@@ -543,6 +543,10 @@ class myBMW extends eqLogic {
 
 			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
 		}
+		else {
+			$this->checkAndUpdateCmd('totalEnergyCharged', 'not available');
+			$this->checkAndUpdateCmd('chargingSessions', json_encode(array()));
+		}
 
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
