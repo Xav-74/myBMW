@@ -367,7 +367,7 @@
 	function setColorIconClosed#id#(theme)  {
 		var color = "";
 		if ( '#panel_color_icon_closed#id##' != 'green' )  {
-			if ( theme == 'black' ) {
+			if ( theme == 'black' || theme == 'legacy') {
 				color = 'white';
 			}
 			else if ( theme == 'white' ) {
@@ -380,7 +380,7 @@
 	
 	function setDoorsWindowsDisplay#id#()  {
 		if ( '#panel_doors_windows_display#id##' == 'icon' )  {
-		$('.doors_text#id#').hide();
+			$('.doors_text#id#').hide();
 		}
 		if ( '#panel_doors_windows_display#id##' == 'text' || '#panel_doors_windows_display#id##' == '' )  {
 			$('.doors_icon#id#').hide();
