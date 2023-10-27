@@ -317,7 +317,7 @@ class myBMW extends eqLogic {
 		return $myConnection;
 	}
 	
-	public function synchronize($vin, $username, $password, $brand)
+	public static function synchronize($vin, $username, $password, $brand)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
 		
@@ -338,7 +338,7 @@ class myBMW extends eqLogic {
 		$img = $result->body;
 		file_put_contents($filename,$img);
 		log::add('myBMW', 'debug', '| Result getPictures() : '.$result->headers);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 200), '| End of car picture refresh : ['.$result->httpCode.']');
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '| End of car picture refresh : ['.$result->httpCode.']');
 				
 		$result = $myConnection->getVehicles();
 		$bmwCarInfo = json_decode($result->body);
@@ -346,7 +346,7 @@ class myBMW extends eqLogic {
 		if ( count($bmwCarInfo) == 0 )
 		{
 			log::add('myBMW', 'debug', '| Result getVehicles() : no vehicle found with services BMWConnectedDrive activated');
-			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of synchronisation : ['.$result->httpCode.']');
+			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
 		}
 		else
 		{
@@ -354,12 +354,12 @@ class myBMW extends eqLogic {
 			{
 				if ( $vehicle->vin == $vin )
 				{
-					if ( array_key_exists('brand', $vehicle->attributes) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle->attributes->brand); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
-					if ( array_key_exists('model', $vehicle->attributes) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle->attributes->model); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
-					if ( array_key_exists('year', $vehicle->attributes) ) { $eqLogic->checkAndUpdateCmd('year', $vehicle->attributes->year); } else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
-					if ( array_key_exists('driveTrain', $vehicle->attributes) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle->attributes->driveTrain); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
+					if ( isset($vehicle->attributes->brand) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle->attributes->brand); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
+					if ( isset($vehicle->attributes->model) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle->attributes->model); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
+					if ( isset($vehicle->attributes->year) ) { $eqLogic->checkAndUpdateCmd('year', $vehicle->attributes->year); } else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
+					if ( isset($vehicle->attributes->driveTrain) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle->attributes->driveTrain); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
 					log::add('myBMW', 'debug', '| Result getVehicles() : '.str_replace('\n','',json_encode($vehicle)));
-					log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of synchronisation : ['.$result->httpCode.']');
+					log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
 					return $vehicle;
 				}
 			}
@@ -394,37 +394,37 @@ class myBMW extends eqLogic {
 		if ($vehicle != null) {
 
 			//States
-			if ( array_key_exists('currentMileage', $vehicle->state) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
+			if ( isset($vehicle->state->currentMileage) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
 						
-			if ( array_key_exists('combinedSecurityState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
-			if ( array_key_exists('combinedState', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('allDoorsState', $vehicle->state->doorsState->combinedState); } else { $this->checkAndUpdateCmd('allDoorsState', 'not available'); }
-			if ( array_key_exists('combinedState', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('allWindowsState', $vehicle->state->windowsState->combinedState); } else { $this->checkAndUpdateCmd('allWindowsState', 'not available'); }
-			if ( array_key_exists('leftFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverFront', $vehicle->state->doorsState->leftFront); } else { $this->checkAndUpdateCmd('doorDriverFront', 'not available'); }
-			if ( array_key_exists('leftRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorDriverRear', $vehicle->state->doorsState->leftRear); } else { $this->checkAndUpdateCmd('doorDriverRear', 'not available'); }
-			if ( array_key_exists('rightFront', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerFront', $vehicle->state->doorsState->rightFront); } else { $this->checkAndUpdateCmd('doorPassengerFront', 'not available'); }
-			if ( array_key_exists('rightRear', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('doorPassengerRear', $vehicle->state->doorsState->rightRear); } else { $this->checkAndUpdateCmd('doorPassengerRear', 'not available'); }
-			if ( array_key_exists('leftFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverFront', $vehicle->state->windowsState->leftFront); } else { $this->checkAndUpdateCmd('windowDriverFront', 'not available'); }
-			if ( array_key_exists('leftRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowDriverRear', $vehicle->state->windowsState->leftRear); } else { $this->checkAndUpdateCmd('windowDriverRear', 'not available'); }
-			if ( array_key_exists('rightFront', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerFront', $vehicle->state->windowsState->rightFront); } else { $this->checkAndUpdateCmd('windowPassengerFront', 'not available'); }
-			if ( array_key_exists('rightRear', $vehicle->state->windowsState) ) { $this->checkAndUpdateCmd('windowPassengerRear', $vehicle->state->windowsState->rightRear); } else { $this->checkAndUpdateCmd('windowPassengerRear', 'not available'); }
-			if ( array_key_exists('trunk', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
-			if ( array_key_exists('hood', $vehicle->state->doorsState) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
-			if ( array_key_exists('roofState', $vehicle->state) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
+			if ( isset($vehicle->state->doorsState->combinedSecurityState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
+			if ( isset($vehicle->state->doorsState->combinedState) ) { $this->checkAndUpdateCmd('allDoorsState', $vehicle->state->doorsState->combinedState); } else { $this->checkAndUpdateCmd('allDoorsState', 'not available'); }
+			if ( isset($vehicle->state->windowsState->combinedState) ) { $this->checkAndUpdateCmd('allWindowsState', $vehicle->state->windowsState->combinedState); } else { $this->checkAndUpdateCmd('allWindowsState', 'not available'); }
+			if ( isset($vehicle->state->doorsState->leftFront) ) { $this->checkAndUpdateCmd('doorDriverFront', $vehicle->state->doorsState->leftFront); } else { $this->checkAndUpdateCmd('doorDriverFront', 'not available'); }
+			if ( isset($vehicle->state->doorsState->leftRear) ) { $this->checkAndUpdateCmd('doorDriverRear', $vehicle->state->doorsState->leftRear); } else { $this->checkAndUpdateCmd('doorDriverRear', 'not available'); }
+			if ( isset($vehicle->state->doorsState->rightFront) ) { $this->checkAndUpdateCmd('doorPassengerFront', $vehicle->state->doorsState->rightFront); } else { $this->checkAndUpdateCmd('doorPassengerFront', 'not available'); }
+			if ( isset($vehicle->state->doorsState->rightRear) ) { $this->checkAndUpdateCmd('doorPassengerRear', $vehicle->state->doorsState->rightRear); } else { $this->checkAndUpdateCmd('doorPassengerRear', 'not available'); }
+			if ( isset($vehicle->state->windowsState->leftFront) ) { $this->checkAndUpdateCmd('windowDriverFront', $vehicle->state->windowsState->leftFront); } else { $this->checkAndUpdateCmd('windowDriverFront', 'not available'); }
+			if ( isset($vehicle->state->windowsState->leftRear) ) { $this->checkAndUpdateCmd('windowDriverRear', $vehicle->state->windowsState->leftRear); } else { $this->checkAndUpdateCmd('windowDriverRear', 'not available'); }
+			if ( isset($vehicle->state->windowsState->rightFront) ) { $this->checkAndUpdateCmd('windowPassengerFront', $vehicle->state->windowsState->rightFront); } else { $this->checkAndUpdateCmd('windowPassengerFront', 'not available'); }
+			if ( isset($vehicle->state->windowsState->rightRear) ) { $this->checkAndUpdateCmd('windowPassengerRear', $vehicle->state->windowsState->rightRear); } else { $this->checkAndUpdateCmd('windowPassengerRear', 'not available'); }
+			if ( isset($vehicle->state->doorsState->trunk) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
+			if ( isset($vehicle->state->doorsState->hood) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
+			if ( isset($vehicle->state->roofState) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
 			
-			if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
-			if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontLeft->status) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
-			if ( array_key_exists('currentPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
-			if ( array_key_exists('targetPressure', $vehicle->state->tireState->frontRight->status) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
-			if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
-			if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearLeft->status) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
-			if ( array_key_exists('currentPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
-			if ( array_key_exists('targetPressure', $vehicle->state->tireState->rearRight->status) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
+			if ( isset($vehicle->state->tireState->frontLeft->status->currentPressure) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
+			if ( isset($vehicle->state->tireState->frontLeft->status->targetPressure) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
+			if ( isset($vehicle->state->tireState->frontRight->status->currentPressure) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
+			if ( isset($vehicle->state->tireState->frontRight->status->targetPressure) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
+			if ( isset($vehicle->state->tireState->rearLeft->status->currentPressure) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
+			if ( isset($vehicle->state->tireState->rearLeft->status->targetPressure) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
+			if ( isset($vehicle->state->tireState->rearRight->status->currentPressure) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
+			if ( isset($vehicle->state->tireState->rearRight->status->targetPressure) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
 					
-			if ( array_key_exists('chargingStatus', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
-			if ( array_key_exists('isChargerConnected', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
-			if ( array_key_exists('range', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
-			if ( array_key_exists('chargingLevelPercent', $vehicle->state->electricChargingState) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
-			if ( array_key_exists('remainingChargingMinutes', $vehicle->state->electricChargingState) ) { 
+			if ( isset($vehicle->state->electricChargingState->chargingStatus) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
+			if ( isset($vehicle->state->electricChargingState->isChargerConnected) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
+			if ( isset($vehicle->state->electricChargingState->range) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
+			if ( isset($vehicle->state->electricChargingState->chargingLevelPercent) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
+			if ( isset($vehicle->state->electricChargingState->remainingChargingMinutes) ) { 
 				$remainingMinutes = $vehicle->state->electricChargingState->remainingChargingMinutes;
 				$currentTime = $vehicle->state->lastUpdatedAt;
 				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
@@ -432,13 +432,13 @@ class myBMW extends eqLogic {
 			}
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 					
-			if ( array_key_exists('range', $vehicle->state->combustionFuelLevel) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-			if ( array_key_exists('remainingFuelLiters', $vehicle->state->combustionFuelLevel) ) {
+			if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
+			if ( isset($vehicle->state->combustionFuelLevel->remainingFuelLiters) ) {
 				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters);
 				$this->setConfiguration('fuel_value_unit','L');
 				$this->save(true);
 			}
-			else if ( array_key_exists('remainingFuelPercent', $vehicle->state->combustionFuelLevel) ) {
+			else if ( isset($vehicle->state->combustionFuelLevel->remainingFuelPercent) ) {
 				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelPercent);
 				$this->setConfiguration('fuel_value_unit','%');
 				$this->save(true);
@@ -452,26 +452,26 @@ class myBMW extends eqLogic {
 			$table_messages = array();
 			
 			foreach ($control_messages as $message) {
-				if ( array_key_exists('type', $message) ) { $message_type = $message->type; } else { $message_type = ''; }
-				if ( array_key_exists('severity', $message) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
-				if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }
+				if ( isset($message->type) ) { $message_type = $message->type; } else { $message_type = ''; }
+				if ( isset($message->severity) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
+				if ( isset($message->description) ) { $message_description = $message->description; } else { $message_description = ''; }
 				$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
 			}
 			$table_messages['checkControlMessages'] = $table_temp;
 			$table_temp = array();
 			
 			foreach ($services_messages as $message) {
-				if ( array_key_exists('dateTime', $message) ) {
+				if ( isset($message->dateTime) ) {
 					$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
 					$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
-					if ( array_key_exists('mileage', $message) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
+					if ( isset($message->mileage) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
 				}
 				else { 
 					$message_date = '';
-					if ( array_key_exists('mileage', $message) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
+					if ( isset($message->mileage) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
 				}
 				$message_status = '';
-				if ( array_key_exists('type', $message) ) {
+				if ( isset($message->type) ) {
 					if ($message->type == "OIL") { $message_title = "Huile moteur"; }
 					elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
 					elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
@@ -484,21 +484,21 @@ class myBMW extends eqLogic {
 					else { $message_title = $message->type; }
 				}
 				else { $message_title = ''; }
-				if ( array_key_exists('description', $message) ) { $message_description = $message->description; } else { $message_description = ''; }							
+				if ( isset($message->description) ) { $message_description = $message->description; } else { $message_description = ''; }							
 				$table_temp[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 			}
 			$table_messages['requiredServices'] = $table_temp;
 			$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 			
 			//Location - Presence
-			if ( array_key_exists('latitude', $vehicle->state->location->coordinates) && array_key_exists('longitude', $vehicle->state->location->coordinates) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
+			if ( isset($vehicle->state->location->coordinates->latitude) && isset($vehicle->state->location->coordinates->longitude) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
 			$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude );
 			$this->checkAndUpdateCmd('distance', $distance);
 			if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
 			else { $this->checkAndUpdateCmd('presence', 0); }
 			
 			//Last update
-			if ( array_key_exists('lastUpdatedAt', $vehicle->state) ) { 
+			if ( isset($vehicle->state->lastUpdatedAt) ) { 
 				if ( $vehicle->state->lastUpdatedAt == "0001-01-01T00:00:00Z" ) { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
 				else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
 			}
@@ -516,7 +516,7 @@ class myBMW extends eqLogic {
 			if ($statistics != null) {
 				
 				//Charging statistics
-				if ( array_key_exists('totalEnergyCharged', $statistics->statistics) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
+				if ( isset($statistics->statistics->totalEnergyCharged) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
 			}
 
 			log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
@@ -528,7 +528,7 @@ class myBMW extends eqLogic {
 
 				//Charging sessions
 				$tab_temp = array();
-				if ( array_key_exists('sessions', $sessions->chargingSessions) ) { 
+				if ( isset($sessions->chargingSessions->sessions) ) { 
 					$tab_sessions = $sessions->chargingSessions->sessions;
 										
 					foreach ($tab_sessions as $session) {
@@ -548,7 +548,7 @@ class myBMW extends eqLogic {
 			$this->checkAndUpdateCmd('chargingSessions', json_encode(array()));
 		}
 
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
 	}
 
@@ -565,12 +565,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}		
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event hornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event hornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doLightFlash()
@@ -586,12 +586,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event lightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event lightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doDoorLock()
@@ -607,12 +607,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event doorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doDoorUnlock()
@@ -628,12 +628,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event doorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doClimateNow()
@@ -649,12 +649,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event climateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event climateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function stopClimateNow()
@@ -670,12 +670,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('stopClimateNow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event stopClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event stopClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
     public function doChargeNow()
@@ -691,12 +691,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
 	public function stopChargeNow()
@@ -712,12 +712,12 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
 			sleep(5);
 			$retry--;
 		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event stopChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event stopChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 	}
 
 	public function vehicleFinder()
@@ -733,7 +733,7 @@ class myBMW extends eqLogic {
 		{
 			$status = $myConnection->getRemoteServiceStatus($response->eventId);
 			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, 200), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
 			$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
 			sleep(5);
 			$retry--;
@@ -745,18 +745,18 @@ class myBMW extends eqLogic {
 			$position = $myConnection->getEventPosition($response->eventId, $gps_source['latitude'], $gps_source['longitude']);
 			$eventPosition = json_decode($position->body);
 			$gps_coordinates = $eventPosition->positionData->position->latitude.','.$eventPosition->positionData->position->longitude;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($position->httpCode, 200), '| Result getEventPosition() : ['.$position->httpCode.'] - '.$position->body);
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($position->httpCode, '200 - OK'), '| Result getEventPosition() : ['.$position->httpCode.'] - '.$position->body);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 			return $gps_coordinates; 
 		}
 		else 
 		{ 
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, 200), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 			return false;
 		}
 	}
 
-	public function sendPOI($vin, $username, $password, $brand, $json_POI)
+	public static function sendPOI($vin, $username, $password, $brand, $json_POI)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
 		log::add('myBMW', 'debug', '┌─Command execution : sendPOI');
@@ -780,7 +780,7 @@ class myBMW extends eqLogic {
 			$eqLogic->checkAndUpdateCmd('sendPOI_status', 'EXECUTED');
 		}
 		else { $eqLogic->checkAndUpdateCmd('sendPOI_status', 'ERROR'); }
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, 201), '└─End of car event sendPOI : ['.$result->httpCode.']');
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '└─End of car event sendPOI : ['.$result->httpCode.']');
 	}
 	
 	public function chargingStatistics()
@@ -801,7 +801,7 @@ class myBMW extends eqLogic {
 		return $sessions;
 	}
 
-	public function getBMWEqLogic($vehicle_vin)
+	public static function getBMWEqLogic($vehicle_vin)
 	{
 		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {
 			if ( $myBMW->getConfiguration('vehicle_vin') == $vehicle_vin )   {
@@ -812,9 +812,9 @@ class myBMW extends eqLogic {
 		return $eqLogic;
 	}
 	
-	public function getLogLevelFromHttpStatus($httpStatus, $success)
+	public static function getLogLevelFromHttpStatus($httpStatus, $success)
 	{
-		return ($httpStatus == $success) ? 'debug' : 'error'; 
+		return ( $httpStatus == $success ) ? 'debug' : 'error';
 	}
 	
 	public function getIcon()
@@ -851,7 +851,7 @@ class myBMW extends eqLogic {
 		return round(($earth_radius * $d * 1000), 1); //retour en m
 	}
 	
-	public function getGPSCoordinates($vin)
+	public static function getGPSCoordinates($vin)
 	{
 		$eqLogic = self::getBMWEqLogic($vin);
 		$cmd = $eqLogic->getCmd(null, 'gps_coordinates');
