@@ -23,9 +23,6 @@ if (!$eqLogics) {
 				<?php
 				$first = true;
 				foreach ($eqLogics as $myBMW) {
-					if ($myBMW->getIsVisible() != 1) {
-						continue;
-					}
 					if (init('eqLogic_id') == '' && $first == true) {
 						echo '<li class="cursor li_object active" ><a data-eqLogic_id="' .$myBMW->getId(). '" href="index.php?v=d&p=panel&m=' .$pluginName. '&eqLogic_id=' . $myBMW->getId() . '" style="padding: 5px 0px; background-color: rgb(var(--bg-color))"><span>' . $myBMW->getName(). '</span></a></li>';
 						$first = false;
@@ -46,9 +43,6 @@ if (!$eqLogics) {
 		<?php
 		echo '<div style="width: 100%;">';
 		foreach ($eqLogics as $myBMW) {
-			if ($myBMW->getIsVisible() != 1) {
-				continue;
-			}
 			if (init('eqLogic_id') == '') {
 				echo $myBMW->toHtml('panel');
 				break;
