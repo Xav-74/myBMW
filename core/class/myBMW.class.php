@@ -388,10 +388,27 @@ class myBMW extends eqLogic {
     {
 		$myConnection = $this->getConnection();
 		
-		$result = $myConnection->getVehicleState();
-		$vehicle = json_decode($result->body);
-				
-		if ($vehicle != null) {
+		$retry = 5;
+		for ( $i = 1; $i <= $retry; $i++ ) {
+			$result = $myConnection->getVehicleState();
+			$vehicle = json_decode($result->body);
+
+			if ( $vehicle->statusCode == 429 ) {
+				log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
+				if ( preg_match_all('/\d+/', $vehicle->message, $matches) ) {
+					$wait_time = implode('', $matches[0])*2;
+					log::add('myBMW', 'debug', '| Wait '.$wait_time.'s'); 
+				}
+				else {
+					$wait_time = 2*$i;
+					log::add('myBMW', 'debug', '| Wait '.$wait_time.'s'); 
+				}
+				sleep($wait_time);
+			}
+			else { break; }
+		}
+
+		if ($vehicle != null && isset($vehicle->state)) {
 
 			//States
 			if ( isset($vehicle->state->currentMileage) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
