@@ -449,7 +449,12 @@ class myBMW extends eqLogic {
 			}
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 					
-			if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
+			if ( $this->getConfiguration('vehicle_type') == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
+				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
+			}
+			else {
+				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
+			}
 			if ( isset($vehicle->state->combustionFuelLevel->remainingFuelLiters) ) {
 				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters);
 				$this->setConfiguration('fuel_value_unit','L');

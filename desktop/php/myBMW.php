@@ -72,9 +72,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		<div class="eqLogicThumbnailContainer">
 			<?php
 				foreach ($eqLogics as $eqLogic)	{
+					//$dir = dirname(__FILE__).'/../../data/';
+					//$filename = $dir.$eqLogic->getConfiguration('vehicle_vin').'.png';
+					//$img = $eqLogic->getConfiguration('vehicle_vin').'.png';
 					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
 					echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-					echo '<img src="' . $plugin->getPathImgIcon() . '"/>';
+					//if ( file_exists($filename) ) { echo '<img id="img_eq" src="/plugins/myBMW/data/'.$img.'" style="padding-top: 25px ! important; padding-bottom: 20px ! important">'; }
+					//else { echo '<img src="' . $plugin->getPathImgIcon() . '"/>'; }
+					echo '<img src="' . $plugin->getPathImgIcon() . '"/>'; 
 					echo '<br/>';
 					echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
 					echo '</div>';
@@ -322,6 +327,27 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			<script>
 			
+			/*$('#bt_pluginDisplayAsTable').on('click', function (){
+				//const div = document.querySelector('div');
+				//console.log(div.classList.contains('.displayAsTable'));
+				if ( document.querySelector('.displayAsTable') === null )
+				 {
+					console.log("Table");
+					$('#img_eq').empty();
+					var img ='<img style="min-height:18px ! important; height: 18px ! important"/>';
+					$('#img_eq').append(img);
+					
+					
+					//document.getElementById("img_eq").style.minHeight = "18px ! important";
+					//document.getElementById("img_eq").style.height = '18px ! important';
+				}
+				else {
+					console.log("Not Table");
+					document.getElementById("img_eq").style.paddingTop = '20px ! important';
+					document.getElementById("img_eq").style.paddingBottom = '20px ! important';
+				}
+			});*/
+
 			setDisplayGPS();
 			setDisplayPanel();
 			
@@ -332,7 +358,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			$('#sel_panel_icon').on("change",function (){
 				setDisplayPanel();
 			});
-
+			
 			function setDisplayGPS() {
 				if ( $('.eqLogicAttr[data-l2key=option_localisation]').value() == "jeedom" || $('.eqLogicAttr[data-l2key=option_localisation]').value() == null) {
 					$('#gps_coordinates').hide();
