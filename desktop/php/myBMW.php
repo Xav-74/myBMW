@@ -60,7 +60,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 		</div>
 
-
 		<legend><i class="fas fa-table"></i> {{Mes véhicules}}</legend>
 		<div class="input-group" style="margin-bottom:5px;">
 			<input class="form-control roundedLeft" placeholder="{{Rechercher}}" id="in_searchEqlogic"/>
@@ -72,22 +71,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 		<div class="eqLogicThumbnailContainer">
 			<?php
 				foreach ($eqLogics as $eqLogic)	{
-					//$dir = dirname(__FILE__).'/../../data/';
-					//$filename = $dir.$eqLogic->getConfiguration('vehicle_vin').'.png';
-					//$img = $eqLogic->getConfiguration('vehicle_vin').'.png';
+					$dir = dirname(__FILE__).'/../../data/';
+					$filename = $dir.$eqLogic->getConfiguration('vehicle_vin').'.png';
+					$img = $eqLogic->getConfiguration('vehicle_vin').'.png';
 					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
 					echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-					//if ( file_exists($filename) ) { echo '<img id="img_eq" src="/plugins/myBMW/data/'.$img.'" style="padding-top: 25px ! important; padding-bottom: 20px ! important">'; }
-					//else { echo '<img src="' . $plugin->getPathImgIcon() . '"/>'; }
-					echo '<img src="' . $plugin->getPathImgIcon() . '"/>'; 
+					if ( file_exists($filename) ) { echo '<img id="img_eq" src="/plugins/myBMW/data/'.$img.'" style="transform:scale(80%); left:0px !important" />'; }
+					else { echo '<img id="img_eq" src="' . $plugin->getPathImgIcon() . '" />'; }
 					echo '<br/>';
-					echo '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
+					echo '<div class="name" style="line-height:20px !important">' . $eqLogic->getHumanName(true, true) . '</div>';
 					echo '</div>';
 				}
 			?>
 		</div>
 	</div>
-
 
 	<div class="col-xs-12 eqLogic" style="display: none;">
 		<div class="input-group pull-right" style="display:inline-flex">
@@ -246,7 +243,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<option value="icon">Icône</option>
 										</select>
 									</div>
-									<label class="col-sm-6 control-label help" data-help="{{Si l'option précédente est réglée sur Icône, vous pouvez choisir la couleur souhaitée}}"">{{Couleur des icônes portes / fenêtres}}</label>
+									<label class="col-sm-6 control-label help" data-help="{{Si l'option précédente est réglée sur Icône, vous pouvez choisir la couleur souhaitée}}">{{Couleur des icônes portes / fenêtres}}</label>
 									<div class="col-sm-6">
 										<select id="sel_panel_color" class="eqLogicAttr form-control" style="margin-bottom: 3px;" data-l1key="configuration" data-l2key="panel_color_icon_closed">
 											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
@@ -327,27 +324,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			<script>
 			
-			/*$('#bt_pluginDisplayAsTable').on('click', function (){
-				//const div = document.querySelector('div');
-				//console.log(div.classList.contains('.displayAsTable'));
-				if ( document.querySelector('.displayAsTable') === null )
-				 {
-					console.log("Table");
-					$('#img_eq').empty();
-					var img ='<img style="min-height:18px ! important; height: 18px ! important"/>';
-					$('#img_eq').append(img);
-					
-					
-					//document.getElementById("img_eq").style.minHeight = "18px ! important";
-					//document.getElementById("img_eq").style.height = '18px ! important';
-				}
-				else {
-					console.log("Not Table");
-					document.getElementById("img_eq").style.paddingTop = '20px ! important';
-					document.getElementById("img_eq").style.paddingBottom = '20px ! important';
-				}
-			});*/
-
 			setDisplayGPS();
 			setDisplayPanel();
 			
