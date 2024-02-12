@@ -865,7 +865,11 @@
 
         return `${year}-${month}-${day}`;
       }
-
+	
+	var colorTitle = '';
+	if ( theme_jeedom == 'black' || theme_jeedom == 'legacy' ) { colorTitle = 'white'; }
+	else if ( theme_jeedom == 'white' ) { colorTitle = 'black'; }
+	
 	var date=[];
 	var date2=[];
 	var date3=[];
@@ -874,7 +878,7 @@
     var dateDebut = new Date();
 	dateDebut.setDate(dateDebut.getDate() - 60);		// Historique sur les 60 derniers jours
 	dateDebut = formattedDateForCode(dateDebut);
-        
+	        
 	var km_chart#id# = new Highcharts.chart('km_chart#id#', {
         
 		chart: {
@@ -885,7 +889,7 @@
             text: 'Kilométrage véhicule',
 			align: 'left',
 			style: {
-				color: 'white',
+				color: colorTitle,
 			}
         },
         yAxis: {
@@ -952,7 +956,7 @@
             text: 'Niveau carburant',
 			align: 'left',
 			style: {
-				color: 'white',
+				color: colorTitle,
 			}
         },
         yAxis: {
@@ -1020,7 +1024,7 @@
             text: 'Charge restante',
 			align: 'left',
 			style: {
-				color: 'white',
+				color: colorTitle,
 			}
         },
         yAxis: {
