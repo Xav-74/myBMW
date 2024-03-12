@@ -849,6 +849,15 @@ class myBMW extends eqLogic {
 		return $sessions;
 	}
 
+	public function lastTrip()
+    {
+		$myConnection = $this->getConnection();
+		$result = $myConnection->getLastTrip();
+		$trip = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Result getLastTrip() : '. str_replace('\n','',json_encode($trip)));
+		return $trip;
+	}
+
 	public static function getBMWEqLogic($vehicle_vin)
 	{
 		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {

@@ -32,14 +32,21 @@ class Auth_Token implements JsonSerializable
      */
 	protected $id_token = '';
 
+    /**
+     * The gcid
+     * @var string $gcid
+     */
+	protected $gcid = '';
 
-    public function __construct($token, $expires, $refresh_token, $token_type, $id_token)
+
+    public function __construct($token, $expires, $refresh_token, $token_type, $id_token, $gcid)
     {
         $this->token = $token;
         $this->expires = $expires;
 		$this->refresh_token = $refresh_token;
 		$this->token_type = $token_type;
 		$this->id_token = $id_token;
+        $this->gcid = $gcid;
     }
 
     /**
@@ -143,6 +150,27 @@ class Auth_Token implements JsonSerializable
     }
 
     /**
+     * Get the gcid
+     * @return string
+     */
+    public function getGcId()
+    {
+        return $this->gcid;
+    }
+
+    /**
+     * Set the gcid
+     * @param $gcid
+     * @return $this
+     */
+    public function setGcId($gcid)
+    {
+        $this->gcid = $gcid;
+        return $this;
+    }
+
+
+    /**
      * Used to be json encoded
      * @return array
      */
@@ -153,7 +181,8 @@ class Auth_Token implements JsonSerializable
             'expires' => $this->getExpires(),
 			'refresh_token' => $this->getRefreshToken(),
 			'token_type' => $this->getTokenType(),
-			'id_token' => $this->getIdToken()
+			'id_token' => $this->getIdToken(),
+            'gcid' => $this->getGcId()
         ];
     }
 }
