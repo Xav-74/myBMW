@@ -548,23 +548,18 @@ class myBMW extends eqLogic {
 				
 		if ( $this->getConfiguration("vehicle_type") == 'ELECTRIC' || $this->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' ) {
 
-			$result2 = $myConnection->getChargingStatistics();
-			$statistics = json_decode($result2->body);
-
-			if ($statistics != null) {
-				
-				//Charging statistics
-				if ( isset($statistics->statistics->totalEnergyCharged) ) { $this->checkAndUpdateCmd('totalEnergyCharged', $statistics->statistics->totalEnergyCharged); } else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
-			}
-
-			log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
-
-			$result3 = $myConnection->getChargingSessions();
-			$sessions = json_decode($result3->body);
+			$result2 = $myConnection->getChargingSessions();
+			$sessions = json_decode($result2->body);
 			
 			if ($sessions != null) {
 
 				//Charging sessions
+				if ( isset($sessions->chargingSessions->total) ) { 
+					$total = preg_replace('/\D+/', '', $sessions->chargingSessions->total);
+					$this->checkAndUpdateCmd('totalEnergyCharged', $total); 
+				}
+				else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
+							
 				$tab_temp = array();
 				if ( isset($sessions->chargingSessions->sessions) ) { 
 					$tab_sessions = $sessions->chargingSessions->sessions;
