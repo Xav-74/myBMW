@@ -109,7 +109,7 @@ class myBMW extends eqLogic {
 		$this->createCmd('year', 'Année', 3, 'info', 'numeric');
 		$this->createCmd('type', 'Type', 4, 'info', 'string');
 		
-		$this->createCmd('mileage', 'Kilométrage', 5, 'info', 'numeric');
+		$this->createCmd('mileage', 'Kilométrage', 5, 'info', 'numeric', 1);
 				
 		$this->createCmd('doorLockState', 'Verrouillage', 6, 'info', 'string');
 		$this->createCmd('allDoorsState', 'Toutes les portes', 7, 'info', 'string');
@@ -138,11 +138,11 @@ class myBMW extends eqLogic {
 		$this->createCmd('chargingStatus', 'Etat de la charge', 28, 'info', 'string');
 		$this->createCmd('connectorStatus', 'Etat de la prise', 29, 'info', 'binary');
 		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 30, 'info', 'numeric');
-        $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric');
+        $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric', 1);
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
         
 		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 33, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 34, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 34, 'info', 'numeric', 1);
 		
         $this->createCmd('vehicleMessages', 'Messages', 35, 'info', 'string');
         $this->createCmd('gps_coordinates', 'Coordonnées GPS', 36, 'info', 'string');
@@ -274,8 +274,6 @@ class myBMW extends eqLogic {
 		if ($panel == true) { $template = 'myBMW_panel_flatdesign'; }
 		elseif (version_compare(jeedom::version(), '4.0.0') >= 0) {
 			$template = 'myBMW_dashboard_flatdesign';
-			//if ($this->getConfiguration('widget_template') == 1) { $template = 'myBMW_dashboard_flatdesign'; }
-			//if ($this->getConfiguration('widget_template') == 2) { $template = 'myBMW_dashboard_legacy'; }
 		}
 		$replace['#template#'] = $template;
 
@@ -290,7 +288,7 @@ class myBMW extends eqLogic {
     public static function preConfig_<Variable>() {
     } */
 	 
-	private function createCmd($commandName, $commandDescription, $order, $type, $subType, $template = [])
+	private function createCmd($commandName, $commandDescription, $order, $type, $subType, $isHistorized = 0, $template = [])
 	{	
 		$cmd = $this->getCmd(null, $commandName);
         if (!is_object($cmd)) {
@@ -301,6 +299,7 @@ class myBMW extends eqLogic {
 			$cmd->setLogicalId($commandName);
 			$cmd->setType($type);
 			$cmd->setSubType($subType);
+			$cmd->setIsHistorized($isHistorized);
 			if (!empty($template)) { $cmd->setTemplate($template[0], $template[1]); }
 			$cmd->save();
 			log::add('myBMW', 'debug', 'Add command '.$cmd->getName().' (LogicalId : '.$cmd->getLogicalId().')');
