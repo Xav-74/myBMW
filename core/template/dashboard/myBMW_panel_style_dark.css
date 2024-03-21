@@ -1,3 +1,9 @@
+.myBMW_panel_flat {
+	background-color: rgb(var(--bg-color)) !important;
+	margin : 10px 0px 0px 0px !important;
+	box-shadow: none !important;
+}
+
 .myBMW_panel_flat .container-fluid {
 	margin : 5px 5px 5px 20px !important;
 	padding : 0px 0px 0px 0px !important;
@@ -23,10 +29,26 @@
 }
 
 .myBMW_panel_flat #tile {
-    margin : 5px 5px 5px 5px !important;
+    margin : 3px 3px 3px 3px !important;
 	padding : 0px 0px 0px 0px !important;
 	background-color : rgb(var(--bg-color)) !important;
-	filter : contrast(105%);
+	filter : contrast(95%);
+	border : solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: rgb(30,30,30);
+}
+
+.myBMW_panel_flat #tile_off {
+    margin : 3px 3px 3px 3px !important;
+	padding : 0px 0px 0px 0px !important;
+	background-color : rgb(var(--bg-color)) !important;
+	filter : contrast(95%);
+	border : solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: rgb(30,30,30);
+	background: repeating-linear-gradient(135deg, transparent, transparent 0px, rgb(30,30,30) 5px, rgb(var(--bg-color)) 10px);
 }
 
 .myBMW_panel_flat #picture {
@@ -138,6 +160,15 @@
 	overflow: auto;
 }
 
+.myBMW_panel_flat .list-group-item {
+	background-color: transparent !important;
+	margin-bottom: 10px;
+	padding: 0px 0px 10px 0px;
+	border-bottom : solid;
+	border-bottom-width: 2px;
+	border-bottom-color: rgb(30,30,30);
+}
+
 .myBMW_panel_flat #last_update {
 	font-size : 12px;
 	text-align:center;
@@ -166,4 +197,13 @@
 	width: 665px;
 	height: 325px;
 	overflow: auto;
+}
+
+.highcharts-root {
+	font-family: Roboto !important;
+}
+
+.highcharts-title {
+	font-size: 22px !important;
+	fill : #FFFFFF !important;
 }

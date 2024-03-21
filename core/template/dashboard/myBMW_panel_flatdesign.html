@@ -1,4 +1,4 @@
-<div id="myBMW_panel_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_panel_flat myBMW_panel_flat_#id# myBMW" style="min-width:1392px !important; max-width:1392px !important; min-height:1650px; max-height:1650px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="panel">
+<div id="myBMW_panel_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_panel_flat myBMW_panel_flat_#id# myBMW" style="min-width:1392px !important; max-width:1392px !important; min-height:1660px; max-height:1660px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="panel">
 
 	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" style="vertical-align: bottom !important" src=""><span style="padding-left:10px;"> #name_display#</span></a>
 	<!-- <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="Rafraichir" style="margin-right:10px;" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i id="refresh" class="fas fa-sync"></i></span> -->
@@ -8,20 +8,20 @@
 		<div>
 			
 			<!-- Column N°1 -->
-			<div class="col-xs-4" id="column" style="width:450px;">
+			<div class="col-xs-4" id="column" style="height: 770px; width:450px;">
 		
-				<div class="col-xs-12" id="tile" style="height:250px; width:440px;">
-					<div id="picture" style="height: 250px; width:440px;">
+				<div class="col-xs-12" id="tile" style="height:253px; width:444px;">
+					<div id="picture" style="height: 250px; width:440px;"> 
 						<img id="img_car#id#" src="plugins/myBMW/data/#vehicle_vin#id##.png" style="width:300px; margin-bottom: -40px" />
 					</div>
 				</div>
 				
-				<div class="col-xs-2" id="tile" style="height:50px; width:75px;">
+				<div class="col-xs-2" id="tile" style="height:55px; width:80px;">
 					<div id="picture" style="height:35px; width:75px; padding-top: 5px;"><i class="Cmd#presence_id#"></i></div>
 					<div id="distance" style="height:15px; width:75px;"><span class="Cmd#distance_id#"></span></div>
 				</div>
 				
-				<div class="col-xs-10" id="tile" style="height:50px; width:355px;">
+				<div class="col-xs-10" id="tile" style="height:55px; width:358px;">
 					<div class="col-xs-1"></div>
 					<div class="col-xs-2" style="padding:0px !important;"><span class="icon_oil#id#"><img src="plugins/myBMW/core/img/oil_grey.png" height="50" title="Huile moteur OK"/></span></div>
 					<div class="col-xs-2" style="padding:0px !important;"><span class="icon_brake#id#"><img src="plugins/myBMW/core/img/brake_grey.png" height="50" title="Freins OK"/></span></div>
@@ -31,43 +31,43 @@
 					<div class="col-xs-1"></div>
 				</div>
 				
-				<div class="col-xs-4" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Kilométrage</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-signs"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#mileage_id#"></span><span id="titre_tile"> km</span></div>
 				</div>
 				
-				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Niveau carburant</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-gas-pump"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#remaining_fuel_id#"></span><span id="titre_tile"> #fuel_value_unit#id##</span></div>
 				</div>
 				
-				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 combustion_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Km restants (thermique)</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-pin"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#beRemainingRangeFuelKm_id#"></span><span id="titre_tile"> km</span></div>
 				</div>
 				
-				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Batterie</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-car-battery"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#chargingLevelHv_id#"></span><span id="titre_tile"> %</span></div>				
 				</div>
 								
-				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Km restants (électrique)</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-map-pin"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#beRemainingRangeElectric_id#"></span><span id="titre_tile"> km</span></div>				
 				</div>
 				
-				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Prise</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-plug"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:70px;"><span class="Cmd#connectorStatus_id#"></span></div>				
 				</div>
 				
-				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:140px; width:140px;">
+				<div class="col-xs-4 electric_engine#id#" id="tile" style="height:144px; width:144px;">
 					<div class="col-xs-8" id="titre_tile" style="height:70px;">Recharge</div>
 					<div class="col-xs-4" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-charging-station"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:40px;"><span class="Cmd#chargingStatus_id#"></span></div>
@@ -79,31 +79,31 @@
 			<!-- Column N°2 -->
 			<div class="col-xs-4" id="column" style="width:450px;">
 				
-				<div class="col-xs-6" id="tile" style="height:100px; width: 215px;">
+				<div class="col-xs-6" id="tile" style="height:103px; width: 219px;">
 					<div class="col-xs-8" id="titre_tile" style="height:50px;">Verrouillage</div>
 					<div class="col-xs-4" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-unlock-alt"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:50px;"><span class="Cmd#doorLockState_id#"></span></div>
 				</div>
 				
-				<div class="col-xs-6" id="tile" style="height:100px; width:215px;">
+				<div class="col-xs-6" id="tile" style="height:103px; width:219px;">
 					<div class="col-xs-8" id="titre_tile" style="height:50px;">Sécurité</div>
 					<div class="col-xs-4" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-shield-alt"></i></div>
 					<div class="col-xs-12" id="value_tile" style="height:50px;"><span class="securisedMode#id#"></span></div>
 				</div>
 				
-				<div class="col-xs-6 all_info_display#id#" id="tile" style="height:100px; width:215px;">
+				<div class="col-xs-6 all_info_display#id#" id="tile" style="height:103px; width:219px;">
 					<div class="col-xs-8" id="titre_tile" style="height:50px;">Toutes les portes</div>
 					<div class="col-xs-4" id="icon_tile" style="height:50px;"><img src="plugins/myBMW/core/img/doors_blue.png" style="height:24px"></div>
 					<div class="col-xs-12" id="value_tile" style="height:50px;"><span class="Cmd#allDoorsState_id#"></span></div>
 				</div>
 				
-				<div class="col-xs-6 all_info_display#id#" id="tile" style="height:100px; width:215px;">
+				<div class="col-xs-6 all_info_display#id#" id="tile" style="height:103px; width:219px;">
 					<div class="col-xs-8" id="titre_tile" style="height:50px;">Toutes les fenêtres</div>
 					<div class="col-xs-4" id="icon_tile" style="height:50px;"><img src="plugins/myBMW/core/img/windows_blue.png" style="height:24px"></div>
 					<div class="col-xs-12" id="value_tile" style="height:50px;"><span class="Cmd#allWindowsState_id#"></span></div>
 				</div>
 				
-				<div class="col-xs-12" id="tile" style="height:420px; width:440px;">
+				<div class="col-xs-12" id="tile" style="height:420px; width:444px;">
 					<div class="col-xs-2" id="icon_tile" style="height:70px;"><i class="fas fa-lg fa-info"></i></div>
 					<div class="col-xs-10" id="titre_tile_2" style="height:70px;">Informations</div>
 					
@@ -190,28 +190,28 @@
 								
 				</div>
 				
-				<div class="col-xs-12" id="tile" style="height:110px; width:440px;">
+				<div class="col-xs-12" id="tile" style="height:120px; width:444px;">
 					
 					<div class="col-xs-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-cogs"></i></div>
 					<div class="col-xs-10" id="titre_tile_2" style="height:50px;">Actions</div>
 					
-					<button class="btn cmd action" data-cmd_id="#refresh_id#" title="Rafraichir" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i class="fa-lg icon fas fa-sync-alt"></i></button>
-					<button class="btn cmd action" data-cmd_id="#doorLock_id#" title="Verrouiller" onclick="jeedom.cmd.execute({id: #doorLock_id#});"><i class="fa-lg icon fas fa-lock"></i></button>
-					<button class="btn cmd action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});"><i class="fa-lg icon fas fa-lock-open"></i></button>
-					<button class="btn cmd action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-lg icon fas fa-fan"></i></button>
-					<button class="btn cmd action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});"><i class="fa-lg icon fas fa-ban"></i></button>
-					<button id="charge_btn#id#" class="btn cmd action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});"><i class="fa-lg icon fas fa-charging-station"></i></button>
-					<button id="stopcharge_btn#id#" class="btn cmd action" data-cmd_id="#stopChargeNow_id#" title="Stop Charger" onclick="jeedom.cmd.execute({id: #stopChargeNow_id#});"><i class="fa-lg icon fas fa-power-off"></i></button>
-					<button class="btn cmd action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});"><i class="fa-lg icon fas fa-lightbulb"></i></button>
-					<button class="btn cmd action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});"><i class="fa-lg icon fas fa-volume-up"></i></button>
-					<button class="btn cmd action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-lg icon fas fa-map-marked"></i></button>
+					<button class="btn action" data-cmd_id="#refresh_id#" title="Rafraichir" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i class="fa-lg icon fas fa-sync-alt"></i></button>
+					<button class="btn action" data-cmd_id="#doorLock_id#" title="Verrouiller" onclick="jeedom.cmd.execute({id: #doorLock_id#});"><i class="fa-lg icon fas fa-lock"></i></button>
+					<button class="btn action" data-cmd_id="#doorUnlock_id#" title="Déverrouiller" onclick="jeedom.cmd.execute({id: #doorUnlock_id#});"><i class="fa-lg icon fas fa-lock-open"></i></button>
+					<button class="btn action" data-cmd_id="#climateNow_id#" title="Ventiler" onclick="jeedom.cmd.execute({id: #climateNow_id#});"><i class="fa-lg icon fas fa-fan"></i></button>
+					<button class="btn action" data-cmd_id="#stopClimateNow_id#" title="Stop Ventiler" onclick="jeedom.cmd.execute({id: #stopClimateNow_id#});"><i class="fa-lg icon fas fa-ban"></i></button>
+					<button id="charge_btn#id#" class="btn action" data-cmd_id="#chargeNow_id#" title="Charger" onclick="jeedom.cmd.execute({id: #chargeNow_id#});"><i class="fa-lg icon fas fa-charging-station"></i></button>
+					<button id="stopcharge_btn#id#" class="btn action" data-cmd_id="#stopChargeNow_id#" title="Stop Charger" onclick="jeedom.cmd.execute({id: #stopChargeNow_id#});"><i class="fa-lg icon fas fa-power-off"></i></button>
+					<button class="btn action" data-cmd_id="#lightFlash_id#" title="Appel de phares" onclick="jeedom.cmd.execute({id: #lightFlash_id#});"><i class="fa-lg icon fas fa-lightbulb"></i></button>
+					<button class="btn action" data-cmd_id="#hornBlow_id#" title="Klaxonner" onclick="jeedom.cmd.execute({id: #hornBlow_id#});"><i class="fa-lg icon fas fa-volume-up"></i></button>
+					<button class="btn action" data-cmd_id="#vehicleFinder_id#" title="Recherche véhicule"><i class="fa-lg icon fas fa-map-marked"></i></button>
 					<script>
 						$('.cmd[data-cmd_id=#vehicleFinder_id#]').on('click', function () {
 							$('#md_modal').dialog({title: "Recherche Véhicule"});
 							$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=VehicleFinder.myBMW&eqLogic_id='+'#id#').dialog('open');
 						});
 					</script>
-					<button class="btn cmd action" data-cmd_id="#sendPOI_id#" title="Envoi POI"><i class="fa-lg icon fas fa-map-marker-alt"></i></button>
+					<button class="btn action" data-cmd_id="#sendPOI_id#" title="Envoi POI"><i class="fa-lg icon fas fa-map-marker-alt"></i></button>
 					<script>
 						$('.cmd[data-cmd_id=#sendPOI_id#]').on('click', function () {
 							$('body').append('<div id="mod_sendPOI" style="overflow-x: hidden; overflow-y: hidden;"/>');
@@ -237,13 +237,13 @@
 			<!-- Column N°3 -->
 			<div class="col-xs-4" id="column" style="width:450px;">
 				
-				<div class="col-xs-12" id="tile" style="height:420px; width:440px;">
+				<div class="col-xs-12" id="tile" style="height:420px; width:444px;">
 					<div class="col-xs-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-wrench"></i></div>
 					<div class="col-xs-10" id="titre_tile_2" style="height:50px;">Services</div>
 					<div id="liste_msg" class="label Cmd#vehicleMessages_id# table_message#id#"></div>
 				</div>
 				
-				<div class="col-xs-12" id="tile" style="height:330px; width:440px;">
+				<div class="col-xs-12" id="tile" style="height:338px; width:444px;">
 					<div class="col-xs-2" id="icon_tile" style="height:50px;"><i class="fas fa-lg fa-location-arrow"></i></div>
 					<div class="col-xs-10" id="titre_tile_2" style="height:50px;">Localisation</div>
 					<div id="location">
@@ -255,25 +255,25 @@
 
 			<!-- Charts -->
 			<div class="col-xs-6" id="column" style="width:675px;">
-				<div class="col-xs-12" id="tile" style="width:665px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="km_chart#id#"></div>
 				</div>
 			</div>
 			
 			<div class="col-xs-6 fuel_chart#id#" id="column" style="width:675px;">
-				<div class="col-xs-12" id="tile" style="width:665px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="fuel_chart#id#"></div>
 				</div>
 			</div>
 			
 			<div class="col-xs-6 charge_chart#id#" id="column" style="width:675px;">
-				<div class="col-xs-12" id="tile" style="width:665px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="charge_chart#id#"></div>
 				</div>
 			</div>
 			
 			<div class="col-xs-6 charge_sessions#id#" id="column" style="width:675px;">
-				<div class="col-xs-12" id="tile" style="height:400px; width:665px;">
+				<div class="col-xs-12" id="tile" style="height: 408px; width:669px;">
 					<div class="col-xs-12" id="titre_graph" style="height:35px;">Statistiques de charge - Mois en cours</div>
 					<div class="col-xs-12" id="soustitre_graph" style="height:20px;"><span class="Cmd#totalEnergyCharged_id#"></span></div>
 					<div id="table_sessions" class="label Cmd#chargingSessions_id# table_sessions#id#"></div>
@@ -297,6 +297,7 @@
 	var theme_jeedom;
 	var color_icon_closed;
 	var color_icon_closed_rgb;
+	var color_title;
 	
 	function setTheme#id#() {
 		var theme = "";
@@ -330,15 +331,19 @@
 			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_panel_style_legacy.css';
 			theme = 'legacy';
 			if ( '#vehicle_brand#id##' == 1 )  {
-				source = "plugins/myBMW/core/img/logo_bmw_white.png";
+				source = "plugins/myBMW/core/img/logo_bmw_black.png";
 			}
 			if ( '#vehicle_brand#id##' == 2 )  {
-				source = "plugins/myBMW/core/img/logo_mini_white.png";
+				source = "plugins/myBMW/core/img/logo_mini_black.png";
 			}
 		}
 		document.head.appendChild(link);
 		logo.src = source;
-		if ( theme != 'legacy' ) { $('.myBMW_panel_flat_#id#')[0].style.setProperty('background-color', theme, 'important'); }
+
+		color_icon_closed = setColorIconClosed#id#(theme); 
+		if (color_icon_closed == 'green') {	color_icon_closed_rgb = 'rgb(150,201,39)'; }
+		else { color_icon_closed_rgb = color_icon_closed; }
+		//if ( theme != 'legacy' ) { $('.myBMW_panel_flat_#id#')[0].style.setProperty('background-color', theme, 'important'); }
 		return theme;
 	}
 
@@ -355,22 +360,15 @@
 			return;
 		}
 		theme_jeedom = setTheme#id#();
-		color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
-		if (color_icon_closed == 'green') {
-			color_icon_closed_rgb = 'rgb(150,201,39)';
-		}
-		else  {
-			color_icon_closed_rgb = color_icon_closed;
-		}
 	}
 	
 	function setColorIconClosed#id#(theme)  {
 		var color = "";
 		if ( '#panel_color_icon_closed#id##' != 'green' )  {
-			if ( theme == 'black' || theme == 'legacy') {
+			if ( theme == 'black' ) {
 				color = 'white';
 			}
-			else if ( theme == 'white' ) {
+			else if ( theme == 'white' || theme == 'legacy' ) {
 				color = 'black';
 			}
 		}
@@ -389,13 +387,6 @@
 	
 	if ( $('body')[0].hasAttribute('data-theme') == true )  {
 		theme_jeedom = setTheme#id#();
-		color_icon_closed = setColorIconClosed#id#(theme_jeedom); 
-		if ( color_icon_closed == 'green' ) {
-			color_icon_closed_rgb = 'rgb(150,201,39)';
-		}
-		else  {
-			color_icon_closed_rgb = color_icon_closed;
-		}
 	}
 	else  {
 		timedSetTheme#id#(0);
@@ -403,9 +394,6 @@
 		
 	$('body').on('changeThemeEvent', function (event,theme) {
 		theme_jeedom = setTheme#id#();
-		color_icon_closed = setColorIconClosed#id#(theme_jeedom);
-		if (color_icon_closed == 'green') { color_icon_closed_rgb = 'rgb(150,201,39)'; }
-		else { color_icon_closed_rgb = color_icon_closed; }
 		jeedom.cmd.update['#doorDriverFront_id#']({display_value:'#doorDriverFront#'});
 		jeedom.cmd.update['#doorDriverRear_id#']({display_value:'#doorDriverRear#'});
 		jeedom.cmd.update['#doorPassengerFront_id#']({display_value:'#doorPassengerFront#'});
@@ -429,16 +417,16 @@
 	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
 		$('.electric_engine#id#').hide();
 		$('.charge_chart#id#').hide();
-		$('.charge_sessions#id#').hide();
+		$('.charge_sessions#id#').hide(); 
 	}
 	if ( '#vehicle_type#id##' != 'ELECTRIC' && '#vehicle_type#id##' != 'PLUGIN_HYBRID' )  {
 		$('#charge_btn#id#').hide();
 		$('#stopcharge_btn#id#').hide();
 	}
-	
+
 
 	//----- Location
-	jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {
+		jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {
         var mybmw_cmd  = $('#myFrame#id#')[0];
 		mybmw_cmd.src = "https://maps.google.com/maps?hl=fr&ie=utf8&output=embed&q="+_options.display_value;
 	}
@@ -467,7 +455,7 @@
 		}
 	}
 	jeedom.cmd.update['#distance_id#']({display_value: '#distance#'});
-	
+
 	
 	//----- Lockstate
 	jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
@@ -830,7 +818,7 @@
 		table_html += '<ul class="list-group" style="text-align: left">';
 		jQuery.each(messages.requiredServices,function(key,message){
 			if ( message.description != '' ) {
-				table_html += '<li class="list-group-item" style="margin-bottom: 10px; padding: 0px 0px 5px 0px"><span class="label cmdName">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label cmdName">'+message.title+'</span><br/><span class="label cmdName" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
+				 table_html += '<li class="list-group-item"><span class="label">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label">'+message.title+'</span><br/><span class="label" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
 			}
 		});
 		table_html += '</ul>';
@@ -864,12 +852,8 @@
         if (day.length < 2) day = '0' + day;
 
         return `${year}-${month}-${day}`;
-      }
-	
-	var colorTitle = '';
-	if ( theme_jeedom == 'black' || theme_jeedom == 'legacy' ) { colorTitle = 'white'; }
-	else if ( theme_jeedom == 'white' ) { colorTitle = 'black'; }
-	
+    }
+		
 	var date=[];
 	var date2=[];
 	var date3=[];
@@ -888,10 +872,7 @@
         title: {
             text: 'Kilométrage véhicule',
 			align: 'left',
-			style: {
-				color: colorTitle,
-			}
-        },
+		},
         yAxis: {
             title: {
 	            text: "km"
@@ -955,10 +936,7 @@
         title: {
             text: 'Niveau carburant',
 			align: 'left',
-			style: {
-				color: colorTitle,
-			}
-        },
+		},
         yAxis: {
             title: {
 	            text: '#fuel_value_unit#id##'
@@ -1018,15 +996,11 @@
 		chart: {
             zoomType: 'x',
 			marginLeft: 80,
-			
-        },
+		},
         title: {
             text: 'Charge restante',
 			align: 'left',
-			style: {
-				color: colorTitle,
-			}
-        },
+		},
         yAxis: {
             title: {
 	            text: "% restant"
@@ -1169,15 +1143,5 @@
 	
 
 	</script>
-
-	<style>
-	.highcharts-root {
-		font-family: Roboto !important;
-    }
-	.highcharts-title {
-		font-size: 22px !important;
-    }
-	</style>
-	
 
 </div>

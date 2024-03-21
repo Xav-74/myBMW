@@ -1,5 +1,5 @@
 .myBMW_widget_flat .container-fluid {
-	margin : 5px 5px 5px 5px !important;
+	margin : 3px 3px 3px 3px !important;
 	padding : 0px 0px 0px 0px !important;
 }
 
@@ -14,9 +14,13 @@
 }
 
 .myBMW_widget_flat #tile {
-    margin : 5px 5px 5px 5px !important;
+	margin : 3px 3px 3px 3px !important;
 	padding : 0px 0px 0px 0px !important;
-	background-color : rgb(var(--bg-color),0.6) !important;
+	background-color : rgba(var(--bg-color),0.6) !important;
+	border : solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: rgb(225,225,225);
 }
 
 .myBMW_widget_flat #picture {
