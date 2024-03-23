@@ -272,11 +272,9 @@
 				</div>
 			</div>
 			
-			<div class="col-xs-6 charge_sessions#id#" id="column" style="width:675px;">
-				<div class="col-xs-12" id="tile" style="height: 408px; width:669px;">
-					<div class="col-xs-12" id="titre_graph" style="height:35px;">Statistiques de charge - Mois en cours</div>
-					<div class="col-xs-12" id="soustitre_graph" style="height:20px;"><span class="Cmd#totalEnergyCharged_id#"></span></div>
-					<div id="table_sessions" class="label Cmd#chargingSessions_id# table_sessions#id#"></div>
+			<div class="col-xs-6 charge_sessions_chart#id#" id="column" style="width:675px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
+					<div class="col-xs-12" id="charge_sessions_chart#id#"></div>
 				</div>
 			</div>
 			
@@ -885,7 +883,7 @@
                 enabled: false
         },
 		plotOptions: {
-            area: {
+            areaspline: {
                 fillColor: {
                 	linearGradient: {
                         x1: 0,
@@ -914,7 +912,7 @@
         },
         series: [
             {
-				type: 'area',
+				type: 'areaspline',
 				name: "Kilométrage",
 				data: [],
 				tooltip: {
@@ -949,7 +947,7 @@
                 enabled: false
         },
 		plotOptions: {
-            area: {
+            areaspline: {
                 fillColor: {
                 	linearGradient: {
                         x1: 0,
@@ -978,7 +976,7 @@
         },
         series: [
             {
-				type: 'area',
+				type: 'areaspline',
 				name: "Niveau carburant",
 				data: [],
 				tooltip: {
@@ -1013,7 +1011,7 @@
                 enabled: false
         },
         plotOptions: {
-            area: {
+            areaspline: {
                 fillColor: {
                 	linearGradient: {
                         x1: 0,
@@ -1042,7 +1040,7 @@
         },
         series: [
             {
-				type: 'area',
+				type: 'areaspline',
 				name: "Charge restante",
 				data: [],
 				tooltip: {
@@ -1099,36 +1097,110 @@
 
 
 	//----- Statistics
-	jeedom.cmd.update['#totalEnergyCharged_id#'] = function(_options) {
-		$('.Cmd#totalEnergyCharged_id#').empty().append('<span>Charge totale : ~ '+_options.display_value+' kWh</span>');
-	}
-	jeedom.cmd.update['#totalEnergyCharged_id#']({display_value:'#totalEnergyCharged#'});
+	var session_date=[];
+	var session_energyCharged=[];
+	var session_cost=[];
+	var session_time=[];
+	var session_address=[];
 
 	jeedom.cmd.update['#chargingSessions_id#'] = function(_options) {
        	var sessions = jQuery.parseJSON(_options.display_value);
-		var table_html= "";
-		table_html += '<thead><tr>';
-		table_html += '<th style="width: 15%; height: 25px; padding-left: 12px;">{{Date}}</th>';
-		table_html += '<th style="width: 15%; height: 25px; padding-left: 12px;">{{Charge}}</th>';
-		table_html += '<th style="width: 15%; height: 25px; padding-left: 12px;">{{Durée}}</th>';
-		table_html += '<th style="width: 15%; height: 25px; padding-left: 12px;">{{Coût}}</th>';
-		table_html += '<th style="width: 40%; height: 25px; padding-left: 12px;">{{Lieu}}</th>';
-		table_html += '</tr></thead>';
-		table_html += '<tbody>';
 		jQuery.each(sessions,function(key,session){
-			table_html += '<tr>'
-			table_html += '<td><input type="text" class="eqLogicAttr form-control input-sm" style="background-color: transparent !important;" value="'+session.date+'" readonly="true"></td>'
-			table_html += '<td><input type="text" class="eqLogicAttr form-control input-sm" style="background-color: transparent !important;" value="'+session.energyCharged+'" readonly="true"></td>'
-			table_html += '<td><input type="text" class="eqLogicAttr form-control input-sm" style="background-color: transparent !important;" value="'+session.time+'" readonly="true"></td>'
-			table_html += '<td><input type="text" class="eqLogicAttr form-control input-sm" style="background-color: transparent !important;" value="'+session.cost+'" readonly="true"></td>'
-			table_html += '<td><input type="text" class="eqLogicAttr form-control input-sm" style="background-color: transparent !important;" value="'+session.address+'" readonly="true"></td>'
-			table_html += '</tr>'
+			session_date.push(session.date);
+			session_energyCharged.push(session.energyCharged);
+			session_cost.push(session.cost);
+			session_time.push(session.time);
+			session_address.push(session.address);
 		});
-		table_html += '</tbody>';
-		$('.table_sessions#id#').empty().append(table_html);
+		console.log(session_time);
 	}
 	jeedom.cmd.update['#chargingSessions_id#']({display_value:'#chargingSessions#'});
 
+	var charge_sessions_chart#id# = new Highcharts.chart('charge_sessions_chart#id#', {
+        
+		chart: {
+            type: 'column',
+			zoomType: 'x',
+			marginLeft: 80,
+		},
+        title: {
+            text: 'Statistiques de charge - Mois en cours',
+			align: 'left',
+		},
+		subtitle: {
+            text: 'Charge totale : ~ '+'#totalEnergyCharged#'+' kWh',
+			align: 'left',
+		},
+		tooltip: {
+			formatter: function() {
+        		if (this.series.index === 0) {
+					var tooltipContent = '<span style="font-size: 10px;">' + this.point.category + '</span><br/>' + '<span style="color:' + this.series.color + '">\u25CF</span>'+' Charge : ' + this.y + ' kWh';
+					var timeValue = session_time[this.point.index];
+					tooltipContent += '<br>&nbsp&nbsp&nbsp Durée : ' + timeValue;
+				}
+				if (this.series.index === 1) {
+					var tooltipContent = '<span style="font-size: 10px;">' + this.point.category + '</span><br/>' + '<span style="color:' + this.series.color + '">\u25CF</span>'+' Coût : ' + this.y + ' €';
+					var timeValue = session_address[this.point.index];
+					tooltipContent += '<br>&nbsp&nbsp&nbsp Adresse : ' + timeValue;
+				}
+				return tooltipContent;
+        	}
+        },
+        yAxis: [
+			{
+				min: 0,
+				title: {
+					text: "kWh",
+				}
+			},
+			{
+				min: 0,
+				title: {
+					text: "Euros",
+				},
+				opposite: true,
+			}
+		],
+        xAxis: {
+            type: 'datetime',
+			categories: session_date,
+		},
+		legend: {
+                enabled: false
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+            	borderWidth: 0,
+			}
+        },
+        series: [
+            {
+				name: "Charge",
+				color: 'rgba(80, 120, 170, 1)',
+				data: session_energyCharged,
+				tooltip: {
+					valueSuffix: ' kWh',
+				},
+				yAxis: 0,
+				borderRadius: 2
+       		},
+			{
+				name: "Coût",
+				color: 'rgba(80, 120, 170, 0.5)',
+				data: session_cost,
+				tooltip: {
+					valueSuffix: ' €'
+          		},
+				yAxis: 1,
+				borderRadius: 2		
+       		}
+        ],
+		credits: {
+			enabled: false
+		}
+    });
+	
 
 	//----- Last update
 	jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {

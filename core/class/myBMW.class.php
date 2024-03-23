@@ -566,9 +566,18 @@ class myBMW extends eqLogic {
 										
 					foreach ($tab_sessions as $session) {
 						$date = substr($session->id, 0, 10);
+						$date = DateTime::createFromFormat('Y-m-d', $date);
+						$date = $date->format('d/m/Y');
 						$tab_info = explode('•', $session->subtitle);
-						$tab_temp[] = array( "date" => $date, "energyCharged" => $session->energyCharged, "time" => $tab_info[1], "cost" => $tab_info[2], "address" => str_replace("'", " ", $tab_info[0]));
+						$energyCharged = preg_replace('/\D+/', '', $session->energyCharged);
+						$energyCharged = (int) $energyCharged;
+						$cost = preg_match('/[0-9]+(?:[\.,][0-9]+)?/', $tab_info[2], $matches);
+						$cost = str_replace(',', '.', $matches[0]);
+						$cost = (float) $cost;
+
+						$tab_temp[] = array( "date" => $date, "energyCharged" => $energyCharged, "time" => $tab_info[1], "cost" => $cost, "address" => str_replace("'", " ", $tab_info[0]));
 					}
+					$tab_temp = array_reverse($tab_temp);
 					$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 				}
 				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
