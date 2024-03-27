@@ -1,4 +1,4 @@
-<div id="myBMW_panel_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_panel_flat myBMW_panel_flat_#id# myBMW" style="min-width:1392px !important; max-width:1392px !important; min-height:1660px; max-height:1660px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="panel">
+<div id="myBMW_panel_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_panel_flat myBMW_panel_flat_#id# myBMW" style="min-width:1392px !important; max-width:1392px !important; min-height:2080px; max-height:2080px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="panel">
 
 	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" style="vertical-align: bottom !important" src=""><span style="padding-left:10px;"> #name_display#</span></a>
 	<!-- <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="Rafraichir" style="margin-right:10px;" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i id="refresh" class="fas fa-sync"></i></span> -->
@@ -275,6 +275,18 @@
 			<div class="col-xs-6 charge_sessions_chart#id#" id="column" style="width:675px;">
 				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="charge_sessions_chart#id#"></div>
+				</div>
+			</div>
+
+			<div class="col-xs-6 drivingStats_chart#id#" id="column" style="width:675px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
+					<div class="col-xs-12" id="drivingStats_chart#id#"></div>
+				</div>
+			</div>
+
+			<div class="col-xs-6 trips_chart#id#" id="column" style="width:675px;">
+				<div class="col-xs-12" id="tile" style="width:669px;">
+					<div class="col-xs-12" id="trips_chart#id#"></div>
 				</div>
 			</div>
 			
@@ -1096,7 +1108,7 @@
     });
 
 
-	//----- Statistics
+	//----- charging Statistics
 	var session_date=[];
 	var session_energyCharged=[];
 	var session_cost=[];
@@ -1112,7 +1124,6 @@
 			session_time.push(session.time);
 			session_address.push(session.address);
 		});
-		console.log(session_time);
 	}
 	jeedom.cmd.update['#chargingSessions_id#']({display_value:'#chargingSessions#'});
 
@@ -1128,7 +1139,7 @@
 			align: 'left',
 		},
 		subtitle: {
-            text: 'Charge totale : ~ '+'#totalEnergyCharged#'+' kWh',
+            text: 'Charge totale : <b>~ '+'#totalEnergyCharged#'+' kWh<b>',
 			align: 'left',
 		},
 		tooltip: {
@@ -1201,6 +1212,189 @@
 		}
     });
 	
+
+	//----- driving Statistics
+	var stats_totalTrips;
+	var stats_totalDistance;
+	var stats_totalDistanceUnit;
+	var stats_totalCombustionPercentage;
+	var stats_totalElectricPercentage;
+	var stats_totalConsumption;
+	
+	jeedom.cmd.update['#drivingStats_id#'] = function(_options) {
+       	var stats = jQuery.parseJSON(_options.display_value);
+		
+		if ( stats != '' ) {
+			stats_totalTrips = stats.totalTrips;
+			stats_totalDistance = stats.totalDistance;
+			stats_totalDistanceUnit = stats.totalDistanceUnit;
+			
+			if ('#vehicle_type#id##' == 'ELECTRIC' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER') {
+				stats_totalCombustionPercentage = 0.00;
+				stats_totalElectricPercentage = 100.00; 
+				stats_totalConsumption = 'Consommation moyenne électrique : '+ stats.totalElectricConsumption.averageConsumption + ' ' + stats.totalElectricConsumption.averageUnit;
+			}
+			else if ('#vehicle_type#id##' == 'COMBUSTION') {
+				stats_totalCombustionPercentage = 100.00;
+				stats_totalElectricPercentage = 0.00;
+				stats_totalConsumption = 'Consommation moyenne thermique : '+ stats.totalCombustionConsumption.averageConsumption + ' ' + stats.totalCombustionConsumption.averageUnit;
+			}
+			else if ('#vehicle_type#id##' == 'PLUGIN_HYBRID') {
+				stats_totalCombustionPercentage = stats.eDriveShare.totalCombustionPercentage;
+				stats_totalElectricPercentage = stats.eDriveShare.totalElectricPercentage;
+				stats_totalConsumption = 'Consommation moyenne thermique : '+'<b>-&nbspL100Km</b>'+'&nbsp&nbsp/&nbsp&nbspConsommation moyenne électrique : '+'<b>-&nbspkWh100Km</b>';
+			}
+		}
+		else {
+			$('.drivingStats_chart#id#').hide();
+			$('.trips_chart#id#').hide();
+			$('.myBMW_panel_flat_#id#').css('min-height', 1660);
+			$('.myBMW_panel_flat_#id#').css('max-height', 1660);
+		}
+	}
+	jeedom.cmd.update['#drivingStats_id#']({display_value:'#drivingStats#'});
+		
+	var drivingStats_chart#id# = new Highcharts.chart('drivingStats_chart#id#', {
+        
+		chart: {
+            type: 'pie',
+		},
+        title: {
+            text: 'Statistiques de conduite - Mois en cours',
+			align: 'left',
+		},
+		subtitle: {
+            text: '<div><span>'+stats_totalConsumption+'</span></div><br><br><br><br><br><br><br><br><br><br><br><div style="text-align: center;"><span style="font-size: 42px;"><b>'+stats_totalDistance+' '+stats_totalDistanceUnit+'</b></span><br><span style="font-size: 16px;""><b> Total : '+stats_totalTrips+' trajets'+'</b></span></div>',
+            verticalAlign: 'middle',
+            y: -30,
+			style: {
+				fontFamily: 'Roboto',
+			}
+        },
+		tooltip: {
+			enabled: false,
+		},
+		legend: {
+            enabled: false
+        },
+		plotOptions: {
+			pie: {
+				size: '90%',
+				innerSize: '70%',
+				center: ['50%', '55%'],
+				borderWidth: 1,
+				borderColor: 'rgb(102, 102, 102)',
+				borderRadius: 3,
+				shadow: false,
+				dataLabels: {
+					enabled: true,
+					format: '<b>{point.name} :</b> <span> {y}%</span>',
+					style: {
+						color: 'rgb(102, 102, 102)',
+						textOutline: 'none',
+						fontSize: '12px',
+						fontWeight: 'normal'
+					},
+					connectorWidth: 2
+                },
+			},
+    	},
+		colors: ['rgba(80, 120, 170, 1)', 'rgba(80, 120, 170, 0.5)'],
+		series: [{
+			data: [ 
+				{ 
+					name: 'Electrique',
+					y: stats_totalElectricPercentage,
+				},
+				{
+					name: 'Thermique',
+					y: stats_totalCombustionPercentage,
+				}
+			],
+		}],
+		credits: {
+			enabled: false
+		}
+	});
+
+
+	//----- Trips
+	var trip_date=[];
+	var trip_distance=[];
+	var trip_duration=[];
+	var trip_fuelConsumption=[];
+	var trip_electricConsumption=[];
+	
+
+	jeedom.cmd.update['#trips_id#'] = function(_options) {
+       	var trips = jQuery.parseJSON(_options.display_value);
+		jQuery.each(trips.trips,function(key,trip){
+			trip_date.push(trip.date);
+			trip_distance.push(trip.distance.distance);
+			trip_duration.push(trip.duration.duration);
+			if ('fuelConsumption' in trip) { trip_fuelConsumption.push(trip.fuelConsumption.averageConsumption); }
+			else { trip_fuelConsumption.push('-'); }
+			if ('electricConsumption' in trip) { trip_electricConsumption.push(trip.electricConsumption.averageConsumption); }
+			else { trip_electricConsumption.push('-'); }
+		});
+	}
+	jeedom.cmd.update['#trips_id#']({display_value:'#trips#'});
+
+	var trips_chart#id# = new Highcharts.chart('trips_chart#id#', {
+        
+		chart: {
+            type: 'column',
+			zoomType: 'x',
+			marginLeft: 80,
+		},
+        title: {
+            text: 'Trajets - Mois en cours',
+			align: 'left',
+		},
+		tooltip: {
+			formatter: function() {
+        		var tooltipContent = '<span style="font-size: 10px;">' + this.point.category + '</span><br/>' + '<span style="color:' + this.series.color + '">\u25CF</span>'+' Distance : ' + this.y + ' Km';
+				var durationValue = trip_duration[this.point.index];
+				tooltipContent += '<br>&nbsp&nbsp&nbsp Durée : ' + durationValue + ' min';
+				var fuelConsumptionValue = trip_fuelConsumption[this.point.index];
+				if ( fuelConsumptionValue != '-' ) { tooltipContent += '<br>&nbsp&nbsp&nbsp Conso thermique : ' + fuelConsumptionValue + ' L100km'; }
+				var electricConsumptionValue = trip_electricConsumption[this.point.index];
+				if ( electricConsumptionValue != '-' ) { tooltipContent += '<br>&nbsp&nbsp&nbsp Conso électrique : ' + electricConsumptionValue + ' kWh100Km'; }
+				return tooltipContent;
+        	}
+        },
+        yAxis: {
+				min: 0,
+				title: {
+					text: "Km",
+				}
+		},
+		xAxis: {
+            type: 'datetime',
+			categories: trip_date,
+		},
+		legend: {
+                enabled: false
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+            	borderWidth: 0,
+			}
+        },
+        series: [
+			{
+				name: "Distance",
+				color: 'rgba(80, 120, 170, 1)',
+				data: trip_distance,
+				borderRadius: 2
+       		},
+		],
+		credits: {
+			enabled: false
+		}
+    });
+
 
 	//----- Last update
 	jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
