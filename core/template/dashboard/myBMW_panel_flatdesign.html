@@ -1,5 +1,5 @@
 <div id="myBMW_panel_flat_ID" class="eqLogic-widget eqLogic noResize myBMW_panel_flat myBMW_panel_flat_#id# myBMW" style="min-width:1392px !important; max-width:1392px !important; min-height:2080px; max-height:2080px; text-align:center; border:#border#; border-radius:#border-radius#; background-color:#background-color#; color:#color#; #style#;" data-eqType="#eqType#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="panel">
-
+	
 	<a href="#eqLink#" id="titre" style="#hideEqLogicName#"><img class="logo_car#id#" id="logo" style="vertical-align: bottom !important" src=""><span style="padding-left:10px;"> #name_display#</span></a>
 	<!-- <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="Rafraichir" style="margin-right:10px;" onclick="jeedom.cmd.execute({id: #refresh_id#});"><i id="refresh" class="fas fa-sync"></i></span> -->
 	
@@ -254,7 +254,7 @@
 			</div>
 
 			<!-- Charts -->
-			<div class="col-xs-6" id="column" style="width:675px;">
+			<div class="col-xs-6 km_chart#id#" id="column" style="width:675px;">
 				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="km_chart#id#"></div>
 				</div>
@@ -420,6 +420,8 @@
 	
 	
 	//----- Electric / Combustion / Hybrid
+	var panel_height = 1660;
+	
 	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
 		$('.combustion_engine#id#').hide();
 		$('.fuel_chart#id#').hide();
@@ -427,13 +429,16 @@
 	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
 		$('.electric_engine#id#').hide();
 		$('.charge_chart#id#').hide();
-		$('.charge_sessions#id#').hide(); 
+		$('.charge_sessions_chart#id#').hide();
+		panel_height = 1660 - 420;
 	}
 	if ( '#vehicle_type#id##' != 'ELECTRIC' && '#vehicle_type#id##' != 'PLUGIN_HYBRID' )  {
 		$('#charge_btn#id#').hide();
 		$('#stopcharge_btn#id#').hide();
 	}
-
+	$('.myBMW_panel_flat_#id#').css('min-height', panel_height);
+	$('.myBMW_panel_flat_#id#').css('max-height', panel_height);
+	
 
 	//----- Location
 		jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {
@@ -1244,12 +1249,13 @@
 				stats_totalElectricPercentage = stats.eDriveShare.totalElectricPercentage;
 				stats_totalConsumption = 'Consommation moyenne thermique : '+'<b>-&nbspL100Km</b>'+'&nbsp&nbsp/&nbsp&nbspConsommation moyenne électrique : '+'<b>-&nbspkWh100Km</b>';
 			}
+			panel_height = panel_height + 420;
+			$('.myBMW_panel_flat_#id#').css('min-height', panel_height);
+			$('.myBMW_panel_flat_#id#').css('max-height', panel_height);
 		}
 		else {
 			$('.drivingStats_chart#id#').hide();
 			$('.trips_chart#id#').hide();
-			$('.myBMW_panel_flat_#id#').css('min-height', 1660);
-			$('.myBMW_panel_flat_#id#').css('max-height', 1660);
 		}
 	}
 	jeedom.cmd.update['#drivingStats_id#']({display_value:'#drivingStats#'});
