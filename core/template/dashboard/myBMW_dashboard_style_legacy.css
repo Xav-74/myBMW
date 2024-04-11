@@ -23,6 +23,17 @@
 	border-color: rgb(225,225,225);
 }
 
+.myBMW_widget_flat #tile_off {
+    margin : 3px 3px 3px 3px !important;
+	padding : 0px 0px 0px 0px !important;
+	background-color : rgb(var(--bg-color),0.6) !important;
+	border : solid;
+	border-width: 2px;
+	border-radius: 10px;
+	border-color: rgb(225,225,225);
+	background: repeating-linear-gradient(135deg, transparent, transparent 0px, rgb(225,225,225) 5px, rgb(var(--bg-color)) 10px);
+}
+
 .myBMW_widget_flat #picture {
 	color : #FFFFFF !important;
 }

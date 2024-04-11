@@ -8,7 +8,7 @@
 		<div>
 			
 			<!-- Column N°1 -->
-			<div class="col-xs-4" id="column" style="height: 770px; width:450px;">
+			<div class="col-xs-4 column_1#id#" id="column" style="height: 770px; width:450px;">
 		
 				<div class="col-xs-12" id="tile" style="height:253px; width:444px;">
 					<div id="picture" style="height: 250px; width:440px;"> 
@@ -422,14 +422,28 @@
 	//----- Electric / Combustion / Hybrid
 	var panel_height = 1660;
 	
-	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
+	if ( '#vehicle_type#id##' == 'PLUGIN_HYBRID' )  {
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+	}
+	if ( '#vehicle_type#id##' == 'ELECTRIC' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER' )  {
 		$('.combustion_engine#id#').hide();
 		$('.fuel_chart#id#').hide();
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
 	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
 		$('.electric_engine#id#').hide();
 		$('.charge_chart#id#').hide();
 		$('.charge_sessions_chart#id#').hide();
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
+		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		panel_height = 1660 - 420;
 	}
 	if ( '#vehicle_type#id##' != 'ELECTRIC' && '#vehicle_type#id##' != 'PLUGIN_HYBRID' )  {
