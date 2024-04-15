@@ -41,7 +41,7 @@ class BMWConnectedDrive_API
 	const VEHICLE_CHARGING_URL = '/eadrax-crccs/v1/vehicles/%s/';
 	const VEHICLE_CHARGING_DETAILS_URL = '/eadrax-crccs/v2/vehicles';
 	const VEHICLE_CHARGING_STATISTICS_URL = '/eadrax-chs/v1/charging-statistics';
-	const VEHICLE_CHARGING_SESSIONS_URL = '/eadrax-chs/v1/charging-sessions';
+	const VEHICLE_CHARGING_SESSIONS_URL = '/eadrax-chs/v2/charging-sessions';
 
 	const VEHICLE_LAST_TRIP = '/eadrax-suscs/v1/vehicles/sustainability/widget';
 
@@ -514,6 +514,7 @@ class BMWConnectedDrive_API
     {
         $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
+		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
 		$url = $this::API_URL . $this::VEHICLE_CHARGING_SESSIONS_URL . '?vin=' . $this->auth_config->getVin() . '&maxResults=50&include_date_picker=true';
 		log::add('myBMW', 'debug', '| Hearders : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($url, 'GET', null, $headers);
