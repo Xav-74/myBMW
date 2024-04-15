@@ -57,10 +57,10 @@ class myBMW extends eqLogic {
 
     /*     * ***********************Methode static*************************** */
     
-    public static function cronHourly() {
+    public static function cron30() {
 		
 		foreach (eqLogic::byType('myBMW', true) as $myBMW) {										// type = myBMW et eqLogic enable
-			log::add('myBMW', 'debug', 'CronHourly');
+			log::add('myBMW', 'debug', 'Cron30');
 			$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
 			if (!is_object($cmdRefresh) ) {															// Si la commande n'existe pas ou condition non respectée
 			  	continue; 																			// continue la boucle
