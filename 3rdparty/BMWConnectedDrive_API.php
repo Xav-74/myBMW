@@ -145,6 +145,7 @@ class BMWConnectedDrive_API
         $body = substr($response, $headerSize);
 
         curl_close($ch);
+		unset($ch);
 
 		return (object)[
             'headers' => $header,
