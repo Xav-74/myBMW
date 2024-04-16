@@ -422,11 +422,11 @@
 	//----- Electric / Combustion / Hybrid
 	var panel_height = 1660;
 	
-	if ( '#vehicle_type#id##' == 'PLUGIN_HYBRID' )  {
+	if ( '#vehicle_type#id##' == 'PLUGIN_HYBRID' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER' )  {
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	if ( '#vehicle_type#id##' == 'ELECTRIC' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER' )  {
+	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
 		$('.combustion_engine#id#').hide();
 		$('.fuel_chart#id#').hide();
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
