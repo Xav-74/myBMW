@@ -214,9 +214,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</br>
 
 								<div id="div_actions" class="form-group">						
-									<label class="col-sm-6 control-label">{{Actions}}</label>	
+									<label class="col-sm-6 control-label help" data-help="{{Attention, la suppression du token nécessitera obligatoirement une nouvelle synchronisation !}}">{{Actions}}</label>	
 									<div class="col-sm-6">
-										<a class="btn btn-danger btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
+										<a class="btn btn-default btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
+										<a class="btn btn-danger btn-sm cmdAction" id="bt_resetToken"><i class="far fa-trash-alt"></i> {{Suppression token}}</a>
 										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
 									</div>	
 								</div>

@@ -44,6 +44,11 @@ try {
 		$result = myBMW::getGPSCoordinates(init('vin'));
 		ajax::success($result);
 	}
+
+	if (init('action') == 'resetToken') {
+		$result = myBMW::resetToken(init('vin'));
+		ajax::success($result);
+	}
 		
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */

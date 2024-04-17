@@ -983,6 +983,22 @@ class myBMW extends eqLogic {
 		return $gps;
 	}
 
+	public static function resetToken($vin)	{		
+
+		$filename = __DIR__.'/../../data/'.'auth_token_'.$vin.'.json';
+		if ( file_exists($filename) ) {
+			unlink($filename);
+			$result = array();
+			$result['res'] = "OK";
+			log::add('myBMW', 'debug', 'Suppression du fichier '.$filename);
+			return $result;
+		}
+		else { 
+			log::add('myBMW', 'debug', 'Le fichier '.$filename.' n\'existe pas'); 
+			return null;
+		}
+	}
+	
 }
 
 

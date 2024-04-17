@@ -235,7 +235,6 @@ class BMWConnectedDrive_API
 		$session_id = $this->_uuid4();
 		$correlation_id = $this->_uuid4();
 		$ocp_apim_key = $this->_ocp_apim_key();
-
 		
 		//STAGE 0 - Request OAuth2 settings
 		$headers = [
@@ -248,7 +247,6 @@ class BMWConnectedDrive_API
         ];
 		$result = $this->_request($this::API_URL . $this::OAUTH_CONFIG_URL, 'GET', null, $headers);
 		log::add('myBMW', 'debug', '| Result getToken() - Stage 0 : ' . $result->body);
-				
 		
 		//STAGE 1 - Request authorization
 		$headers = [

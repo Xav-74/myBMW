@@ -171,7 +171,7 @@ function getCoordinates()  {
 		}
 	});
 
-}
+};
 
 
 $('#bt_Synchronization').on('click',function() {
@@ -198,8 +198,41 @@ $('#bt_gps').on('click',function() {
 });
 
 
+$('#bt_resetToken').on('click',function() {
+	
+	var vin = $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
+		
+	$.ajax({													// fonction permettant de faire de l'ajax
+		type: "POST", 											// methode de transmission des données au fichier php
+		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
+		data: {
+			action: "resetToken",
+			vin: vin,
+			},
+		dataType: 'json',
+			error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+			},
+		success: function (data) { 		
+
+			if (data.state != 'ok' || data.result == null) {
+				$('#div_alert').showAlert({message: '{{Erreur lors de la suppression du token}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if ( data.result['res'] == "OK" ) {
+					$('#div_alert').showAlert({message: '{{Suppression du token réalisée avec succès}}', level: 'success'});
+				}
+			}
+		}
+	});
+
+});
+
+
 $('.eqLogicAction[data-action=createCommunityPost]').on('click', function (event) {
-    jeedom.plugin.createCommunityPost({
+    
+	jeedom.plugin.createCommunityPost({
       type: eqType,
       error: function(error) {
         domUtils.hideLoading()
@@ -219,4 +252,5 @@ $('.eqLogicAction[data-action=createCommunityPost]').on('click', function (event
       }
     });
     return;
+
 });
