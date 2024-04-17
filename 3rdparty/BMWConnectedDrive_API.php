@@ -20,6 +20,8 @@ class BMWConnectedDrive_API
     const AUTH_TOKEN_URL = 'https://customer.bmwgroup.com/gcdm/oauth/token';
 	const API_URL = 'https://cocoapi.bmwgroup.com';
     
+	const OAUTH_CONFIG_URL = '/eadrax-ucs/v1/presentation/oauth/config';
+
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
 	const USER_AGENT = 'Dart/3.0 (dart:io)';
@@ -207,12 +209,46 @@ class BMWConnectedDrive_API
 	}
 
 
+	private function _uuid4() 
+	{
+    	$data = random_bytes(16);
+		assert(strlen($data) == 16);
+		$data[6] = chr(ord($data[6]) & 0x0f | 0x40);	// set version to 0100
+		$data[8] = chr(ord($data[8]) & 0x3f | 0x80);	// set bits 6-7 to 10
+    	return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+
+	private function _ocp_apim_key()
+	{
+		$key_row = 'NGYxYzg1YTMtNzU4Zi1hMzdkLWJiYjYtZjg3MDQ0OTRhY2Zh';
+		return base64_decode($key_row);
+	}
+
+
     public function getToken()
     {
         $code_verifier =  $this->_randomCode(86);
 		$code_challenge = $this->_sha256Code($code_verifier);
 		$state = $this->_randomCode(22);
 		$nonce = $this->_randomCode(22);
+		$session_id = $this->_uuid4();
+		$correlation_id = $this->_uuid4();
+		$ocp_apim_key = $this->_ocp_apim_key();
+
+		
+		//STAGE 0 - Request OAuth2 settings
+		$headers = [
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
+			'ocp-apim-subscription-key: '.$ocp_apim_key,
+            'bmw-session-id: '.$session_id,
+			'x-identity-provider: gcdm',
+			'x-correlation-id: '.$correlation_id,
+			'bmw-correlation-id: '.$correlation_id
+        ];
+		$result = $this->_request($this::API_URL . $this::OAUTH_CONFIG_URL, 'GET', null, $headers);
+		log::add('myBMW', 'debug', '| Result getToken() - Stage 0 : ' . $result->body);
+				
 		
 		//STAGE 1 - Request authorization
 		$headers = [
