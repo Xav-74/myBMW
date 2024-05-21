@@ -1245,7 +1245,7 @@
 		
 		if ( stats != '' ) {
 			stats_totalTrips = stats.totalTrips;
-			stats_totalDistance = stats.totalDistance;
+			stats_totalDistance = Math.round(stats.totalDistance);
 			stats_totalDistanceUnit = stats.totalDistanceUnit;
 			
 			if ('#vehicle_type#id##' == 'ELECTRIC' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER') {
