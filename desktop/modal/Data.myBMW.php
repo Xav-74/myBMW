@@ -48,10 +48,12 @@ log::add('myBMW', 'debug', '┌─Command execution : retrieving raw data - eqLo
 <pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->vehicleState(),JSON_PRETTY_PRINT); ?></pre>
 </br>
 
-<h3>{{charging Sessions :}} </h3>
+<h3>{{charging Statistics & Sessions :}} </h3>
 <pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'>
 <?php 
     if ( $eqLogic->getConfiguration("vehicle_type") == 'ELECTRIC' || $eqLogic->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' ) {
+        echo json_encode($eqLogic->chargingStatistics(),JSON_PRETTY_PRINT);
+        echo '<br><br>';
         echo json_encode($eqLogic->chargingSessions(),JSON_PRETTY_PRINT);
     } 
     else { echo 'Not available';}
