@@ -502,8 +502,8 @@ class myBMW extends eqLogic {
 				$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
 			}
 			$table_messages['checkControlMessages'] = $table_temp;
-			$table_temp = array();
 			
+			$table_temp = array();
 			foreach ($services_messages as $message) {
 				if ( isset($message->dateTime) ) {
 					$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");

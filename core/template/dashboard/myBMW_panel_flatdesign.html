@@ -846,9 +846,9 @@
 		$('.nb_message#id#').empty().append('<span>'+'('+Object.keys(messages.requiredServices).length+')'+'</span>');
 		table_html += '<ul class="list-group" style="text-align: left">';
 		jQuery.each(messages.requiredServices,function(key,message){
-			if ( message.description != '' ) {
+			//if ( message.description != '' ) {
 				 table_html += '<li class="list-group-item"><span class="label">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label">'+message.title+'</span><br/><span class="label" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
-			}
+			//}
 		});
 		table_html += '</ul>';
 		$('.table_message#id#').empty().append(table_html);
