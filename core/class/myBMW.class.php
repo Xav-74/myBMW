@@ -72,7 +72,7 @@ class myBMW extends eqLogic {
 	public static function getConfigForCommunity() {
 
 		$index = 1;
-		$CommunityInfo = "";
+		$CommunityInfo = "```\n";
 		foreach (eqLogic::byType('myBMW', true) as $myBMW)  {
 			if ($myBMW->getConfiguration('vehicle_brand') == 1) { $brand = 'BMW'; }
 			else if ($myBMW->getConfiguration('vehicle_brand') == 2) { $brand = 'MINI'; }
@@ -80,6 +80,7 @@ class myBMW extends eqLogic {
 			$CommunityInfo = $CommunityInfo . "Vehicle #" . $index . " - Brand : " . $brand . " - Model : ". $myBMW->getConfiguration('vehicle_model') . " - Year : ". $myBMW->getConfiguration('vehicle_year') . " - Type : ". $myBMW->getConfiguration('vehicle_type') . "\n";
 			$index++;
 		}
+		$CommunityInfo = $CommunityInfo . "```";
 		return $CommunityInfo;
 	}
 
