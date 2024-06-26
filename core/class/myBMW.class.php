@@ -553,7 +553,7 @@ class myBMW extends eqLogic {
 		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
 		
 		//Charging sessions
-		if ( $this->getConfiguration("vehicle_type") == 'ELECTRIC' || $this->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' ) {
+		if ( $this->getConfiguration("vehicle_type") == 'ELECTRIC' || $this->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' || $this->getConfiguration("vehicle_type") == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
 
 			$result2 = $myConnection->getChargingSessions();
 			$sessions = json_decode($result2->body);
