@@ -434,7 +434,7 @@
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	if ( '#vehicle_type#id##' == 'COMBUSTION' )  {
+	if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' )  {
 		$('.electric_engine#id#').hide();
 		$('.charge_chart#id#').hide();
 		$('.charge_sessions_chart#id#').hide();
@@ -1253,7 +1253,7 @@
 				stats_totalElectricPercentage = 100.00; 
 				stats_totalConsumption = 'Consommation moyenne électrique : '+ stats.totalElectricConsumption.averageConsumption + ' ' + stats.totalElectricConsumption.averageUnit;
 			}
-			else if ('#vehicle_type#id##' == 'COMBUSTION') {
+			else if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' ) {
 				stats_totalCombustionPercentage = 100.00;
 				stats_totalElectricPercentage = 0.00;
 				stats_totalConsumption = 'Consommation moyenne thermique : '+ stats.totalCombustionConsumption.averageConsumption + ' ' + stats.totalCombustionConsumption.averageUnit;
@@ -1306,6 +1306,7 @@
 				borderColor: 'rgb(102, 102, 102)',
 				borderRadius: 3,
 				shadow: false,
+				startAngle: 60,
 				dataLabels: {
 					enabled: true,
 					format: '<b>{point.name} :</b> <span> {y}%</span>',
