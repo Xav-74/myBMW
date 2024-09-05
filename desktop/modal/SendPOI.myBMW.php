@@ -69,25 +69,36 @@ $eqLogic = eqLogic::byId(init('eqLogic_id'));
 			
 		if ( name != '' && latitude != '' && longitude != '' )  {
 			var json_POI = {
-				"location" :  
+				"places" :  [
 					{
-					"coordinates" :
+					"position" :
 						{ 
-						 "latitude" : latitude,
-						 "longitude" : longitude
+						 "lat" : parseFloat(latitude),
+						 "lng" : parseFloat(longitude)
 						},
-					"name" : name,
-					"locationAddress" :
+					"title" : name,
+					"address" :
 						{
 						"street": "",
 						"postalCode": "",
 						"city": "",
 						"country": ""
 						},
-					"type" : "SHARED_DESTINATION_FROM_EXTERNAL_APP"
+					"formattedAddress" : "Coordinates only",
+					"category" : 
+						{
+						"losCategory": "Address",
+						"mguVehicleCategoryId": 0,
+						"name": "Address"
+						}
 					},
-				"vin" : vin
+				],
+				"vehicleInformation" :
+					{
+					"vin" : vin	
+					}
 			}
+			var jsonString = JSON.stringify(json_POI);
 		}
 		else { 
 			$('#div_alert').showAlert({message: '{{Erreur ! Les champs ne peuvent pas être vides}}', level: 'danger'});
@@ -103,7 +114,7 @@ $eqLogic = eqLogic::byId(init('eqLogic_id'));
 				username: username,
 				pwd: pwd,
 				brand: brand,
-				json: json_POI,
+				json: jsonString,
 			},
 			dataType: 'json',
 			error: function (request, status, error) {

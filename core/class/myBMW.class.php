@@ -880,14 +880,16 @@ class myBMW extends eqLogic {
 		}
 		
 		$eqLogic->checkAndUpdateCmd('sendPOI_status', 'PENDING');
-		$result = $myConnection->sendPOI($json_POI);
-		log::add('myBMW', 'debug', '| Send json : '.json_encode($json_POI));
+		$result = $myConnection->sendPOI(json_decode($json_POI));
+		$response = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Send json : '.$json_POI);
 		if ( $result->httpCode == "201 - CREATED" )
 		{
 			$eqLogic->checkAndUpdateCmd('sendPOI_status', 'EXECUTED');
 		}
 		else { $eqLogic->checkAndUpdateCmd('sendPOI_status', 'ERROR'); }
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '└─End of car event sendPOI : ['.$result->httpCode.']');
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '| Result sendPOI() : ['.$result->httpCode.'] - '.$result->body);
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '└─End of car event sendPOI : ['.$result->httpCode.'] - eventId : '.$response->id);
 	}
 	
 	public function chargingStatistics()
