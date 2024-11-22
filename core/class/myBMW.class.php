@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /* This file is part of Jeedom.
  *
@@ -358,21 +358,22 @@ class myBMW extends eqLogic {
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '| End of car picture refresh : ['.$result->httpCode.']');
 				
 		$result = $myConnection->getVehicleProfile();
-		$vehicle = json_decode($result->body);
-
-		if ( $vehicle->vin == $vin )
+		$result2 = $myConnection->getVehicleState();
+		$vehicle = json_decode($result->body, true) + json_decode($result2->body, true);
+		
+		if ( $vehicle['vin'] == $vin )
 		{
-			if ( isset($vehicle->brand) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle->brand); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
-			if ( isset($vehicle->model) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle->model); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
-			if ( isset($vehicle->year) ) { $eqLogic->checkAndUpdateCmd('year', $vehicle->year); } else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
-			if ( isset($vehicle->driveTrain) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle->driveTrain); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
-			log::add('myBMW', 'debug', '| Result getVehicleProfile() : '.str_replace('\n','',json_encode($vehicle,JSON_UNESCAPED_SLASHES)));
+			if ( isset($vehicle['brand']) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle['brand']); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
+			if ( isset($vehicle['model']) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle['model']); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
+			if ( isset($vehicle['year']) ) { $eqLogic->checkAndUpdateCmd('year', $vehicle['year']); } else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
+			if ( isset($vehicle['driveTrain']) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle['driveTrain']); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
+			log::add('myBMW', 'debug', '| Result getVehicleProfile() / getVehicleState() : '.str_replace('\n','',json_encode($vehicle,JSON_UNESCAPED_SLASHES)));
 			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
 			return $vehicle;
 		}
 		else
 		{
-			log::add('myBMW', 'debug', '| Result getVehicleProfile() : no vehicle found with services BMWConnectedDrive activated');
+			log::add('myBMW', 'debug', '| Result getVehicleProfile() / getVehicleState() : no vehicle found with services BMWConnectedDrive activated');
 			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
 		}
 	}

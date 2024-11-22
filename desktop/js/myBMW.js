@@ -91,7 +91,7 @@ function printEqLogic(_eqLogic) {
 
 
 function synchronize()  {
-	
+
 	//$('#div_brand').empty();
 	$('#div_model').empty();
 	$('#div_year').empty();
@@ -124,6 +124,33 @@ function synchronize()  {
 				$('#div_year').append('<input id="year" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="'+data.result['year']+'" readonly>'); 
 				$('#div_type').append('<input id="type" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="'+data.result['driveTrain']+'" readonly>');
 				
+				if ( data.result['capabilities']['lock'] == true ) { $('#isLockSupported').prop('checked', true);}
+				else { $('#isLockSupported').prop('checked', false); }
+				if ( data.result['capabilities']['unlock'] == true ) { $('#isUnlockSupported').prop('checked', true); }
+				else { $('#isUnlockSupported').prop('checked', false); }
+				if ( data.result['capabilities']['lights'] == true ) { $('#isLightSupported').prop('checked', true); }
+				else { $('#isLightSupported').prop('checked', false); }
+				if ( data.result['capabilities']['horn'] == true ) { $('#isHornSupported').prop('checked', true); }
+				else { $('#isHornSupported').prop('checked', false); }
+				if ( data.result['capabilities']['vehicleFinder'] == true ) { $('#isVehicleFinderSupported').prop('checked', true); }
+				else { $('#isVehicleFinderSupported').prop('checked', false); }
+				if ( data.result['capabilities']['sendPoi'] == true ) { $('#isSendPOISupported').prop('checked', true); }
+				else { $('#isSendPOISupported').prop('checked', false); }
+				if ( data.result['brand'].includes('BMW') ) {
+					if ( data.result['capabilities']['isBmwChargingSupported'] == true ) { $('#isChargingSupported').prop('checked', true); }
+					else { $('#isChargingSupported').prop('checked', false); }
+				}
+				if ( data.result['brand'].includes('MINI') ) {
+					if ( data.result['capabilities']['isMiniChargingSupported'] == true ) { $('#isChargingSupported').prop('checked', true); }
+					else { $('#isChargingSupported').prop('checked', false); }
+				}				
+				if ( data.result['capabilities']['climateNow'] == true ) { $('#isClimateSupported').prop('checked', true); }
+				else { $('#isClimateSupported').prop('checked', false); }
+				if ( data.result['capabilities']['isChargingHistorySupported'] == true ) { $('#isChargingHistorySupported').prop('checked', true); }
+				else { $('#isChargingHistorySupported').prop('checked', false); }
+				if ( data.result['capabilities']['isSustainabilitySupported'] == true ) { $('#isDrivingHistorySupported').prop('checked', true); }
+				else { $('#isDrivingHistorySupported').prop('checked', false); }
+
 				$('#div_img').empty();
 				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
 				$('#div_img').append(img);

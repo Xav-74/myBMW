@@ -149,6 +149,23 @@ $eqLogics = eqLogic::byType($plugin->getId());
  							</fieldset>
 						</form>
 					</div>
+
+					<div class="col-sm-6">
+						<form class="form-horizontal">
+							<fieldset>	
+                        		
+								<legend id="parcel"><i class="fas fa-info"></i> {{Informations}}</legend>
+								<div id="parcel" class="form-group">
+									<label class="col-sm-4 control-label">{{Commentaire}}</label>
+									<div class="col-sm-6">
+										<textarea class="form-control eqLogicAttr autogrow" data-l1key="comment"></textarea>
+									</div>
+								</div>
+																							
+							</fieldset>
+						</form>  
+                    </div>
+
 				</div>	
 					 
 				<div class="row">
@@ -289,7 +306,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								
-								</br></br>
+								</br>
 								
 							</fieldset>
 						</form>  
@@ -299,11 +316,57 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						<form class="form-horizontal">
 							<fieldset>	
                         		
+								<legend><i class="fas fa-car"></i> {{Services distants disponibles}}</legend>
 								<div class="form-group">
-									<div id="div_img" class="col-sm-6" style="padding-top: 20px;">
+									<div class="col-sm-2"></div>
+									<label class="col-sm-3">{{Verrouiller}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isLockSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isLockSupported" disabled /></div>
+									<label class="col-sm-3">{{Déverrouiller}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isUnlockSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isUnlockSupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+								<div class="form-group">	
+									<div class="col-sm-2"></div>
+									<label class="col-sm-3">{{Appel de phare}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isLightSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isLightSupported" disabled /></div>
+									<label class="col-sm-3">{{Klaxon}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isHornSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isHornSupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2"></div>	
+									<label class="col-sm-3">{{Localisation}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isVehicleFinderSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isVehicleFinderSupported" disabled /></div>
+									<label class="col-sm-3">{{Envoi POI}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isSendPOISupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isSendPOISupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2"></div>	
+									<label class="col-sm-3">{{Charge électrique (On / Off)}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingSupported" disabled /></div>
+									<label class="col-sm-3">{{Ventilation}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isClimateSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isClimateSupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-2"></div>	
+									<label class="col-sm-3">{{Statistiques de charge}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingHistorySupported" disabled /></div>
+									<label class="col-sm-3">{{Statistiques de conduite}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isDrivingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isDrivingHistorySupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+								
+								</br></br>
+
+								<legend><i class="fas fa-camera"></i> {{Image}}</legend>
+								<div class="form-group">
+									<div id="div_img" class="col-sm-12" style="margin-bottom: 10px">
 										<img id="car_img" src=""/>
 									</div>
 								</div>
+
 								
 							</fieldset>
 						</form>  
