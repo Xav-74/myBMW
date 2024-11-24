@@ -107,6 +107,7 @@ function synchronize()  {
 			username: $('.eqLogicAttr[data-l2key=username]').value(),
 			pwd: $('.eqLogicAttr[data-l2key=password]').value(),
 			brand: $('.eqLogicAttr[data-l2key=vehicle_brand]').value(),
+			hCaptchaResponse: $('.eqLogicAttr[data-l2key=hCaptcha]').value(),
 			},
 		dataType: 'json',
 			error: function (request, status, error) {
@@ -115,6 +116,7 @@ function synchronize()  {
 		success: function (data) { 			
 
 			if (data.state != 'ok') {
+				$('#captcha').val('');
 				$('#div_alert').showAlert({message: '{{Erreur lors de la synchronisation}}', level: 'danger'});
 				return;
 			}
@@ -154,8 +156,11 @@ function synchronize()  {
 				$('#div_img').empty();
 				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
 				$('#div_img').append(img);
+			
+				$('#captcha').val('');
+				$('.btn[data-action=save]').click();
+				$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
 			}
-			$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
 		}
 	});
 	
@@ -209,22 +214,6 @@ $('#bt_Synchronization').on('click',function() {
 });
 
 
-$('#bt_Data').on('click',function() {
-	
-	$('#md_modal').dialog({title: "{{Données brutes BMW Connected Drive}}"});
-	$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=Data.myBMW&eqLogicId='+ $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
-	
-});
-
-
-$('#bt_gps').on('click',function() {
- 
-	$('.btn[data-action=save]').click();
-	setTimeout(getCoordinates,2000);
-	
-});
-
-
 $('#bt_resetToken').on('click',function() {
 	
 	var vin = $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
@@ -254,6 +243,22 @@ $('#bt_resetToken').on('click',function() {
 		}
 	});
 
+});
+
+
+$('#bt_Data').on('click',function() {
+	
+	$('#md_modal').dialog({title: "{{Données brutes BMW Connected Drive}}"});
+	$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=Data.myBMW&eqLogicId='+ $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
+
+});
+
+
+$('#bt_gps').on('click',function() {
+ 
+	$('.btn[data-action=save]').click();
+	setTimeout(getCoordinates,2000);
+	
 });
 
 

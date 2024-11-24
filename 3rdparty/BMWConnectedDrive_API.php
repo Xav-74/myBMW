@@ -25,7 +25,7 @@ class BMWConnectedDrive_API
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
 	const USER_AGENT = 'Dart/3.3 (dart:io)';
-	const X_USER_AGENT = 'android(AP2A.240605.024);%s;4.7.2(35379);row';
+	const X_USER_AGENT = 'android(AP2A.240605.024);%s;4.9.2(36892);row';
 	
 	const VEHICLES_LIST_URL = '/eadrax-vcs/v5/vehicle-list';
 	const VEHICLE_PROFILE_URL = '/eadrax-vcs/v5/vehicle-data/profile';
@@ -73,15 +73,17 @@ class BMWConnectedDrive_API
     private $auth_config = null;
     /* @var Auth_Token $auth_token */
     private $auth_token = null;
+	private $hCaptchaToken;
 
 
-    public function  __construct($vin, $username, $password, $brand)
+    public function  __construct($vin, $username, $password, $brand, $hCaptchaResponse = null)
     {
         if (!$vin || !$username || !$password || !$brand) {
             throw new \Exception('Config parameters missing');
         }
 
 		$this->_loadConfig($vin, $username, $password, $brand);
+		$this->hCaptchaToken = $hCaptchaResponse;
 				
         if (file_exists(dirname(__FILE__).'/../data/auth_token_'.$vin.'.json')) {
             $array = json_decode(file_get_contents(dirname(__FILE__).'/../data/auth_token_'.$vin.'.json'), true);
@@ -115,11 +117,11 @@ class BMWConnectedDrive_API
             
             if ($this->auth_token->getExpires() < time()) {
                 $data_str = http_build_query($data);
-            } else {
+			} else {
                 $data_str = json_encode($data);
                 $headers[] = 'Content-Type: application/json';
                 $headers[] = 'Content-Length: ' . strlen($data_str);
-            }
+			}
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_str);
         }
 
@@ -250,10 +252,11 @@ class BMWConnectedDrive_API
 		
 		//STAGE 1 - Request authorization
 		$headers = [
-            'Content-Type: application/x-www-form-urlencoded',
-            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 11_1_1 like Mac OS X) AppleWebKit/604.3.5 (KHTML, like Gecko) Version/11.0 Mobile/15B150 Safari/604.1',
-			'Accept: application/json, text/plain, */*',
-        ];
+            'Accept: application/json, text/plain, */*',
+			'Content-Type: application/x-www-form-urlencoded',
+            'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 12_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1.2 Mobile/15E148 Safari/604.1',
+			'hcaptchatoken: '.$this->hCaptchaToken
+		];
 		
 		$data = [
             'client_id' => $this::CLIENT_ID,
@@ -266,8 +269,8 @@ class BMWConnectedDrive_API
 			'code_challenge_method' => 'S256',
 			'username' => $this->auth_config->getUsername(),
 			'password' => $this->auth_config->getPassword(),
-			'grant_type' => 'authorization_code'
-        ];
+			'grant_type' => 'authorization_code',
+		];
         
 		$result = $this->_request($this::AUTH_URL, 'POST', $data, $headers);
 		log::add('myBMW', 'debug', '| Result getToken() - Stage 1 : ' . $result->body);
@@ -295,7 +298,7 @@ class BMWConnectedDrive_API
 		];
 
 		$result = $this->_request($this::AUTH_URL, 'POST', $data, $headers);
-		log::add('myBMW', 'debug', '| Result getToken() - Stage 2 : ' . $result->headers);
+		log::add('myBMW', 'debug', '| Result getToken() - Stage 2 : ' . json_encode($result->headers));
 
 		if (!preg_match('/.*location:.*code=(.*?)&/im', $result->headers, $matches))
 		{	  

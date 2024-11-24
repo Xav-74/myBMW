@@ -230,6 +230,13 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 								</br>
 
+								<div id="div_user" class="form-group">						
+									<label class="col-sm-6 control-label help" data-help="{{Uniquement nécessaire à la première connexion ou en cas de suppression du token.<br/> Générez le captcha via la page de documentation du plugin et copiez le ici puis synchronisez !}}">Captcha</label>
+									<div class="col-sm-6">
+										<input id="captcha" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
+									</div>
+								</div>								
+								
 								<div id="div_actions" class="form-group">						
 									<label class="col-sm-6 control-label help" data-help="{{Attention, la suppression du token nécessitera obligatoirement une nouvelle synchronisation !}}">{{Actions}}</label>	
 									<div class="col-sm-6">
@@ -358,7 +365,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-sm-2"></div>
 								</div>
 								
-								</br></br>
+								</br></br></br>
 
 								<legend><i class="fas fa-camera"></i> {{Image}}</legend>
 								<div class="form-group">

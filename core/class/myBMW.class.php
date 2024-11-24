@@ -334,27 +334,28 @@ class myBMW extends eqLogic {
 		return $myConnection;
 	}
 	
-	public static function synchronize($vin, $username, $password, $brand)
+	public static function synchronize($vin, $username, $password, $brand, $hCaptchaResponse)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
 		
 		log::add('myBMW', 'debug', '┌─Command execution : synchronize');
 		if ( $brand == 1 )
 		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'bmw');
-		log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username);
+			$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'bmw', $hCaptchaResponse);
+			if ( $hCaptchaResponse == null || $hCaptchaResponse == '' ) { log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : No'); }
+			else { log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : '.$hCaptchaResponse); }
 		}
 		if ( $brand == 2 )
 		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'mini');
-		log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username);
+			$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'mini', $hCaptchaResponse);
+			if ( $hCaptchaResponse == null || $hCaptchaResponse == '' ) { log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : No'); }
+			else { log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : '.$hCaptchaResponse); }
 		}
 				
 		$filename = dirname(__FILE__).'/../../data/'.$vin.'.png';
 		$result = $myConnection->getPictures();
 		$img = $result->body;
 		file_put_contents($filename,$img);
-		log::add('myBMW', 'debug', '| Result getPictures() : '.$result->headers);
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '| End of car picture refresh : ['.$result->httpCode.']');
 				
 		$result = $myConnection->getVehicleProfile();
