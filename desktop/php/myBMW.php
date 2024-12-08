@@ -230,10 +230,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 								</br>
 
-								<div id="div_user" class="form-group">						
+								<div class="form-group">						
 									<label class="col-sm-6 control-label help" data-help="{{Uniquement nécessaire à la première connexion ou en cas de suppression du token.<br/> Générez le captcha via la page de documentation du plugin et copiez le ici puis synchronisez !}}">Captcha</label>
 									<div class="col-sm-6">
-										<input id="captcha" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
+										<!--<div id="div_captcha" class="input-group">-->
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
+											<!--<span class="input-group-btn" title="{{Résoudre le captcha}}">
+                    							<a class="btn btn-primary" id="bt_Captcha"><i class="fas fa-key"></i></a>
+                							</span>
+										</div>-->
 									</div>
 								</div>								
 								

@@ -214,6 +214,23 @@ $('#bt_Synchronization').on('click',function() {
 });
 
 
+$('#bt_Captcha').on('click',function() {
+
+	$('body').append('<div id="mod_captcha" style="background-color: white !important; overflow-x: hidden; overflow-y: hidden;"></div>');
+	$("#mod_captcha").dialog({
+		create: function(event, ui) { 
+			$(this).closest(".ui-dialog").find(".ui-dialog-titlebar").remove();				// Supprime la barre de titre entière
+		},
+		autoOpen: false,
+		modal: true,
+		width: 333,
+		height: 181,
+	});
+	$('#mod_captcha').load('index.php?v=d&plugin=myBMW&modal=Captcha.myBMW').dialog('open');
+
+});
+
+
 $('#bt_resetToken').on('click',function() {
 	
 	var vin = $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
