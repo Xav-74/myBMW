@@ -641,8 +641,8 @@ class myBMW extends eqLogic {
 				$this->checkAndUpdateCmd('trips', json_encode($trips));
 			}
 			else if ($data->status == "TripHistoryNotActive" || $data->status == "NoTripsYet") {
-				$this->checkAndUpdateCmd('drivingStats', json_encode(array()));
-				$this->checkAndUpdateCmd('trips', json_encode(array()));
+				if ( $this->getCmd(null, 'drivingStats')->execCmd() == null || $this->getCmd(null, 'drivingStats')->execCmd() == '[]') { $this->checkAndUpdateCmd('drivingStats', json_encode(array())); }
+				if ( $this->getCmd(null, 'trips')->execCmd() == null || $this->getCmd(null, 'trips')->execCmd() == '[]') { $this->checkAndUpdateCmd('trips', json_encode(array())); }
 			}
 		}
 
