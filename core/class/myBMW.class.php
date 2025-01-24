@@ -175,10 +175,11 @@ class myBMW extends eqLogic {
 		$this->createCmd('distance', 'Distance domicile', 60, 'info', 'numeric');
 
 		$this->createCmd('totalEnergyCharged', 'Charge électrique totale', 61, 'info', 'numeric');
-		$this->createCmd('chargingSessions', 'Sessions de charge', 62, 'info', 'string');
+		$this->createCmd('totalEnergyCost', 'Coût électrique total', 62, 'info', 'numeric');
+		$this->createCmd('chargingSessions', 'Sessions de charge', 63, 'info', 'string');
 
-		$this->createCmd('drivingStats', 'Staistiques de conduite', 63, 'info', 'string');
-		$this->createCmd('trips', 'Trajets', 64, 'info', 'string');
+		$this->createCmd('drivingStats', 'Staistiques de conduite', 64, 'info', 'string');
+		$this->createCmd('trips', 'Trajets', 65, 'info', 'string');
 
 	}
 
@@ -562,12 +563,16 @@ class myBMW extends eqLogic {
 			
 			if ($sessions != null) {
 
-				if ( isset($sessions->chargingSessions->total) ) { 
-					$total = preg_replace('/\D+/', '', $sessions->chargingSessions->total);
-					$this->checkAndUpdateCmd('totalEnergyCharged', $total); 
+				if ( isset($sessions->chargingSessions->totalValue) ) { 
+					$this->checkAndUpdateCmd('totalEnergyCharged', round($sessions->chargingSessions->totalValue,2)); 
 				}
-				else { $this->checkAndUpdateCmd('totalEnergyCharged', 'not available'); }
+				else { $this->checkAndUpdateCmd('totalEnergyCharged', 0); }
 							
+				if ( isset($sessions->chargingSessions->costsGroupedByCurrencyValue->EUR) ) { 
+					$this->checkAndUpdateCmd('totalEnergyCost', round($sessions->chargingSessions->costsGroupedByCurrencyValue->EUR,2)); 
+				}
+				else { $this->checkAndUpdateCmd('totalEnergyCost', 0); }
+								
 				$tab_temp = array();
 				if ( isset($sessions->chargingSessions->sessions) ) { 
 					$tab_sessions = $sessions->chargingSessions->sessions;
@@ -594,7 +599,8 @@ class myBMW extends eqLogic {
 			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
 		}
 		else {
-			$this->checkAndUpdateCmd('totalEnergyCharged', 'not available');
+			$this->checkAndUpdateCmd('totalEnergyCharged', 0);
+			$this->checkAndUpdateCmd('totalEnergyCost', 0);
 			$this->checkAndUpdateCmd('chargingSessions', json_encode(array()));
 		}
 
