@@ -555,7 +555,7 @@ class myBMW extends eqLogic {
 		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
 		
 		//Charging sessions
-		if ( $this->getConfiguration("vehicle_type") == 'ELECTRIC' || $this->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' || $this->getConfiguration("vehicle_type") == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
+		if ( $this->getConfiguration("isChargingHistorySupported") == "1" ) {
 
 			$result2 = $myConnection->getChargingSessions();
 			$sessions = json_decode($result2->body);
@@ -599,54 +599,60 @@ class myBMW extends eqLogic {
 		}
 
 		//Driving statistics
-		$result3 = $myConnection->getLastTrip();
-		$data = json_decode($result3->body);
-		
-		$cmd = $this->getCmd(null, 'trips');
-		$trips = array();
-		if ( $cmd->execCmd() == null || $cmd->execCmd() == '[]') {
-			$trips = [ 'trips' => [] ];
-		}
-		else { $trips = json_decode($cmd->execCmd(), true); }
-		
-		if ( isset($data->status) ) {
-			if ( $data->status == 'Success' ) {
-				$stats = json_encode($data->monthly);
-				$this->checkAndUpdateCmd('drivingStats', $stats);
-				
-				if ( count($trips['trips']) == 0 ) {
-					$data->lastTrip->date = date('d/m/Y');
-					$trips['trips'][] = $data->lastTrip;
-					log::add('myBMW', 'debug', '| Update trips : Add first trip');
-				}
-				else {
-					$last_id = $trips['trips'][count($trips['trips'])-1]['id'];
-					$new_id = $data->lastTrip->id;
-					$actual_month = date('m');
-					$last_month = date_parse_from_format('d/m/Y', $trips['trips'][count($trips['trips'])-1]['date'])['month'];
+		if ( $this->getConfiguration("isDrivingHistorySupported") == "1" ) {
+			$result3 = $myConnection->getLastTrip();
+			$data = json_decode($result3->body);
+			
+			$cmd = $this->getCmd(null, 'trips');
+			$trips = array();
+			if ( $cmd->execCmd() == null || $cmd->execCmd() == '[]') {
+				$trips = [ 'trips' => [] ];
+			}
+			else { $trips = json_decode($cmd->execCmd(), true); }
+			
+			if ( isset($data->status) ) {
+				if ( $data->status == 'Success' ) {
+					$stats = json_encode($data->monthly);
+					$this->checkAndUpdateCmd('drivingStats', $stats);
 					
-					if ( $new_id != $last_id && $actual_month == $last_month ) {
+					if ( count($trips['trips']) == 0 ) {
 						$data->lastTrip->date = date('d/m/Y');
 						$trips['trips'][] = $data->lastTrip;
-						log::add('myBMW', 'debug', '| Update trips : Add new trip');
+						log::add('myBMW', 'debug', '| Update trips : Add first trip');
 					}
-					else if ( $new_id != $last_id && $actual_month != $last_month ) {
-						$trips = [ 'trips' => [] ];
-						$data->lastTrip->date = date('d/m/Y');
-						$trips['trips'][] = $data->lastTrip;
-						log::add('myBMW', 'debug', '| Update trips : Reset trips & add new trip');
+					else {
+						$last_id = $trips['trips'][count($trips['trips'])-1]['id'];
+						$new_id = $data->lastTrip->id;
+						$actual_month = date('m');
+						$last_month = date_parse_from_format('d/m/Y', $trips['trips'][count($trips['trips'])-1]['date'])['month'];
+						
+						if ( $new_id != $last_id && $actual_month == $last_month ) {
+							$data->lastTrip->date = date('d/m/Y');
+							$trips['trips'][] = $data->lastTrip;
+							log::add('myBMW', 'debug', '| Update trips : Add new trip');
+						}
+						else if ( $new_id != $last_id && $actual_month != $last_month ) {
+							$trips = [ 'trips' => [] ];
+							$data->lastTrip->date = date('d/m/Y');
+							$trips['trips'][] = $data->lastTrip;
+							log::add('myBMW', 'debug', '| Update trips : Reset trips & add new trip');
+						}
+						else { log::add('myBMW', 'debug', '| Update trips : no change'); }
 					}
-					else { log::add('myBMW', 'debug', '| Update trips : no change'); }
+					$this->checkAndUpdateCmd('trips', json_encode($trips));
 				}
-				$this->checkAndUpdateCmd('trips', json_encode($trips));
+				else if ($data->status == "TripHistoryNotActive" || $data->status == "NoTripsYet") {
+					if ( $this->getCmd(null, 'drivingStats')->execCmd() == null || $this->getCmd(null, 'drivingStats')->execCmd() == '[]') { $this->checkAndUpdateCmd('drivingStats', json_encode(array())); }
+					if ( $this->getCmd(null, 'trips')->execCmd() == null || $this->getCmd(null, 'trips')->execCmd() == '[]') { $this->checkAndUpdateCmd('trips', json_encode(array())); }
+				}
 			}
-			else if ($data->status == "TripHistoryNotActive" || $data->status == "NoTripsYet") {
-				if ( $this->getCmd(null, 'drivingStats')->execCmd() == null || $this->getCmd(null, 'drivingStats')->execCmd() == '[]') { $this->checkAndUpdateCmd('drivingStats', json_encode(array())); }
-				if ( $this->getCmd(null, 'trips')->execCmd() == null || $this->getCmd(null, 'trips')->execCmd() == '[]') { $this->checkAndUpdateCmd('trips', json_encode(array())); }
-			}
-		}
 
-		log::add('myBMW', 'debug', '| Result getLastTrip() : '. str_replace('\n','',json_encode($data)));
+			log::add('myBMW', 'debug', '| Result getLastTrip() : '. str_replace('\n','',json_encode($data)));
+		}
+		else {
+			$this->checkAndUpdateCmd('drivingStats', json_encode(array()));
+			$this->checkAndUpdateCmd('trips', json_encode(array()));
+		}
 
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 		return $vehicle;
