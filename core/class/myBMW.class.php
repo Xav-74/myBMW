@@ -237,6 +237,7 @@ class myBMW extends eqLogic {
 		$version = jeedom::versionAlias($_version);
 		$replace['#version#'] = $_version;
 		
+		// Traitement des options de configuration
 		$replace['#vehicle_vin'.$this->getId().'#'] = $this->getConfiguration('vehicle_vin');
 		$replace['#vehicle_brand'.$this->getId().'#'] = $this->getConfiguration('vehicle_brand');
 		$replace['#vehicle_type'.$this->getId().'#'] = $this->getConfiguration('vehicle_type');
@@ -244,6 +245,16 @@ class myBMW extends eqLogic {
 		$replace['#panel_doors_windows_display'.$this->getId().'#'] = $this->getConfiguration('panel_doors_windows_display');
 		$replace['#panel_color_icon_closed'.$this->getId().'#'] = $this->getConfiguration('panel_color_icon_closed');
 		$replace['#fuel_value_unit'.$this->getId().'#'] = $this->getConfiguration('fuel_value_unit');
+		$replace['#isLockSupported'.$this->getId().'#'] = $this->getConfiguration('isLockSupported');
+		$replace['#isUnlockSupported'.$this->getId().'#'] = $this->getConfiguration('isUnlockSupported');
+		$replace['#isLightSupported'.$this->getId().'#'] = $this->getConfiguration('isLightSupported');
+		$replace['#isHornSupported'.$this->getId().'#'] = $this->getConfiguration('isHornSupported');
+		$replace['#isVehicleFinderSupported'.$this->getId().'#'] = $this->getConfiguration('isVehicleFinderSupported');
+		$replace['#isSendPOISupported'.$this->getId().'#'] = $this->getConfiguration('isSendPOISupported');
+		$replace['#isChargingSupported'.$this->getId().'#'] = $this->getConfiguration('isChargingSupported');
+		$replace['#isClimateSupported'.$this->getId().'#'] = $this->getConfiguration('isClimateSupported');
+		$replace['#isChargingHistorySupported'.$this->getId().'#'] = $this->getConfiguration('isChargingHistorySupported');
+		$replace['#isDrivingHistorySupported'.$this->getId().'#'] = $this->getConfiguration('isDrivingHistorySupported');
 							
 		// Traitement des commandes infos
 		foreach ($this->getCmd('info') as $cmd) {
