@@ -299,8 +299,6 @@
 		
 	</div>
 	
-	#divGraphInfo#
-	
 	<script>
     
     //----- Display options (Electric / Combustion / Hybrid)
@@ -327,7 +325,6 @@
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	
 	if ( '#isLockSupported#id##' == '0' )  {
 		$('#doorLock_btn#id#').hide();
 	}
@@ -490,7 +487,7 @@
 
 
 	//----- Panel display update
-	function updateDisplayPanel#id#()  {	
+	function updateDisplayPanel#id#()  {
 		
 		//----- Location
 			jeedom.cmd.update['#gps_coordinates_id#'] =function(_options) {

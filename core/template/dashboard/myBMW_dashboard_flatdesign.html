@@ -141,6 +141,51 @@
 	#divGraphInfo#
 	
 	<script>
+
+		//----- Display options (Electric / Combustion / Hybrid)
+		var dashboard_height;
+		
+		if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
+			$('.combustion_engine#id#').hide();
+			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
+			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
+			dashboard_height = 640;
+		}
+		if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' )  {
+			$('.electric_engine#id#').hide();
+			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
+			dashboard_height = 534;
+		}
+		if ( '#isLockSupported#id##' == '0' )  {
+			$('#doorLock_btn#id#').hide();
+		}
+		if ( '#isUnlockSupported#id##' == '0' )  {
+			$('#doorUnlock_btn#id#').hide();
+		}
+		if ( '#isHornSupported#id##' == '0' )  {
+			$('#hornBlow_btn#id#').hide();
+		}
+		if ( '#isLightSupported#id##' == '0' )  {
+			$('#lightFlash_btn#id#').hide();
+		}
+		if ( '#isSendPOISupported#id##' == '0' )  {
+			$('#sendPOI_btn#id#').hide();
+		}
+		if ( '#isVehicleFinderSupported#id##' == '0' )  {
+			$('#vehicleFinder_btn#id#').hide();
+		}
+		if ( '#isChargingSupported#id##' == '0' )  {
+			$('#charge_btn#id#').hide();
+			$('#stopcharge_btn#id#').hide();
+		}
+		if ( '#isClimateSupported#id##' == '0' )  {
+			$('#climate_btn#id#').hide();
+			$('#stopclimate_btn#id#').hide();
+		}
+
+		$('.myBMW_widget_flat_#id#').css('min-height', dashboard_height);
+		$('.myBMW_widget_flat_#id#').css('max-height', dashboard_height);
+
     
 		//----- Theme colors & optional parameters
 		var logo = $('.logo_car#id#')[0];
@@ -170,6 +215,14 @@
 			document.head.appendChild(link);
 		}
 
+
+		//----- Events
+		$('body').on('changeThemeEvent', function (event,theme) {
+			setTheme#id#();
+		});
+
+
+		//----- Initialization
 		function timedSetTheme#id#(occurence = 0){
 			if ($('.myBMW_widget_flat_#id#').length == 0) {
 				return;
@@ -183,254 +236,214 @@
 				return;
 			}
 			setTheme#id#();
+			updateDisplayDashboard#id#();
 		}
 		
 		if ( $('body')[0].hasAttribute('data-theme') == true )  {
 			setTheme#id#();
+			updateDisplayDashboard#id#();
 		}
 		else  {
 			timedSetTheme#id#(0);
 		}
+		
+		
+		//----- Dashboard display update
+		function updateDisplayDashboard#id#()  {
+	
+			//----- Presence
+			jeedom.cmd.update['#presence_id#'] =function(_options) {
+				if ( _options.display_value == 1 )  {
+					$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.5em;" title="Présence domicile<br/>Oui"></i>');
+				}
+				if ( _options.display_value == 0 )  {
+					$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.5em; color:rgb(185,58,62);" title="Présence domicile<br/>Non"></i>');
+				}
+			}
+			jeedom.cmd.update['#presence_id#']({display_value: '#presence#'});
 			
-		$('body').on('changeThemeEvent', function (event,theme) {
-			setTheme#id#();
-		});
-		
-		
-		//----- Electric / Combustion / Hybrid
-		if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
-			$('.combustion_engine#id#').hide();
-			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
-			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
-			$('.myBMW_widget_flat_#id#').css('min-height', 640);
-			$('.myBMW_widget_flat_#id#').css('max-height', 640);
-		}
-		if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' ) {
-			$('.electric_engine#id#').hide();
-			$('<div class="col-xs-4" id="tile_off" style="height:100px; width:120px;"></div>').insertBefore('.tile_action#id#');
-			$('.myBMW_widget_flat_#id#').css('min-height', 534);
-			$('.myBMW_widget_flat_#id#').css('max-height', 534);
-		}
-		if ( '#isLockSupported#id##' == '0' )  {
-			$('#doorLock_btn#id#').hide();
-		}
-		if ( '#isUnlockSupported#id##' == '0' )  {
-			$('#doorUnlock_btn#id#').hide();
-		}
-		if ( '#isHornSupported#id##' == '0' )  {
-			$('#hornBlow_btn#id#').hide();
-		}
-		if ( '#isLightSupported#id##' == '0' )  {
-			$('#lightFlash_btn#id#').hide();
-		}
-		if ( '#isSendPOISupported#id##' == '0' )  {
-			$('#sendPOI_btn#id#').hide();
-		}
-		if ( '#isVehicleFinderSupported#id##' == '0' )  {
-			$('#vehicleFinder_btn#id#').hide();
-		}
-		if ( '#isChargingSupported#id##' == '0' )  {
-			$('#charge_btn#id#').hide();
-			$('#stopcharge_btn#id#').hide();
-		}
-		if ( '#isClimateSupported#id##' == '0' )  {
-			$('#climate_btn#id#').hide();
-			$('#stopclimate_btn#id#').hide();
-		}
-		
+			jeedom.cmd.update['#distance_id#'] =function(_options) {
+				if ( parseFloat(_options.display_value) <= parseFloat('#home_distance#id##' ) )  {
+					if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span>'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
+					else { $('.Cmd#distance_id#').empty().append('<span>'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
+				}
+				else { 
+					if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
+					else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
+				}
+			}
+			jeedom.cmd.update['#distance_id#']({display_value: '#distance#'});
+			
+			
+			//----- Lockstate
+			jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
+				if ( _options.display_value == "UNLOCKED" || _options.display_value == "PARTIALLY_LOCKED" )  {
+					$('.Cmd#doorLockState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Déverrouillé</span>');
+					$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
+				}
+				if ( _options.display_value == "LOCKED" || _options.display_value == "SELECTIVE_LOCKED" )  {
+					$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
+					$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
+				}
+				if (  _options.display_value == "SECURED" )  {
+					$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
+					$('.securisedMode#id#').empty().append('<span>Sécurisé</span>');
+				}
+				if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+					$('.Cmd#doorLockState_id#').empty().append('<span> - </span>');
+					$('.securisedMode#id#').empty().append('<span> - </span>');
+				}
+			}
+			jeedom.cmd.update['#doorLockState_id#']({display_value:'#doorLockState#'});	
 
-		//----- Presence
-		jeedom.cmd.update['#presence_id#'] =function(_options) {
-			if ( _options.display_value == 1 )  {
-				$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.5em;" title="Présence domicile<br/>Oui"></i>');
-			}
-			if ( _options.display_value == 0 )  {
-				$('.Cmd#presence_id#').empty().append('<i class="fas fa-house-user" style="font-size:1.5em; color:rgb(185,58,62);" title="Présence domicile<br/>Non"></i>');
-			}
-		}
-		jeedom.cmd.update['#presence_id#']({display_value: '#presence#'});
-		
-		jeedom.cmd.update['#distance_id#'] =function(_options) {
-			if ( parseFloat(_options.display_value) <= parseFloat('#home_distance#id##' ) )  {
-				if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span>'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
-				else { $('.Cmd#distance_id#').empty().append('<span>'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
-			}
-			else { 
-				if ( parseFloat(_options.display_value) < 1000 ) { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ parseFloat(_options.display_value).toFixed(0) +' m</span>'); }
-				else { $('.Cmd#distance_id#').empty().append('<span style="color:rgb(185,58,62) !important;">'+ (parseFloat(_options.display_value)/1000).toFixed(1) +' km</span>'); }
-			}
-		}
-		jeedom.cmd.update['#distance_id#']({display_value: '#distance#'});
-		
-		
-		//----- Lockstate
-		jeedom.cmd.update['#doorLockState_id#'] = function(_options) {
-			if ( _options.display_value == "UNLOCKED" || _options.display_value == "PARTIALLY_LOCKED" )  {
-				$('.Cmd#doorLockState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Déverrouillé</span>');
-				$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
-			}
-			if ( _options.display_value == "LOCKED" || _options.display_value == "SELECTIVE_LOCKED" )  {
-				$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
-				$('.securisedMode#id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Non sécurisé</span>');
-			}
-			if (  _options.display_value == "SECURED" )  {
-				$('.Cmd#doorLockState_id#').empty().append('<span>Verrouillé</span>');
-				$('.securisedMode#id#').empty().append('<span>Sécurisé</span>');
-			}
-			if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
-				$('.Cmd#doorLockState_id#').empty().append('<span> - </span>');
-				$('.securisedMode#id#').empty().append('<span> - </span>');
-			}
-		}
-		jeedom.cmd.update['#doorLockState_id#']({display_value:'#doorLockState#'});	
-
-			
-		//----- Combustion engine
-		jeedom.cmd.update['#beRemainingRangeFuelKm_id#'] = function(_options) {
-			$('.Cmd#beRemainingRangeFuelKm_id#').empty().append('<span>'+_options.display_value+'</span>');
-		}
-		jeedom.cmd.update['#beRemainingRangeFuelKm_id#']({display_value:'#beRemainingRangeFuelKm#'});
-		
-		jeedom.cmd.update['#remaining_fuel_id#'] = function(_options) {
-			$('.Cmd#remaining_fuel_id#').empty().append('<span>'+_options.display_value+'</span>');
-		}
-		jeedom.cmd.update['#remaining_fuel_id#']({display_value:'#remaining_fuel#'});	
-			
-		
-		//----- Electric engine
-		jeedom.cmd.update['#beRemainingRangeElectric_id#'] = function(_options) {
-			$('.Cmd#beRemainingRangeElectric_id#').empty().append('<span>'+_options.display_value+'</span>');
-		}
-		jeedom.cmd.update['#beRemainingRangeElectric_id#']({display_value:'#beRemainingRangeElectric#'});
-			
-		jeedom.cmd.update['#chargingLevelHv_id#'] = function(_options) {
-			$('.Cmd#chargingLevelHv_id#').empty().append('<span>'+_options.display_value+'</span>');
-		}
-		jeedom.cmd.update['#chargingLevelHv_id#']({display_value:'#chargingLevelHv#'});
-			
-		jeedom.cmd.update['#connectorStatus_id#'] = function(_options) {
-			if ( _options.display_value == "1" )  {			
-				$('.Cmd#connectorStatus_id#').empty().append('<span>Connectée</span>');
-			}
-			if ( _options.display_value == "0" || _options.display_value == "" )  {			
-				$('.Cmd#connectorStatus_id#').empty().append('<span>Deconnectée</span>');
-			}
-		}
-		jeedom.cmd.update['#connectorStatus_id#']({display_value:'#connectorStatus#'});
 				
-		jeedom.cmd.update['#chargingStatus_id#'] = function(_options) {
-			if ( _options.display_value == "DEFAULT" || _options.display_value == "ERROR" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Erreur</span>');
+			//----- Combustion engine
+			jeedom.cmd.update['#beRemainingRangeFuelKm_id#'] = function(_options) {
+				$('.Cmd#beRemainingRangeFuelKm_id#').empty().append('<span>'+_options.display_value+'</span>');
 			}
-			if ( _options.display_value == "CHARGING" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>En cours</span>');
-			}
-			if ( _options.display_value == "COMPLETE" || _options.display_value == "FULLY_CHARGED" || _options.display_value == "FINISHED_FULLY_CHARGED" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>Complète</span>');
-			}
-			if ( _options.display_value == "FINISHED_NOT_FULL" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>Interrompue</span>');
-			}
-			if ( _options.display_value == "NOT_CHARGING" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>Aucune</span>');
-			}
-			if ( _options.display_value == "PLUGGED_IN" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>Branchée</span>');
-			}
-			if ( _options.display_value == "WAITING_FOR_CHARGING" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>En attente</span>');
-			}
-			if ( _options.display_value == "TARGET_REACHED" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span>Atteinte</span>');
-			}
-			if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" )  {	
-				$('.Cmd#chargingStatus_id#').empty().append('<span> - </span>');
-			}
-		}
-		jeedom.cmd.update['#chargingStatus_id#']({display_value:'#chargingStatus#'});
-		
-		jeedom.cmd.update['#chargingEndTime_id#'] = function(_options) {
-			if ( _options.display_value != "not available" )  {
-				$('.Cmd#chargingEndTime_id#').empty().append('<span>Recharge terminée</br>(100%) à '+_options.display_value+'</span>');
-			}
-			else  {
-				$('.Cmd#chargingEndTime_id#').empty().append('<span></span>');		
-			}
-		}
-		jeedom.cmd.update['#chargingEndTime_id#']({display_value:'#chargingEndTime#'});
-		
-		
-		//----- Doors
-		jeedom.cmd.update['#allDoorsState_id#'] = function(_options) {
-			if ( _options.display_value == "OPEN" )  {
-				$('.Cmd#allDoorsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
-			}
-			if ( _options.display_value == "CLOSED" )  {
-				$('.Cmd#allDoorsState_id#').empty().append('<span>Fermé</span>');
-			}
-			if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
-				$('.Cmd#allDoorsState_id#').empty().append('<span> - </span>');
-			}
-		}
-		jeedom.cmd.update['#allDoorsState_id#']({display_value:'#allDoorsState#'});
-		
-
-		//----- Windows
-		jeedom.cmd.update['#allWindowsState_id#'] = function(_options) {
-			if ( _options.display_value == "OPEN" )  {
-				$('.Cmd#allWindowsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
-			}
-			if ( _options.display_value == "CLOSED" )  {
-				$('.Cmd#allWindowsState_id#').empty().append('<span>Fermé</span>');
-			}
-			if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
-				$('.Cmd#allWindowsState_id#').empty().append('<span> - </span>');
-			}
-		}
-		jeedom.cmd.update['#allWindowsState_id#']({display_value:'#allWindowsState#'});
-
-
-		//----- Messages
-		jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
-			var messages = jQuery.parseJSON(_options.display_value);
+			jeedom.cmd.update['#beRemainingRangeFuelKm_id#']({display_value:'#beRemainingRangeFuelKm#'});
 			
-			jQuery.each(messages.checkControlMessages,function(key,message){
-				if ( message.type == "ENGINE_OIL" ) {
-					//if ( message.severity == "OK" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_grey.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_orange.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_red.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+			jeedom.cmd.update['#remaining_fuel_id#'] = function(_options) {
+				$('.Cmd#remaining_fuel_id#').empty().append('<span>'+_options.display_value+'</span>');
+			}
+			jeedom.cmd.update['#remaining_fuel_id#']({display_value:'#remaining_fuel#'});	
+				
+			
+			//----- Electric engine
+			jeedom.cmd.update['#beRemainingRangeElectric_id#'] = function(_options) {
+				$('.Cmd#beRemainingRangeElectric_id#').empty().append('<span>'+_options.display_value+'</span>');
+			}
+			jeedom.cmd.update['#beRemainingRangeElectric_id#']({display_value:'#beRemainingRangeElectric#'});
+				
+			jeedom.cmd.update['#chargingLevelHv_id#'] = function(_options) {
+				$('.Cmd#chargingLevelHv_id#').empty().append('<span>'+_options.display_value+'</span>');
+			}
+			jeedom.cmd.update['#chargingLevelHv_id#']({display_value:'#chargingLevelHv#'});
+				
+			jeedom.cmd.update['#connectorStatus_id#'] = function(_options) {
+				if ( _options.display_value == "1" )  {			
+					$('.Cmd#connectorStatus_id#').empty().append('<span>Connectée</span>');
 				}
-				if ( message.type == "BRAKE_FLUID" ) {
-					//if ( message.severity == "OK" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_grey.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
-					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_orange.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_red.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( _options.display_value == "0" || _options.display_value == "" )  {			
+					$('.Cmd#connectorStatus_id#').empty().append('<span>Deconnectée</span>');
 				}
-				if ( message.type == "TIRE_PRESSURE" ) {
-					//if ( message.severity == "OK" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_grey.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
-					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_red.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+			}
+			jeedom.cmd.update['#connectorStatus_id#']({display_value:'#connectorStatus#'});
+					
+			jeedom.cmd.update['#chargingStatus_id#'] = function(_options) {
+				if ( _options.display_value == "DEFAULT" || _options.display_value == "ERROR" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Erreur</span>');
 				}
-				if ( message.type == "WASHING_FLUID" ) {
-					//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_grey.png" height="40" title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_orange.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_red.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( _options.display_value == "CHARGING" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>En cours</span>');
 				}
-				if ( message.type == "VEHICLE_CHECK" ) {
-					//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_grey.png" height="40" title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_orange.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
-					if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_red.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+				if ( _options.display_value == "COMPLETE" || _options.display_value == "FULLY_CHARGED" || _options.display_value == "FINISHED_FULLY_CHARGED" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Complète</span>');
 				}
-			});
-		}
-		jeedom.cmd.update['#vehicleMessages_id#']({display_value:'#vehicleMessages#'});
-		
-		
-		//----- Last update
-		jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
-			if ( _options.display_value == "not available")  { $('.Cmd#lastUpdate_id#').empty().append('<span>'+"inconnue"+'</span>'); }
-			else { $('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>'); }
-		}
-		jeedom.cmd.update['#lastUpdate_id#']({display_value:'#lastUpdate#'});	
+				if ( _options.display_value == "FINISHED_NOT_FULL" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Interrompue</span>');
+				}
+				if ( _options.display_value == "NOT_CHARGING" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Aucune</span>');
+				}
+				if ( _options.display_value == "PLUGGED_IN" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Branchée</span>');
+				}
+				if ( _options.display_value == "WAITING_FOR_CHARGING" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>En attente</span>');
+				}
+				if ( _options.display_value == "TARGET_REACHED" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Atteinte</span>');
+				}
+				if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span> - </span>');
+				}
+			}
+			jeedom.cmd.update['#chargingStatus_id#']({display_value:'#chargingStatus#'});
+			
+			jeedom.cmd.update['#chargingEndTime_id#'] = function(_options) {
+				if ( _options.display_value != "not available" )  {
+					$('.Cmd#chargingEndTime_id#').empty().append('<span>Recharge terminée</br>(100%) à '+_options.display_value+'</span>');
+				}
+				else  {
+					$('.Cmd#chargingEndTime_id#').empty().append('<span></span>');		
+				}
+			}
+			jeedom.cmd.update['#chargingEndTime_id#']({display_value:'#chargingEndTime#'});
+			
+			
+			//----- Doors
+			jeedom.cmd.update['#allDoorsState_id#'] = function(_options) {
+				if ( _options.display_value == "OPEN" )  {
+					$('.Cmd#allDoorsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
+				}
+				if ( _options.display_value == "CLOSED" )  {
+					$('.Cmd#allDoorsState_id#').empty().append('<span>Fermé</span>');
+				}
+				if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+					$('.Cmd#allDoorsState_id#').empty().append('<span> - </span>');
+				}
+			}
+			jeedom.cmd.update['#allDoorsState_id#']({display_value:'#allDoorsState#'});
+			
+
+			//----- Windows
+			jeedom.cmd.update['#allWindowsState_id#'] = function(_options) {
+				if ( _options.display_value == "OPEN" )  {
+					$('.Cmd#allWindowsState_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span>');
+				}
+				if ( _options.display_value == "CLOSED" )  {
+					$('.Cmd#allWindowsState_id#').empty().append('<span>Fermé</span>');
+				}
+				if ( _options.display_value == "UNKNOWN" || _options.display_value == "not available" )  {
+					$('.Cmd#allWindowsState_id#').empty().append('<span> - </span>');
+				}
+			}
+			jeedom.cmd.update['#allWindowsState_id#']({display_value:'#allWindowsState#'});
+
+
+			//----- Messages
+			jeedom.cmd.update['#vehicleMessages_id#'] = function(_options) {
+				var messages = jQuery.parseJSON(_options.display_value);
+				
+				jQuery.each(messages.checkControlMessages,function(key,message){
+					if ( message.type == "ENGINE_OIL" ) {
+						//if ( message.severity == "OK" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_grey.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_orange.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_oil#id#').empty().append('<img src="plugins/myBMW/core/img/oil_red.png" height="40" title="Huile moteur - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					}
+					if ( message.type == "BRAKE_FLUID" ) {
+						//if ( message.severity == "OK" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_grey.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
+						if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_orange.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_brake#id#').empty().append('<img src="plugins/myBMW/core/img/brake_red.png" height="40" title="Freins - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					}
+					if ( message.type == "TIRE_PRESSURE" ) {
+						//if ( message.severity == "OK" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_grey.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'"/>'); }
+						if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_orange.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_tire#id#').empty().append('<img src="plugins/myBMW/core/img/tire_red.png" height="40" title="Pression des pneus - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					}
+					if ( message.type == "WASHING_FLUID" ) {
+						//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_grey.png" height="40" title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_orange.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_washingfluid#id#').empty().append('<img src="plugins/myBMW/core/img/washingfluid_red.png" height="40"  title="Liquide de lave-glace - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					}
+					if ( message.type == "VEHICLE_CHECK" ) {
+						//if ( message.severity == "OK" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_grey.png" height="40" title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( (message.severity == "LOW" && message.description != '') || message.severity == "MEDIUM" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_orange.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+						if ( message.severity == "HIGH" || message.severity == "CRITICAL" ) { $('.icon_vehicle#id#').empty().append('<img src="plugins/myBMW/core/img/vehicle_red.png" height="40"  title="Véhicule - Criticité : '+message.severity+'<br/>'+message.description+'">'); }
+					}
+				});
+			}
+			jeedom.cmd.update['#vehicleMessages_id#']({display_value:'#vehicleMessages#'});
+			
+			
+			//----- Last update
+			jeedom.cmd.update['#lastUpdate_id#'] = function(_options) {
+				if ( _options.display_value == "not available")  { $('.Cmd#lastUpdate_id#').empty().append('<span>'+"inconnue"+'</span>'); }
+				else { $('.Cmd#lastUpdate_id#').empty().append('<span>'+_options.display_value+'</span>'); }
+			}
+			jeedom.cmd.update['#lastUpdate_id#']({display_value:'#lastUpdate#'});
+		}	
 
 	</script>
 
