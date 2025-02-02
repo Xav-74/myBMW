@@ -141,6 +141,7 @@ class myBMW extends eqLogic {
 		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 30, 'info', 'numeric');
         $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric', 1);
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
+		$this->createCmd('chargingTarget', 'Objectif de recharge', 32, 'info', 'numeric');
         
 		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 33, 'info', 'numeric');
         $this->createCmd('remaining_fuel', 'Carburant restant', 34, 'info', 'numeric', 1);
@@ -484,6 +485,7 @@ class myBMW extends eqLogic {
 				$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
 			}
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
+			if ( isset($vehicle->state->electricChargingState->chargingTarget) ) { $this->checkAndUpdateCmd('chargingTarget', $vehicle->state->electricChargingState->chargingTarget); } else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
 					
 			if ( $this->getConfiguration('vehicle_type') == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
 				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
