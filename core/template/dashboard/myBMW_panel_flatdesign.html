@@ -712,7 +712,7 @@
 
 		jeedom.cmd.update['#hood_state_id#'] = function(_options) {
 			if ( _options.display_value == "OPEN" || _options.display_value == "INTERMEDIATE" )  {
-				$('.Cmd#trunk_state_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></span>');
+				$('.Cmd#hood_state_id#').empty().append('<span class="doors_text#id#" style="color:rgb(185,58,62) !important; font-weight:bold !important">Ouvert</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_red.png" height="20px"></span>');
 			}
 			if ( _options.display_value == "CLOSED" )  {
 				$('.Cmd#hood_state_id#').empty().append('<span class="doors_text#id#" style="color:'+color_icon_closed_rgb+' !important;">Fermé</span><span class="doors_icon#id#"><img src="plugins/myBMW/core/img/doors_'+color_icon_closed+'.png" height="20px"></span>');

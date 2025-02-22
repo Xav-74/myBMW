@@ -141,46 +141,46 @@ class myBMW extends eqLogic {
 		$this->createCmd('beRemainingRangeElectric', 'Km restant (électrique)', 30, 'info', 'numeric');
         $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric', 1);
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
-		$this->createCmd('chargingTarget', 'Objectif de recharge', 32, 'info', 'numeric');
+		$this->createCmd('chargingTarget', 'Objectif de recharge', 33, 'info', 'numeric');
         
-		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 33, 'info', 'numeric');
-        $this->createCmd('remaining_fuel', 'Carburant restant', 34, 'info', 'numeric', 1);
+		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 34, 'info', 'numeric');
+        $this->createCmd('remaining_fuel', 'Carburant restant', 35, 'info', 'numeric', 1);
 		
-        $this->createCmd('vehicleMessages', 'Messages', 35, 'info', 'string');
-        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 36, 'info', 'string');
+        $this->createCmd('vehicleMessages', 'Messages', 36, 'info', 'string');
+        $this->createCmd('gps_coordinates', 'Coordonnées GPS', 37, 'info', 'string');
       	
-        $this->createCmd('refresh', 'Rafraichir', 37, 'action', 'other');
-        $this->createCmd('climateNow', 'Climatiser', 38, 'action', 'other');
-		$this->createCmd('stopClimateNow', 'Stop Climatiser', 39, 'action', 'other');
-		$this->createCmd('chargeNow', 'Charger', 40, 'action', 'other');
-		$this->createCmd('stopChargeNow', 'Stop Charger', 41, 'action', 'other');
-		$this->createCmd('doorLock', 'Verrouiller', 42, 'action', 'other');
-        $this->createCmd('doorUnlock', 'Déverrouiller', 43, 'action', 'other');
-        $this->createCmd('lightFlash', 'Appel de phares', 44, 'action', 'other');
-        $this->createCmd('hornBlow', 'Klaxonner', 45, 'action', 'other');
-		$this->createCmd('vehicleFinder', 'Recherche véhicule', 46, 'action', 'other');
-		$this->createCmd('sendPOI', 'Envoi POI', 47, 'action', 'other');
-		$this->createCmd('lastUpdate', 'Dernière mise à jour', 48, 'info', 'string');
-		$this->createCmd('climateNow_status', 'Statut climatiser', 49, 'info', 'string');
-		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 50, 'info', 'string');
-		$this->createCmd('chargeNow_status', 'Statut charger', 51, 'info', 'string');
-		$this->createCmd('stopChargeNow_status', 'Statut stop charger', 52, 'info', 'string');
-        $this->createCmd('doorLock_status', 'Statut verrouiller', 53, 'info', 'string');
-        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 54, 'info', 'string');
-        $this->createCmd('lightFlash_status', 'Statut appel de phares', 55, 'info', 'string');
-        $this->createCmd('hornBlow_status', 'Statut klaxonner', 56, 'info', 'string');
-		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 57, 'info', 'string');
-		$this->createCmd('sendPOI_status', 'Statut envoi POI', 58, 'info', 'string');
+        $this->createCmd('refresh', 'Rafraichir', 38, 'action', 'other');
+        $this->createCmd('climateNow', 'Climatiser', 39, 'action', 'other');
+		$this->createCmd('stopClimateNow', 'Stop Climatiser', 40, 'action', 'other');
+		$this->createCmd('chargeNow', 'Charger', 41, 'action', 'other');
+		$this->createCmd('stopChargeNow', 'Stop Charger', 42, 'action', 'other');
+		$this->createCmd('doorLock', 'Verrouiller', 43, 'action', 'other');
+        $this->createCmd('doorUnlock', 'Déverrouiller', 44, 'action', 'other');
+        $this->createCmd('lightFlash', 'Appel de phares', 45, 'action', 'other');
+        $this->createCmd('hornBlow', 'Klaxonner', 46, 'action', 'other');
+		$this->createCmd('vehicleFinder', 'Recherche véhicule', 47, 'action', 'other');
+		$this->createCmd('sendPOI', 'Envoi POI', 48, 'action', 'other');
+		$this->createCmd('lastUpdate', 'Dernière mise à jour', 49, 'info', 'string');
+		$this->createCmd('climateNow_status', 'Statut climatiser', 50, 'info', 'string');
+		$this->createCmd('stopClimateNow_status', 'Statut stop climatiser', 51, 'info', 'string');
+		$this->createCmd('chargeNow_status', 'Statut charger', 52, 'info', 'string');
+		$this->createCmd('stopChargeNow_status', 'Statut stop charger', 53, 'info', 'string');
+        $this->createCmd('doorLock_status', 'Statut verrouiller', 54, 'info', 'string');
+        $this->createCmd('doorUnlock_status', 'Statut déverrouiller', 55, 'info', 'string');
+        $this->createCmd('lightFlash_status', 'Statut appel de phares', 56, 'info', 'string');
+        $this->createCmd('hornBlow_status', 'Statut klaxonner', 57, 'info', 'string');
+		$this->createCmd('vehicleFinder_status', 'Statut recherche véhicule', 58, 'info', 'string');
+		$this->createCmd('sendPOI_status', 'Statut envoi POI', 59, 'info', 'string');
 		
-		$this->createCmd('presence', 'Présence domicile', 59, 'info', 'binary');
-		$this->createCmd('distance', 'Distance domicile', 60, 'info', 'numeric');
+		$this->createCmd('presence', 'Présence domicile', 60, 'info', 'binary');
+		$this->createCmd('distance', 'Distance domicile', 61, 'info', 'numeric');
 
-		$this->createCmd('totalEnergyCharged', 'Charge électrique totale', 61, 'info', 'numeric');
-		$this->createCmd('totalEnergyCost', 'Coût électrique total', 62, 'info', 'numeric');
-		$this->createCmd('chargingSessions', 'Sessions de charge', 63, 'info', 'string');
+		$this->createCmd('totalEnergyCharged', 'Charge électrique totale', 62, 'info', 'numeric');
+		$this->createCmd('totalEnergyCost', 'Coût électrique total', 63, 'info', 'numeric');
+		$this->createCmd('chargingSessions', 'Sessions de charge', 64, 'info', 'string');
 
-		$this->createCmd('drivingStats', 'Staistiques de conduite', 64, 'info', 'string');
-		$this->createCmd('trips', 'Trajets', 65, 'info', 'string');
+		$this->createCmd('drivingStats', 'Staistiques de conduite', 65, 'info', 'string');
+		$this->createCmd('trips', 'Trajets', 66, 'info', 'string');
 
 	}
 
