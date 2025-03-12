@@ -57,22 +57,23 @@ class myBMW extends eqLogic {
 
     /*     * ***********************Methode static*************************** */
     
-    public static function cron30() {
+    public static function pull() {
 		
+		log::add('myBMW', 'debug', 'Cron '.config::byKey('cronPattern', 'myBMW'));
 		foreach (eqLogic::byType('myBMW', true) as $myBMW) {										// type = myBMW et eqLogic enable
-			log::add('myBMW', 'debug', 'Cron30');
 			$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
 			if (!is_object($cmdRefresh) ) {															// Si la commande n'existe pas ou condition non respectée
 			  	continue; 																			// continue la boucle
 			}
 			$cmdRefresh->execCmd(); 
-		}	
+		}
 	}
 
 	public static function getConfigForCommunity() {
 
 		$index = 1;
 		$CommunityInfo = "```\n";
+		$CommunityInfo = $CommunityInfo . 'Custom cron : ' . config::byKey('cronPattern', 'myBMW') . "\n";
 		foreach (eqLogic::byType('myBMW', true) as $myBMW)  {
 			if ($myBMW->getConfiguration('vehicle_brand') == 1) { $brand = 'BMW'; }
 			else if ($myBMW->getConfiguration('vehicle_brand') == 2) { $brand = 'MINI'; }
@@ -83,6 +84,29 @@ class myBMW extends eqLogic {
 		$CommunityInfo = $CommunityInfo . "```";
 		return $CommunityInfo;
 	}
+
+	public static function scheduleCron($cronPattern) {
+				
+		$cron = cron::byClassAndFunction('myBMW', 'pull');
+		if (!is_object($cron)) {
+			$cron = new cron();
+			$cron->setClass('myBMW');
+			$cron->setFunction('pull');
+			$cron->setEnable(1);
+			$cron->setDeamon(0);
+			$cron->setSchedule('*/30 * * * *');
+			$cron->setTimeout(5);
+			$cron->save();
+			log::add('myBMW', 'debug', 'Create cron pull');
+		}
+		if ($cronPattern == '' || $cronPattern == null) {
+			$cron->setSchedule('*/30 * * * *');
+		}
+		else { $cron->setSchedule($cronPattern); }
+		$cron->save();
+		log::add('myBMW', 'debug', 'Update cron pull - setSchedule : '.$cronPattern);
+	}
+
 
     /*     * *********************Méthodes d'instance************************* */
 

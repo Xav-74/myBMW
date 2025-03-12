@@ -49,6 +49,11 @@ try {
 		$result = myBMW::resetToken(init('vin'));
 		ajax::success($result);
 	}
+
+	if (init('action') == 'scheduleCron') {
+		$result = myBMW::scheduleCron(init('cronPattern'));
+		ajax::success($result);
+	}
 		
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
