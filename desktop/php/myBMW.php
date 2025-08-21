@@ -253,7 +253,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							
 								</br>
 								
-								<div id="div_chargingParameters" class="form-group">
+								<div id="div_chargingParameters" class="form-group" style="margin-bottom:32px !important">
 									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
 									<label class="col-sm-6 control-label">{{Objectif de charge}}</label>
 									<div class="col-sm-6">
@@ -290,7 +290,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											</span>
 										</div>
 									</div>
-									</br></br>
 								</div>
 								
 								<legend><i class="fas fa-palette"></i> {{Paramètres d'affichage du panel}}</legend>
