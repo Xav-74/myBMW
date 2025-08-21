@@ -603,7 +603,7 @@ class BMWConnectedDrive_API
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		log::add('myBMW', 'debug', '| Url : '. $url);
 		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
-		return $this->_request($url, 'GET', json_encode($data), $headers);
+		return $this->_request($url, 'POST', $data, $headers);
 	}
 
 
@@ -620,7 +620,7 @@ class BMWConnectedDrive_API
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		log::add('myBMW', 'debug', '| Url : '. $url);
 		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
-		return $this->_request($url, 'GET', json_encode($data), $headers);
+		return $this->_request($url, 'POST', $data, $headers);
 	}
 
 }
