@@ -224,7 +224,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Type}}</label>
 									<div id="div_type" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
+										<input type="text" id="vehicle_type" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
 									</div>
 								</div>
 
@@ -234,7 +234,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="col-sm-6 control-label help" data-help="{{Uniquement nécessaire à la première connexion ou en cas de suppression du token.<br/> Générez le captcha via la page de documentation du plugin et copiez le ici puis synchronisez !}}">Captcha</label>
 									<div class="col-sm-6">
 										<!--<div id="div_captcha" class="input-group">-->
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
+											<input type="text" id="captcha" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
 											<!--<span class="input-group-btn" title="{{Résoudre le captcha}}">
                     							<a class="btn btn-primary" id="bt_Captcha"><i class="fas fa-key"></i></a>
                 							</span>
@@ -252,6 +252,46 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							
 								</br>
+								
+								<div id="div_chargingParameters" class="form-group">
+									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
+									<label class="col-sm-6 control-label">{{Objectif de charge}}</label>
+									<div class="col-sm-6">
+										<div id="div_chargingTarget" class="input-group" style="margin-bottom:3px !important">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingTarget">
+												<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
+												<?php
+												for ($i = 20; $i <= 100; $i += 5) {
+													echo '<option value="' . $i . '">' . $i . '%</option>';
+												}
+												?>
+											</select>
+											<span class="input-group-btn">
+												<a class="btn btn-warning cmdAction" id="bt_chargingTarget" title="{{Mettre à jour le paramètre d'objectif de charge}}"><i class="fa fa-pencil-alt"></i></a>
+											</span>
+										</div>
+									</div>
+									<label class="col-sm-6 control-label">{{Courant de charge}}</label>
+									<div class="col-sm-6">
+										<div id="div_chargingPowerLimit" class="input-group" style="margin-bottom:3px !important">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingPowerLimit">
+												<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
+												<?php
+												for ($i = 6; $i <= 16; $i++) {
+													echo '<option value="' . $i . '">' . $i . 'A</option>';
+												}
+												foreach ([20, 24, 28, 32] as $val) {
+													echo '<option value="' . $val . '">' . $val . 'A</option>';
+												}
+												?>
+											</select>
+											<span class="input-group-btn">
+												<a class="btn btn-warning cmdAction" id="bt_chargingPowerLimit" title="{{Mettre à jour le paramètre de limite de courant de charge}}"><i class="fa fa-pencil-alt"></i></a>
+											</span>
+										</div>
+									</div>
+									</br></br>
+								</div>
 								
 								<legend><i class="fas fa-palette"></i> {{Paramètres d'affichage du panel}}</legend>
 								<div class="form-group">
@@ -369,6 +409,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-sm-1"><input type="checkbox" id="isDrivingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isDrivingHistorySupported" disabled /></div>
 									<div class="col-sm-2"></div>
 								</div>
+								<div class="form-group">
+									<div class="col-sm-2"></div>	
+									<label class="col-sm-3">{{Objectif de charge}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingTargetSocEnabled" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingTargetSocEnabled" disabled /></div>
+									<label class="col-sm-3">{{Courant de charge}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingPowerLimitEnabled" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingPowerLimitEnabled" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
 								
 								</br></br></br>
 
@@ -392,6 +440,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			
 			setDisplayGPS();
 			setDisplayPanel();
+			setDisplayCharge();
 			
 			$('#sel_option_localisation').on("change",function (){
 				setDisplayGPS();
@@ -399,6 +448,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 			$('#sel_panel_icon').on("change",function (){
 				setDisplayPanel();
+			});
+
+			$('#vehicle_type').on("change",function (){
+				setDisplayCharge();
+			});
+			
+			$('#isChargingTargetSocEnabled').on("change",function (){
+				setDisplayCharge();
+			});
+
+			$('#isChargingPowerLimitEnabled').on("change",function (){
+				setDisplayCharge();
 			});
 			
 			function setDisplayGPS() {
@@ -432,6 +493,32 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				}
 			}
 
+			function setDisplayCharge() {
+				if ( $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "PLUGIN_HYBRID" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC_WITH_RANGE_EXTENDER") {
+					$('#div_chargingParameters').hide();
+				}
+				else {
+					$('#div_chargingParameters').show();				
+					if ( $('.eqLogicAttr[data-l2key=isChargingTargetSocEnabled]').value() == false  ) {
+						$('#div_chargingTarget select').prop('disabled', true);
+						$('#div_chargingTarget a').addClass('disabled').css('pointer-events', 'none');
+					}
+					else { 
+						$('#div_chargingTarget select').prop('disabled', false);
+						$('#div_chargingTarget a').removeClass('disabled').css('pointer-events', '');
+					}
+
+					if ( $('.eqLogicAttr[data-l2key=isChargingPowerLimitEnabled]').value() == false ) {
+						$('#div_chargingPowerLimit select').prop('disabled', true);
+						$('#div_chargingPowerLimit a').addClass('disabled').css('pointer-events', 'none');
+					}
+					else { 
+						$('#div_chargingPowerLimit select').prop('disabled', false);
+						$('#div_chargingPowerLimit a').removeClass('disabled').css('pointer-events', '');
+					}
+				}
+			}
+
 			$('body').off('click', '.toggle-pwd').on('click', '.toggle-pwd', function () {
 				$(this).toggleClass("fa-eye fa-eye-slash");
 				var input = $("#pwd");
@@ -441,7 +528,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				input.attr("type", "password");
 				}
 			});
-
+			
 			</script>
 			
 			<style>

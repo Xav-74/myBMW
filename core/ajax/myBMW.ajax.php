@@ -54,6 +54,16 @@ try {
 		$result = myBMW::scheduleCron(init('cronPattern'));
 		ajax::success($result);
 	}
+
+	if (init('action') == 'chargingTarget') {
+		$result = myBMW::setChargingTarget(init('vin'),init('chargingTarget'));
+		ajax::success($result);
+	}
+
+	if (init('action') == 'chargingPowerLimit') {
+		$result = myBMW::setChargingPowerLimit(init('vin'),init('chargingPowerLimit'));
+		ajax::success($result);
+	}
 		
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */

@@ -42,6 +42,7 @@ class BMWConnectedDrive_API
 	const VEHICLE_CHARGING_DETAILS_URL = '/eadrax-crccs/v2/vehicles';
 	const VEHICLE_CHARGING_STATISTICS_URL = '/eadrax-chs/v2/charging-statistics';
 	const VEHICLE_CHARGING_SESSIONS_URL = '/eadrax-chs/v2/charging-sessions';
+	const VEHICLE_CHARGING_SETTINGS_URL = '/eadrax-crccs/v1/vehicles/%s/charging-settings';
 
 	const VEHICLE_LAST_TRIP = '/eadrax-suscs/v1/vehicles/sustainability/widget';
 
@@ -474,7 +475,7 @@ class BMWConnectedDrive_API
 		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::REMOTE_SERVCIE_URL . $this::REMOTE_CHARGE_START, 'POST', null, $headers);
-    }
+	}
 
 
 	public function stopChargeNow()
@@ -484,7 +485,7 @@ class BMWConnectedDrive_API
 		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::REMOTE_SERVCIE_URL . $this::REMOTE_CHARGE_STOP, 'POST', null, $headers);
-    }
+	}
 	
 
     public function doDoorLock()
@@ -586,6 +587,40 @@ class BMWConnectedDrive_API
 		$headers[] = 'x-gcid: '.$this->auth_token->getGcId();
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
 		return $this->_request($this::API_URL . $this::VEHICLE_LAST_TRIP, 'GET', null, $headers);
+	}
+
+
+	public function setChargingTarget($chargingTarget)
+    {
+        log::add('myBMW', 'debug', '| chargingTarget : '. $chargingTarget);
+		$this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
+		$data = [
+		    "chargingTarget" => $chargingTarget
+		];
+		$url = $this::API_URL . sprintf($this::VEHICLE_CHARGING_SETTINGS_URL, $this->auth_config->getVin());
+		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		log::add('myBMW', 'debug', '| Url : '. $url);
+		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
+		return $this->_request($url, 'GET', json_encode($data), $headers);
+	}
+
+
+	public function setChargingPowerLimit($chargingPowerLimit)
+    {
+        log::add('myBMW', 'debug', '| chargingPowerLimit : '. $chargingPowerLimit);
+		$this->_checkAuth();
+		$headers = $this->_setDefaultHeaders();
+		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
+		$data = [
+		    "acLimitValue" => $chargingPowerLimit
+		];
+		$url = $this::API_URL . sprintf($this::VEHICLE_CHARGING_SETTINGS_URL, $this->auth_config->getVin());
+		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
+		log::add('myBMW', 'debug', '| Url : '. $url);
+		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
+		return $this->_request($url, 'GET', json_encode($data), $headers);
 	}
 
 }

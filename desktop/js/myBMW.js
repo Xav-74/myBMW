@@ -152,6 +152,10 @@ function synchronize()  {
 				else { $('#isChargingHistorySupported').prop('checked', false); }
 				if ( data.result['capabilities']['isSustainabilitySupported'] == true ) { $('#isDrivingHistorySupported').prop('checked', true); }
 				else { $('#isDrivingHistorySupported').prop('checked', false); }
+				if ( data.result['capabilities']['isChargingTargetSocEnabled'] == true ) { $('#isChargingTargetSocEnabled').prop('checked', true); }
+				else { $('#isChargingTargetSocEnabled').prop('checked', false); }
+				if ( data.result['capabilities']['isChargingPowerLimitEnabled'] == true ) { $('#isChargingPowerLimitEnabled').prop('checked', true); }
+				else { $('#isChargingPowerLimitEnabled').prop('checked', false); }
 
 				$('#div_img').empty();
 				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
@@ -204,6 +208,74 @@ function getCoordinates()  {
 	});
 
 };
+
+
+function setChargingTarget() {
+
+	var vin =  $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
+	var chargingTarget = $('.eqLogicAttr[data-l2key=chargingTarget]').value();
+		
+	$.ajax({													// fonction permettant de faire de l'ajax
+		type: "POST", 											// methode de transmission des données au fichier php
+		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
+		data: {
+			action: "chargingTarget",
+			vin: vin,
+			chargingTarget: chargingTarget,
+			},
+		dataType: 'json',
+			error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+			},
+		success: function (data) { 		
+
+			if (data.state != 'ok' || data.result == null) {
+				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de la limite de charge}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if ( data.result['res'] == "OK" ) {
+					$('#div_alert').showAlert({message: '{{Configuration de la limite de charge réalisée avec succès}}', level: 'success'});
+				}
+			}
+		}
+	});
+
+}
+
+
+function setChargingPowerLimit() {
+
+	var vin =  $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
+	var chargingPowerLimit = $('.eqLogicAttr[data-l2key=chargingPowerLimit]').value();
+		
+	$.ajax({													// fonction permettant de faire de l'ajax
+		type: "POST", 											// methode de transmission des données au fichier php
+		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
+		data: {
+			action: "chargingPowerLimit",
+			vin: vin,
+			chargingPowerLimit: chargingPowerLimit,
+			},
+		dataType: 'json',
+			error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+			},
+		success: function (data) { 		
+
+			if (data.state != 'ok' || data.result == null) {
+				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration du courant de charge}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if ( data.result['res'] == "OK" ) {
+					$('#div_alert').showAlert({message: '{{Configuration du courant charge réalisée avec succès}}', level: 'success'});
+				}
+			}
+		}
+	});
+
+}
 
 
 $('#bt_Synchronization').on('click',function() {
@@ -276,6 +348,22 @@ $('#bt_gps').on('click',function() {
 	$('.btn[data-action=save]').click();
 	setTimeout(getCoordinates,2000);
 	
+});
+
+
+$('#bt_chargingTarget').on('click',function() {
+	
+	$('.btn[data-action=save]').click();
+	setTimeout(setChargingTarget(),2000);	
+
+});
+
+
+$('#bt_chargingPowerLimit').on('click',function() {
+	
+	$('.btn[data-action=save]').click();
+	setTimeout(setChargingPowerLimit(),2000);
+
 });
 
 

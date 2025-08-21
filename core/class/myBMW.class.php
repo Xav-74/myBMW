@@ -1020,8 +1020,8 @@ class myBMW extends eqLogic {
 		return round(($earth_radius * $d * 1000), 1); //retour en m
 	}
 	
-	public static function getGPSCoordinates($vin)
-	{
+	public static function getGPSCoordinates($vin)	{
+		
 		$eqLogic = self::getBMWEqLogic($vin);
 		$cmd = $eqLogic->getCmd(null, 'gps_coordinates');
 		
@@ -1053,6 +1053,30 @@ class myBMW extends eqLogic {
 		}
 	}
 	
+	public static function setChargingTarget($vin, $chargingTarget)	{
+		
+		$eqLogic = self::getBMWEqLogic($vin);
+
+		log::add('myBMW', 'debug', '┌─Command execution : setChargingTarget');
+		$myConnection = $eqLogic->getConnection();
+		$result = $myConnection->setChargingTarget($chargingTarget);
+ 		log::add('myBMW', 'debug', '| Result setChargingTarget() : '. $result->body);
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingTarget : ['.$result->httpCode.']');
+		return $result->httpCode;
+	}
+
+	public static function setChargingPowerLimit($vin, $chargingPowerLimit)	{
+		
+		$eqLogic = self::getBMWEqLogic($vin);
+		
+		log::add('myBMW', 'debug', '┌─Command execution : setChargingPowerLimit');
+		$myConnection = $eqLogic->getConnection();
+		$result = $myConnection->setChargingPowerLimit($chargingPowerLimit);
+		log::add('myBMW', 'debug', '| Result setChargingPowerLimit() : '. $result->body);
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingPowerLimit : ['.$result->httpCode.']');
+		return $result->httpCode;
+	}
+
 }
 
 
