@@ -592,8 +592,7 @@ class BMWConnectedDrive_API
 
 	public function setChargingTarget($chargingTarget)
     {
-        log::add('myBMW', 'debug', '| chargingTarget : '. $chargingTarget);
-		$this->_checkAuth();
+        $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
 		$data = [
@@ -601,7 +600,6 @@ class BMWConnectedDrive_API
 		];
 		$url = $this::API_URL . sprintf($this::VEHICLE_CHARGING_SETTINGS_URL, $this->auth_config->getVin());
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Url : '. $url);
 		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
 		return $this->_request($url, 'POST', $data, $headers);
 	}
@@ -609,8 +607,7 @@ class BMWConnectedDrive_API
 
 	public function setChargingPowerLimit($chargingPowerLimit)
     {
-        log::add('myBMW', 'debug', '| chargingPowerLimit : '. $chargingPowerLimit);
-		$this->_checkAuth();
+        $this->_checkAuth();
 		$headers = $this->_setDefaultHeaders();
 		$headers[] = 'bmw-vin: '.$this->auth_config->getVin();
 		$data = [
@@ -618,7 +615,6 @@ class BMWConnectedDrive_API
 		];
 		$url = $this::API_URL . sprintf($this::VEHICLE_CHARGING_SETTINGS_URL, $this->auth_config->getVin());
 		log::add('myBMW', 'debug', '| Headers : '. json_encode($headers,JSON_UNESCAPED_SLASHES));
-		log::add('myBMW', 'debug', '| Url : '. $url);
 		log::add('myBMW', 'debug', '| Data : '. json_encode($data));
 		return $this->_request($url, 'POST', $data, $headers);
 	}

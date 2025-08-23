@@ -1060,8 +1060,20 @@ class myBMW extends eqLogic {
 		log::add('myBMW', 'debug', '┌─Command execution : setChargingTarget');
 		$myConnection = $eqLogic->getConnection();
 		$result = $myConnection->setChargingTarget($chargingTarget);
- 		log::add('myBMW', 'debug', '| Result setChargingTarget() : '. $result->body);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingTarget : ['.$result->httpCode.']');
+		$response = json_decode($result->body);
+
+		$eventStatus = 'PENDING';
+		sleep(10);
+		$retry = 12;
+		while ($retry > 0 && $eventStatus == 'PENDING')
+		{
+			$status = $myConnection->getRemoteServiceStatus($response->eventId);
+			$eventStatus = json_decode($status->body)->eventStatus;
+			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			sleep(10);
+			$retry--;
+		}	
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingTarget : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 		return $result->httpCode;
 	}
 
@@ -1072,8 +1084,21 @@ class myBMW extends eqLogic {
 		log::add('myBMW', 'debug', '┌─Command execution : setChargingPowerLimit');
 		$myConnection = $eqLogic->getConnection();
 		$result = $myConnection->setChargingPowerLimit($chargingPowerLimit);
-		log::add('myBMW', 'debug', '| Result setChargingPowerLimit() : '. $result->body);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingPowerLimit : ['.$result->httpCode.']');
+		$response = json_decode($result->body);
+
+		$eventStatus = 'PENDING';
+		sleep(10);
+		$retry = 12;
+		while ($retry > 0 && $eventStatus == 'PENDING')
+		{
+			$status = $myConnection->getRemoteServiceStatus($response->eventId);
+			$eventStatus = json_decode($status->body)->eventStatus;
+			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
+			sleep(10);
+			$retry--;
+		}
+
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingPowerLimit : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
 		return $result->httpCode;
 	}
 
