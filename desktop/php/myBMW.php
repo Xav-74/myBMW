@@ -255,7 +255,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<div id="div_chargingParameters" class="form-group" style="margin-bottom:32px !important">
 									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
-									<label class="col-sm-6 control-label">{{Objectif de charge}}</label>
+									<label class="col-sm-6 control-label">{{Objectif de recharge}}</label>
 									<div class="col-sm-6">
 										<div id="div_chargingTarget" class="input-group" style="margin-bottom:3px !important">
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingTarget">
@@ -267,11 +267,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												?>
 											</select>
 											<span class="input-group-btn">
-												<a class="btn btn-warning cmdAction" id="bt_chargingTarget" title="{{Mettre à jour le paramètre d'objectif de charge}}"><i class="fa fa-pencil-alt"></i></a>
+												<a class="btn btn-warning cmdAction" id="bt_chargingTarget" title="{{Mettre à jour le paramètre d'objectif de recharge}}"><i class="fa fa-pencil-alt"></i></a>
 											</span>
 										</div>
 									</div>
-									<label class="col-sm-6 control-label">{{Courant de charge}}</label>
+									<label class="col-sm-6 control-label">{{Limitation du courant de charge}}</label>
 									<div class="col-sm-6">
 										<div id="div_chargingPowerLimit" class="input-group" style="margin-bottom:3px !important">
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingPowerLimit">
@@ -286,7 +286,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												?>
 											</select>
 											<span class="input-group-btn">
-												<a class="btn btn-warning cmdAction" id="bt_chargingPowerLimit" title="{{Mettre à jour le paramètre de limite de courant de charge}}"><i class="fa fa-pencil-alt"></i></a>
+												<a class="btn btn-warning cmdAction" id="bt_chargingPowerLimit" title="{{Mettre à jour le paramètre de limitation du courant de charge}}"><i class="fa fa-pencil-alt"></i></a>
 											</span>
 										</div>
 									</div>

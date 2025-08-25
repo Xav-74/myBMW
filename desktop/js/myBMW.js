@@ -230,16 +230,18 @@ function setChargingTarget() {
 		success: function (data) { 		
 
 			if (data.state != 'ok' || data.result == null) {
-				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de la limite de charge}}', level: 'danger'});
+				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de l\'objectif de recharge}}', level: 'danger'});
 				return;
 			}
 			else  {
 				if ( data.result['res'] == "OK" ) {
-					$('#div_alert').showAlert({message: '{{Configuration de la limite de charge réalisée avec succès}}', level: 'success'});
+					$('#div_alert').showAlert({message: '{{Configuration de l\'objectif de recharge réalisée avec succès}}', level: 'success'});
 				}
 			}
 		}
 	});
+
+	$('.btn[data-action=save]').click();
 
 }
 
@@ -264,16 +266,18 @@ function setChargingPowerLimit() {
 		success: function (data) { 		
 
 			if (data.state != 'ok' || data.result == null) {
-				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration du courant de charge}}', level: 'danger'});
+				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de la limitation du courant de charge}}', level: 'danger'});
 				return;
 			}
 			else  {
 				if ( data.result['res'] == "OK" ) {
-					$('#div_alert').showAlert({message: '{{Configuration du courant charge réalisée avec succès}}', level: 'success'});
+					$('#div_alert').showAlert({message: '{{Configuration de la limitation du courant de charge réalisée avec succès}}', level: 'success'});
 				}
 			}
 		}
 	});
+
+	$('.btn[data-action=save]').click();
 
 }
 

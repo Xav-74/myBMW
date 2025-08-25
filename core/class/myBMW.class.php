@@ -166,7 +166,7 @@ class myBMW extends eqLogic {
         $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric', 1);
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
 		$this->createCmd('chargingTarget', 'Objectif de recharge', 33, 'info', 'numeric');
-		$this->createCmd('acCurrentLimit', 'Courant de charge max', 34, 'info', 'numeric');
+		$this->createCmd('acCurrentLimit', 'Limitation courant de charge', 34, 'info', 'numeric');
 		        
 		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 35, 'info', 'numeric');
         $this->createCmd('remaining_fuel', 'Carburant restant', 36, 'info', 'numeric', 1);
@@ -511,8 +511,18 @@ class myBMW extends eqLogic {
 			}
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
 			//if ( isset($vehicle->state->electricChargingState->chargingTarget) ) { $this->checkAndUpdateCmd('chargingTarget', $vehicle->state->electricChargingState->chargingTarget); } else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
-			if ( isset($vehicle->state->chargingProfile->chargingSettings->targetSoc) ) { $this->checkAndUpdateCmd('chargingTarget', $vehicle->state->chargingProfile->chargingSettings->targetSoc); } else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
-			if ( isset($vehicle->state->chargingProfile->chargingSettings->acCurrentLimit) ) { $this->checkAndUpdateCmd('acCurrentLimit', $vehicle->state->chargingProfile->chargingSettings->acCurrentLimit); } else { $this->checkAndUpdateCmd('acCurrentLimit', '16'); }
+			if ( isset($vehicle->state->chargingProfile->chargingSettings->targetSoc) ) { 
+				$this->checkAndUpdateCmd('chargingTarget', $vehicle->state->chargingProfile->chargingSettings->targetSoc);
+				$this->setConfiguration('chargingTarget', $vehicle->state->chargingProfile->chargingSettings->targetSoc);
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
+			if ( isset($vehicle->state->chargingProfile->chargingSettings->acCurrentLimit) ) { 
+				$this->checkAndUpdateCmd('acCurrentLimit', $vehicle->state->chargingProfile->chargingSettings->acCurrentLimit);
+				$this->setConfiguration('chargingPowerLimit', $vehicle->state->chargingProfile->chargingSettings->acCurrentLimit);
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('acCurrentLimit', 'not available'); }
 						
 			if ( $this->getConfiguration('vehicle_type') == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
 				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
