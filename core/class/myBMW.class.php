@@ -166,7 +166,7 @@ class myBMW extends eqLogic {
         $this->createCmd('chargingLevelHv', 'Charge restante', 31, 'info', 'numeric', 1);
 		$this->createCmd('chargingEndTime', 'Heure de fin de charge', 32, 'info', 'string');
 		$this->createCmd('chargingTarget', 'Objectif de recharge', 33, 'info', 'numeric');
-		$this->createCmd('acCurrentLimit', 'Limitation courant de charge', 34, 'info', 'numeric');
+		$this->createCmd('acCurrentLimit', 'Limite courant de charge', 34, 'info', 'numeric');
 		        
 		$this->createCmd('beRemainingRangeFuelKm', 'Km restant (thermique)', 35, 'info', 'numeric');
         $this->createCmd('remaining_fuel', 'Carburant restant', 36, 'info', 'numeric', 1);
