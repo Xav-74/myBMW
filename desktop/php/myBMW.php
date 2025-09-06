@@ -255,6 +255,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<div id="div_chargingParameters" class="form-group" style="margin-bottom:32px !important">
 									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
+									<label class="col-sm-6 control-label">{{Limitation du courant de charge activée}}</label>
+									<div class="col-sm-6" style="height:35px">
+										<input type="checkbox" id="isAcCurrentLimitActive" class="eqLogicAttr" data-l1key="configuration" data-l2key="isAcCurrentLimitActive" disabled />
+									</div>
 									<label class="col-sm-6 control-label">{{Objectif de recharge}}</label>
 									<div class="col-sm-6">
 										<div id="div_chargingTarget" class="input-group" style="margin-bottom:3px !important">
@@ -271,7 +275,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											</span>
 										</div>
 									</div>
-									<label class="col-sm-6 control-label">{{Limitation du courant de charge}}</label>
+									<label class="col-sm-6 control-label">{{Limite du courant de charge}}</label>
 									<div class="col-sm-6">
 										<div id="div_chargingPowerLimit" class="input-group" style="margin-bottom:3px !important">
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingPowerLimit">
@@ -516,6 +520,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						$('#div_chargingPowerLimit a').removeClass('disabled').css('pointer-events', '');
 					}
 				}
+				if ( $('.eqLogicAttr[data-l2key=isAcCurrentLimitActive]').value() == true ) {
+					$('#isAcCurrentLimitActive').prop('checked', true);
+				}
+				else { $('#isAcCurrentLimitActive').prop('checked', false); }
+
 			}
 
 			$('body').off('click', '.toggle-pwd').on('click', '.toggle-pwd', function () {
