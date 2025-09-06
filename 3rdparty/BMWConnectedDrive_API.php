@@ -25,7 +25,7 @@ class BMWConnectedDrive_API
 	const CLIENT_ID = '31c357a0-7a1d-4590-aa99-33b97244d048';
 	const CLIENT_PWD = 'c0e3393d-70a2-4f6f-9d3c-8530af64d552';
 	const USER_AGENT = 'Dart/3.3 (dart:io)';
-	const X_USER_AGENT = 'android(AP2A.240605.024);%s;4.9.2(36892);row';
+	const X_USER_AGENT = 'android(%s);%s;4.9.2(36892);row';
 	
 	const VEHICLES_LIST_URL = '/eadrax-vcs/v5/vehicle-list';
 	const VEHICLE_PROFILE_URL = '/eadrax-vcs/v5/vehicle-data/profile';
@@ -165,7 +165,7 @@ class BMWConnectedDrive_API
 			'Accept: application/json',
 			'Authorization: Bearer '.$this->auth_token->getToken(),
 			'user-agent: '. $this::USER_AGENT,
-            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->_x_user_agent_buildstring(), $this->auth_config->getBrand()),
 			'accept-language: fr-FR',
 			'x-raw-locale: fr-FR',
 			'bmw-units-preferences: d=KM;v=L;p=B;ec=KWH100KM;fc=L100KM;em=GKM;',
@@ -229,6 +229,29 @@ class BMWConnectedDrive_API
 	}
 
 
+	private function _x_user_agent_buildstring()
+	{
+		$hostname = gethostname();
+		
+		$interface = exec("ip route | grep '^default' | awk '{print $5}'");
+		$mac = exec("cat /sys/class/net/$interface/address");
+		if (!$mac) { $mac = sprintf("%012x", mt_rand(0, 0xFFFFFFFFFFFF)); }
+		$system_uuid = $hostname . "-" . $mac;
+		
+		// UUID v5 (SHA-1 basé sur DNS namespace)
+		$namespace_dns = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
+		$hash = sha1(hex2bin(str_replace('-', '', $namespace_dns)) . $system_uuid);
+		$uid = strtoupper($hash);
+		$digits = preg_replace('/[^0-9]/', '', $uid);
+		$numeric = substr($digits, 0, 6);
+		$numeric = str_pad($numeric, 6, "0", STR_PAD_RIGHT);
+		$build_num = substr($digits, -3);
+		$build_num = str_pad($build_num, 3, "0", STR_PAD_LEFT);
+		
+		return "AP2A." . $numeric . "." . $build_num;
+	}
+
+
     public function getToken()
     {
         $code_verifier =  $this->_randomCode(86);
@@ -241,7 +264,7 @@ class BMWConnectedDrive_API
 		
 		//STAGE 0 - Request OAuth2 settings
 		$headers = [
-            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand()),
+            'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->_x_user_agent_buildstring(), $this->auth_config->getBrand()),
 			'ocp-apim-subscription-key: '.$ocp_apim_key,
             'bmw-session-id: '.$session_id,
 			'x-identity-provider: gcdm',
@@ -312,7 +335,7 @@ class BMWConnectedDrive_API
 		$headers = [
 			'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 			'Authorization: Basic ' . base64_encode($this::CLIENT_ID . ':' . $this::CLIENT_PWD),
-			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand())
+			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->_x_user_agent_buildstring(), $this->auth_config->getBrand())
 		];
 
 		$data = [
@@ -346,7 +369,7 @@ class BMWConnectedDrive_API
 		$headers = [
 			'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 			'Authorization: Basic ' . base64_encode($this::CLIENT_ID . ':' . $this::CLIENT_PWD),
-			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->auth_config->getBrand())
+			'x-user-agent: '. sprintf($this::X_USER_AGENT, $this->_x_user_agent_buildstring(), $this->auth_config->getBrand())
 		];
 
 		$data = [
