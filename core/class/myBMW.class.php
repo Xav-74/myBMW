@@ -409,6 +409,8 @@ class myBMW extends eqLogic {
 			if ( isset($vehicle['driveTrain']) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle['driveTrain']); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
 			log::add('myBMW', 'debug', '| Result getVehicleProfile() / getVehicleState() : '.str_replace('\n','',json_encode($vehicle,JSON_UNESCAPED_SLASHES)));
 			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
+			log::add('myBMW', 'debug', '┌─Command execution : refresh');
+			$eqLogic->refreshVehicleInfos();
 			return $vehicle;
 		}
 		else
@@ -1093,7 +1095,10 @@ class myBMW extends eqLogic {
 			sleep(10);
 			$retry--;
 		}	
+		
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingTarget : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$eqLogic->refreshVehicleInfos();
 		return $result->httpCode;
 	}
 
@@ -1119,6 +1124,8 @@ class myBMW extends eqLogic {
 		}
 
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingPowerLimit : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$eqLogic->refreshVehicleInfos();
 		return $result->httpCode;
 	}
 

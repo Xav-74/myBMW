@@ -255,7 +255,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<div id="div_chargingParameters" class="form-group" style="margin-bottom:32px !important">
 									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
-									<label class="col-sm-6 control-label">{{Limitation du courant de charge activée}}</label>
+									<label class="col-sm-6 control-label help" data-help="{{Uniquement à titre indicatif. Pour activer cette limitation, définissez une limite du courant de charge}}">{{Limitation du courant de charge activée}}</label>
 									<div class="col-sm-6" style="height:35px">
 										<input type="checkbox" id="isAcCurrentLimitActive" class="eqLogicAttr" data-l1key="configuration" data-l2key="isAcCurrentLimitActive" disabled />
 									</div>

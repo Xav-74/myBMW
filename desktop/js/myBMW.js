@@ -162,8 +162,8 @@ function synchronize()  {
 				$('#div_img').append(img);
 			
 				$('#captcha').val('');
-				$('.btn[data-action=save]').click();
 				$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
+				document.querySelector('.btn[data-action="save"]').click();
 			}
 		}
 	});
@@ -201,6 +201,7 @@ function getCoordinates()  {
 				else  {
 				$('#div_home_lat').append('<input id="input_home_lat" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_lat" placeholder="Latitude de votre domicile" value="'+data.result['latitude']+'" readonly>');
 				$('#div_home_long').append('<input id="input_home_long" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="home_long" placeholder="Longitude de votre domicile" value="'+data.result['longitude']+'" readonly>');
+				document.querySelector('.btn[data-action="save"]').click();
 				}
 			}
 			//$('#div_alert').showAlert({message: '{{Récupération des informations terminée avec succès}}', level: 'success'});
@@ -228,20 +229,19 @@ function setChargingTarget() {
 			handleAjaxError(request, status, error);
 			},
 		success: function (data) { 		
-
+			console.log(data.result);
 			if (data.state != 'ok' || data.result == null) {
 				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de l\'objectif de recharge}}', level: 'danger'});
 				return;
 			}
 			else  {
-				if ( data.result['res'] == "OK" ) {
+				if ( data.result == "200 - OK" ) {
 					$('#div_alert').showAlert({message: '{{Configuration de l\'objectif de recharge réalisée avec succès}}', level: 'success'});
+					document.querySelector('.btn[data-action="save"]').click();
 				}
 			}
 		}
 	});
-
-	$('.btn[data-action=save]').click();
 
 }
 
@@ -270,22 +270,20 @@ function setChargingPowerLimit() {
 				return;
 			}
 			else  {
-				if ( data.result['res'] == "OK" ) {
+				if ( data.result['res'] == "200 - OK" ) {
 					$('#div_alert').showAlert({message: '{{Configuration de la limitation du courant de charge réalisée avec succès}}', level: 'success'});
+					document.querySelector('.btn[data-action="save"]').click();
 				}
 			}
 		}
 	});
-
-	$('.btn[data-action=save]').click();
 
 }
 
 
 $('#bt_Synchronization').on('click',function() {
  
-	$('.btn[data-action=save]').click();
-	setTimeout(synchronize,2000);
+	synchronize();
 	
 });
 
@@ -349,24 +347,21 @@ $('#bt_Data').on('click',function() {
 
 $('#bt_gps').on('click',function() {
  
-	$('.btn[data-action=save]').click();
-	setTimeout(getCoordinates,2000);
+	getCoordinates();
 	
 });
 
 
 $('#bt_chargingTarget').on('click',function() {
 	
-	$('.btn[data-action=save]').click();
-	setTimeout(setChargingTarget(),2000);	
-
+	setChargingTarget();	
+	
 });
 
 
 $('#bt_chargingPowerLimit').on('click',function() {
 	
-	$('.btn[data-action=save]').click();
-	setTimeout(setChargingPowerLimit(),2000);
+	setChargingPowerLimit();
 
 });
 
