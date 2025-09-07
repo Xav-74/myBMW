@@ -787,6 +787,8 @@ class myBMW extends eqLogic {
 			$retry--;
 		}
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$this->refreshVehicleInfos();
 	}
 
     public function doDoorUnlock()
@@ -809,6 +811,8 @@ class myBMW extends eqLogic {
 			$retry--;
 		}	
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$this->refreshVehicleInfos();
 	}
 
     public function doClimateNow()
@@ -875,6 +879,8 @@ class myBMW extends eqLogic {
 			$retry--;
 		}	
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$this->refreshVehicleInfos();
 	}
 
 	public function stopChargeNow()
@@ -897,6 +903,8 @@ class myBMW extends eqLogic {
 			$retry--;
 		}	
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event stopChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$this->refreshVehicleInfos();
 	}
 
 	public function vehicleFinder()
