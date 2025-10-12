@@ -50,13 +50,13 @@ class myBMW extends eqLogic {
 	public function decrypt()
 	{
 		$this->setConfiguration('clientId', utils::decrypt($this->getConfiguration('clientId')));
-		$this->setConfiguration('clientId', utils::decrypt($this->getConfiguration('username')));
+		$this->setConfiguration('username', utils::decrypt($this->getConfiguration('username')));
 	}
 
 	public function encrypt()
 	{
 		$this->setConfiguration('clientId', utils::encrypt($this->getConfiguration('clientId')));
-		$this->setConfiguration('clientId', utils::encrypt($this->getConfiguration('username')));
+		$this->setConfiguration('username', utils::encrypt($this->getConfiguration('username')));
 	}
 
 

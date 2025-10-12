@@ -174,14 +174,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<fieldset>    
 								
 								<legend><i class="fas fa-cogs"></i> {{Paramètres du compte et du véhicule}}</legend>
-								<div id="div_user" class="form-group">						
+								<div id="div_clientId" class="form-group">						
 									<label class="col-sm-6 control-label">{{Client ID}}</label>
 									<div class="col-sm-6">
 										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="clientId" placeholder="Client ID à récupérer sur le site BMW">
 									</div>
 								</div>
 								
-								<div id="div_user" class="form-group">						
+								<div id="div_username" class="form-group">						
 									<label class="col-sm-6 control-label">{{CarData streaming username}}</label>
 									<div class="col-sm-6">
 										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="username" placeholder="CarData streaming username à récupérer sur le site BMW">
