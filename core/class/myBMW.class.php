@@ -19,10 +19,6 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-if (!class_exists('BMWConnectedDrive_API')) {
-	require_once __DIR__ . '/../../3rdparty/BMWConnectedDrive_API.php';
-}
-
 if (!class_exists('BMWCarData_API')) {
 	require_once __DIR__ . '/../../3rdparty/BMWCarData_API.php';
 }
