@@ -20,20 +20,20 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function myBMW_install() {
 
-    // Suppression du cron de la version précédente
+    message::add('myBMW', 'Merci pour l\'installation du plugin MyBMW. Lisez bien la documentation avant utilisation et n\'hésitez pas à laisser un avis sur le Market Jeedom !');
+	
+}
+
+function myBMW_update() {
+
+   	// Suppression du cron de la version précédente
     $cron = cron::byClassAndFunction('myBMW', 'pull');
     if (is_object($cron)) {
         $cron->remove();
         log::add('myBMW', 'debug', 'Remove cron pull');
     }
     
-	message::add('myBMW', 'Merci pour l\'installation du plugin MyBMW. Lisez bien la documentation avant utilisation et n\'hésitez pas à laisser un avis sur le Market Jeedom !');
-	
-}
-
-function myBMW_update() {
-
-   	// Mise à jour de l'ensemble des commandes pour chaque équipement
+    // Mise à jour de l'ensemble des commandes pour chaque équipement
     log::add('myBMW', 'debug', 'Update myBMW plugin commands');
     foreach (eqLogic::byType('myBMW') as $eqLogic) {
         $eqLogic->save();
