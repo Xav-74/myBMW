@@ -428,7 +428,7 @@ class myBMW extends eqLogic {
 	public static function authenticate($vin, $clientId, $brand)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
-		log::add('myBMW', 'debug', '┌─Command execution : synchronize');
+		log::add('myBMW', 'debug', '┌─Command execution : authenticate');
 		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
 		log::add('myBMW', 'debug', '| Brand : '.strtoupper($brand).' - Connection car vin : '.$vin.' with client ID : '.$clientId); 
 		$result = $myConnection->getDeviceCode();
@@ -464,7 +464,7 @@ class myBMW extends eqLogic {
 		
 		$getContainer = $myConnection->getContainer();
 		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($getContainer->httpCode, ['200 - OK', '201 - CREATED']), '| Result getContainer() : ['.$getContainer->httpCode.'] '.$getContainer->body);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of authentication : ['.$result->httpCode.']');
 		
 		log::add('myBMW', 'debug', '┌─Command execution : refresh');
 		$eqLogic->refreshVehicleInfos();

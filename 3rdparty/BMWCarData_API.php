@@ -269,8 +269,8 @@ class BMWCarData_API
                     continue;
                 }
                 else { 
-                    die();
                     log::add('myBMW', 'debug', '| Result Authentication Stage 2 - getTokens() : Error ->' . $response->error);
+                    throw new \Exception($response->error);
                 }
             }
             
@@ -322,13 +322,13 @@ class BMWCarData_API
        	if (!$this->access_token)
 		{
 			log::add('myBMW', 'error', '| Result Authentication : you must (re)authenticate' );
-            return false;
+            throw new \Exception('you must (re)authenticate');
 		}
 
-		if ($this->access_token && time() > ($this->expires_in-10))
+		if ($this->access_token && time() > ($this->expires_in-30))
 		{
-            sleep(10);
-            return $this->refreshTokens();
+            log::add('myBMW', 'debug', '| Token about to expire, refreshing...');
+            $this->refreshTokens();
         }
 		
 		$expires_in = $this->expires_in - time();
