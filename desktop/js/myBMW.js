@@ -90,25 +90,69 @@ function printEqLogic(_eqLogic) {
 };
 
 
-function synchronize()  {
+function authenticate()  {
 
-	//$('#div_brand').empty();
 	$('#div_model').empty();
 	$('#div_year').empty();
 	$('#div_type').empty();
 	  
-	$('#div_alert').showAlert({message: '{{Synchronisation en cours}}', level: 'warning'});	
+	$('#div_alert').showAlert({message: '{{Authentification en cours}}', level: 'warning'});	
 	$.ajax({													// fonction permettant de faire de l'ajax
 		type: "POST", 											// methode de transmission des données au fichier php
 		url: "plugins/myBMW/core/ajax/myBMW.ajax.php", 			// url du fichier php
 		data: {
-			action: "synchronize",
+			action: "authenticate",
 			vin: $('.eqLogicAttr[data-l2key=vehicle_vin]').value(),
-			username: $('.eqLogicAttr[data-l2key=username]').value(),
-			pwd: $('.eqLogicAttr[data-l2key=password]').value(),
+			clientId: $('.eqLogicAttr[data-l2key=clientId]').value(),
 			brand: $('.eqLogicAttr[data-l2key=vehicle_brand]').value(),
-			hCaptchaResponse: $('.eqLogicAttr[data-l2key=hCaptcha]').value(),
+		},
+		dataType: 'json',
+			error: function (request, status, error) {
+			handleAjaxError(request, status, error);
 			},
+		success: function (data) { 			
+
+			if (data.state != 'ok' || data.result == null) {
+				$('#div_alert').showAlert({message: '{{Erreur lors de la récupération du device code}}', level: 'danger'});
+				return;
+			}
+			else  {
+				var user_code = data.result[0];
+				var device_code = data.result[1];
+				var interval = data.result[2];
+				var expires_in = data.result[3];
+				var url = data.result[4];
+				var vin = data.result[5];
+				var clientId = data.result[6];
+				var brand = data.result[7];
+				var codeVerifier = data.result[8]
+				var message = 'Cliquez sur OK pour ouvrir le lien web BMW, vous authentifier et valider le code ! Celui-ci est valable pendant '+expires_in+' s';
+				var response = alert(message);
+				window.open(url, "_blank");
+								
+				authenticate2(vin, clientId, brand, device_code, codeVerifier, interval, expires_in);				
+			}
+		}
+	});
+	
+};
+
+
+function authenticate2(vin, clientId, brand, device_code, codeVerifier, interval, expires_in)  {
+
+	$.ajax({													// fonction permettant de faire de l'ajax
+		type: "POST", 											// methode de transmission des données au fichier php
+		url: "plugins/myBMW/core/ajax/myBMW.ajax.php", 			// url du fichier php
+		data: {
+			action: "authenticate2",
+			vin: vin,
+			clientId: clientId,
+			brand: brand,
+			device_code: device_code,
+			codeVerifier: codeVerifier,
+			interval: interval,
+			expires_in: expires_in,
+		},
 		dataType: 'json',
 			error: function (request, status, error) {
 			handleAjaxError(request, status, error);
@@ -116,59 +160,41 @@ function synchronize()  {
 		success: function (data) { 			
 
 			if (data.state != 'ok') {
-				$('#captcha').val('');
-				$('#div_alert').showAlert({message: '{{Erreur lors de la synchronisation}}', level: 'danger'});
+				$('#div_alert').showAlert({message: '{{Erreur lors de la récupération des tokens}}', level: 'danger'});
 				return;
 			}
 			else  {
-				//$('#div_brand').append('<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule" value="'+data.result['brand']+'" readonly>'); 
-				$('#div_model').append('<input id="model" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="'+data.result['model']+'" readonly>'); 
-				$('#div_year').append('<input id="year" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="'+data.result['year']+'" readonly>'); 
-				$('#div_type').append('<input id="type" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="'+data.result['driveTrain']+'" readonly>');
+				if ( data.result != null ) { 
+					$('#div_model').append('<input id="model" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="'+data.result['modelName']+'" readonly>'); 
+					$('#div_year').append('<input id="year" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="'+data.result['constructionDate']+'" readonly>'); 
+					$('#div_type').append('<input id="type" type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="'+data.result['driveTrain']+'" readonly>');
 				
-				if ( data.result['capabilities']['lock'] == true ) { $('#isLockSupported').prop('checked', true);}
-				else { $('#isLockSupported').prop('checked', false); }
-				if ( data.result['capabilities']['unlock'] == true ) { $('#isUnlockSupported').prop('checked', true); }
-				else { $('#isUnlockSupported').prop('checked', false); }
-				if ( data.result['capabilities']['lights'] == true ) { $('#isLightSupported').prop('checked', true); }
-				else { $('#isLightSupported').prop('checked', false); }
-				if ( data.result['capabilities']['horn'] == true ) { $('#isHornSupported').prop('checked', true); }
-				else { $('#isHornSupported').prop('checked', false); }
-				if ( data.result['capabilities']['vehicleFinder'] == true ) { $('#isVehicleFinderSupported').prop('checked', true); }
-				else { $('#isVehicleFinderSupported').prop('checked', false); }
-				if ( data.result['capabilities']['sendPoi'] == true ) { $('#isSendPOISupported').prop('checked', true); }
-				else { $('#isSendPOISupported').prop('checked', false); }
-				if ( data.result['brand'].includes('BMW') ) {
-					if ( data.result['capabilities']['isBmwChargingSupported'] == true ) { $('#isChargingSupported').prop('checked', true); }
-					else { $('#isChargingSupported').prop('checked', false); }
+					$('#isLockSupported').prop('checked', false);
+					$('#isUnlockSupported').prop('checked', false);
+					$('#isLightSupported').prop('checked', false);
+					$('#isHornSupported').prop('checked', false);
+					$('#isVehicleFinderSupported').prop('checked', false);
+					$('#isSendPOISupported').prop('checked', false);
+					$('#isChargingSupported').prop('checked', false);
+					$('#isClimateSupported').prop('checked', false);
+					if ( data.result['driveTrain'] == 'BEV' || data.result['driveTrain'] == 'PHEV' ) { $('#isChargingHistorySupported').prop('checked', true); }
+					else { $('#isChargingHistorySupported').prop('checked', false); }
+					$('#isDrivingHistorySupported').prop('checked', false);
+					$('#isChargingTargetSocEnabled').prop('checked', false);
+					$('#isChargingPowerLimitEnabled').prop('checked', false);
+					
+					$('#div_img').empty();
+					var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
+					$('#div_img').append(img);				
+					
+					$('#div_alert').showAlert({message: '{{Authentification terminée avec succès}}', level: 'success'});
+					document.querySelector('.btn[data-action="save"]').click();
 				}
-				if ( data.result['brand'].includes('MINI') ) {
-					if ( data.result['capabilities']['isMiniChargingSupported'] == true ) { $('#isChargingSupported').prop('checked', true); }
-					else { $('#isChargingSupported').prop('checked', false); }
-				}				
-				if ( data.result['capabilities']['climateNow'] == true ) { $('#isClimateSupported').prop('checked', true); }
-				else { $('#isClimateSupported').prop('checked', false); }
-				if ( data.result['capabilities']['isChargingHistorySupported'] == true ) { $('#isChargingHistorySupported').prop('checked', true); }
-				else { $('#isChargingHistorySupported').prop('checked', false); }
-				if ( data.result['capabilities']['isSustainabilitySupported'] == true ) { $('#isDrivingHistorySupported').prop('checked', true); }
-				else { $('#isDrivingHistorySupported').prop('checked', false); }
-				if ( data.result['capabilities']['isChargingTargetSocEnabled'] == true ) { $('#isChargingTargetSocEnabled').prop('checked', true); }
-				else { $('#isChargingTargetSocEnabled').prop('checked', false); }
-				if ( data.result['capabilities']['isChargingPowerLimitEnabled'] == true ) { $('#isChargingPowerLimitEnabled').prop('checked', true); }
-				else { $('#isChargingPowerLimitEnabled').prop('checked', false); }
-
-				$('#div_img').empty();
-				var img ='<img id="car_img" src="plugins/myBMW/data/' + data.result['vin'] + '.png" style="height:300px" />';
-				$('#div_img').append(img);
-			
-				$('#captcha').val('');
-				$('#div_alert').showAlert({message: '{{Synchronisation terminée avec succès}}', level: 'success'});
-				document.querySelector('.btn[data-action="save"]').click();
+				else { $('#div_alert').showAlert({message: '{{Erreur lors de la récupération des tokens}}', level: 'danger'}); }
 			}
 		}
 	});
-	
-};
+}
 
 
 function getCoordinates()  {
@@ -211,97 +237,10 @@ function getCoordinates()  {
 };
 
 
-function setChargingTarget() {
-
-	var vin =  $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
-	var chargingTarget = $('.eqLogicAttr[data-l2key=chargingTarget]').value();
-		
-	$.ajax({													// fonction permettant de faire de l'ajax
-		type: "POST", 											// methode de transmission des données au fichier php
-		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
-		data: {
-			action: "chargingTarget",
-			vin: vin,
-			chargingTarget: chargingTarget,
-			},
-		dataType: 'json',
-			error: function (request, status, error) {
-			handleAjaxError(request, status, error);
-			},
-		success: function (data) { 		
-			console.log(data.result);
-			if (data.state != 'ok' || data.result == null) {
-				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de l\'objectif de recharge}}', level: 'danger'});
-				return;
-			}
-			else  {
-				if ( data.result == "200 - OK" ) {
-					$('#div_alert').showAlert({message: '{{Configuration de l\'objectif de recharge réalisée avec succès}}', level: 'success'});
-					document.querySelector('.btn[data-action="save"]').click();
-				}
-			}
-		}
-	});
-
-}
-
-
-function setChargingPowerLimit() {
-
-	var vin =  $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
-	var chargingPowerLimit = $('.eqLogicAttr[data-l2key=chargingPowerLimit]').value();
-		
-	$.ajax({													// fonction permettant de faire de l'ajax
-		type: "POST", 											// methode de transmission des données au fichier php
-		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
-		data: {
-			action: "chargingPowerLimit",
-			vin: vin,
-			chargingPowerLimit: chargingPowerLimit,
-			},
-		dataType: 'json',
-			error: function (request, status, error) {
-			handleAjaxError(request, status, error);
-			},
-		success: function (data) { 		
-
-			if (data.state != 'ok' || data.result == null) {
-				$('#div_alert').showAlert({message: '{{Erreur lors de la configuration de la limitation du courant de charge}}', level: 'danger'});
-				return;
-			}
-			else  {
-				if ( data.result['res'] == "200 - OK" ) {
-					$('#div_alert').showAlert({message: '{{Configuration de la limitation du courant de charge réalisée avec succès}}', level: 'success'});
-					document.querySelector('.btn[data-action="save"]').click();
-				}
-			}
-		}
-	});
-
-}
-
-
-$('#bt_Synchronization').on('click',function() {
+$('#bt_authenticate').on('click',function() {
  
-	synchronize();
+	authenticate();
 	
-});
-
-
-$('#bt_Captcha').on('click',function() {
-
-	$('body').append('<div id="mod_captcha" style="background-color: white !important; overflow-x: hidden; overflow-y: hidden;"></div>');
-	$("#mod_captcha").dialog({
-		create: function(event, ui) { 
-			$(this).closest(".ui-dialog").find(".ui-dialog-titlebar").remove();				// Supprime la barre de titre entière
-		},
-		autoOpen: false,
-		modal: true,
-		width: 333,
-		height: 181,
-	});
-	$('#mod_captcha').load('index.php?v=d&plugin=myBMW&modal=Captcha.myBMW').dialog('open');
-
 });
 
 
@@ -337,7 +276,39 @@ $('#bt_resetToken').on('click',function() {
 });
 
 
-$('#bt_Data').on('click',function() {
+$('#bt_resetContainer').on('click',function() {
+	
+	var vin = $('.eqLogicAttr[data-l2key=vehicle_vin]').value();
+		
+	$.ajax({													// fonction permettant de faire de l'ajax
+		type: "POST", 											// methode de transmission des données au fichier php
+		url: "plugins/myBMW/core/ajax/myBMW.ajax.php",		 	// url du fichier php
+		data: {
+			action: "resetContainer",
+			vin: vin,
+			},
+		dataType: 'json',
+			error: function (request, status, error) {
+			handleAjaxError(request, status, error);
+			},
+		success: function (data) { 		
+
+			if (data.state != 'ok' || data.result == null) {
+				$('#div_alert').showAlert({message: '{{Erreur lors de la suppression du container}}', level: 'danger'});
+				return;
+			}
+			else  {
+				if ( data.result['res'] == "OK" ) {
+					$('#div_alert').showAlert({message: '{{Suppression du container réalisée avec succès}}', level: 'success'});
+				}
+			}
+		}
+	});
+
+});
+
+
+$('#bt_data').on('click',function() {
 	
 	$('#md_modal').dialog({title: "{{Données brutes BMW Connected Drive}}"});
 	$('#md_modal').load('index.php?v=d&plugin=myBMW&modal=Data.myBMW&eqLogicId='+ $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
@@ -349,20 +320,6 @@ $('#bt_gps').on('click',function() {
  
 	getCoordinates();
 	
-});
-
-
-$('#bt_chargingTarget').on('click',function() {
-	
-	setChargingTarget();	
-	
-});
-
-
-$('#bt_chargingPowerLimit').on('click',function() {
-	
-	setChargingPowerLimit();
-
 });
 
 

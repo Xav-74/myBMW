@@ -36,37 +36,24 @@ log::add('myBMW', 'debug', '┌─Command execution : retrieving raw data - eqLo
     }
 </style>
 
-<h3>{{vehicles List :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:100%;height:200px;'><?php echo json_encode($eqLogic->vehiclesInfos(),JSON_PRETTY_PRINT); ?></pre>
+<h3>{{container List :}} </h3>
+<pre id='pre_eventlog' style='overflow: auto; width:100%;height:200px;'><?php echo json_encode($eqLogic->listContainer(),JSON_PRETTY_PRINT); ?></pre>
 </br>
 
 <h3>{{vehicle Profile :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->vehicleProfile(),JSON_PRETTY_PRINT); ?></pre>
+<pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->basicData(),JSON_PRETTY_PRINT); ?></pre>
 </br>
 
 <h3>{{vehicle State :}} </h3>
 <pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'><?php echo json_encode($eqLogic->vehicleState(),JSON_PRETTY_PRINT); ?></pre>
 </br>
 
-<h3>{{charging Statistics & Sessions :}} </h3>
+<h3>{{charging History :}} </h3>
 <pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'>
 <?php 
-    if ( $eqLogic->getConfiguration("vehicle_type") == 'ELECTRIC' || $eqLogic->getConfiguration("vehicle_type") == 'PLUGIN_HYBRID' ) {
-        echo json_encode($eqLogic->chargingStatistics(),JSON_PRETTY_PRINT);
-        echo '<br><br>';
-        echo json_encode($eqLogic->chargingSessions(),JSON_PRETTY_PRINT);
+    if ( $eqLogic->getConfiguration("vehicle_type") == 'BEV' || $eqLogic->getConfiguration("vehicle_type") == 'PHEV' ) {
+        echo json_encode($eqLogic->chargingHistory(),JSON_PRETTY_PRINT);
     } 
-    else { echo 'Not available';}
-?></pre>
-</br>
-
-<h3>{{last Trip :}} </h3>
-<pre id='pre_eventlog' style='overflow: auto; width:100%;height:400px;'>
-<?php
-    $data = $eqLogic->lastTrip(); 
-    if ($data != null) {
-        echo json_encode( $data, JSON_PRETTY_PRINT);
-    }
     else { echo 'Not available';}
 ?></pre>
 </br>

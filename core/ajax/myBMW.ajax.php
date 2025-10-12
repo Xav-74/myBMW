@@ -26,17 +26,17 @@ try {
     
     ajax::init();
 
-	if (init('action') == 'sendPOI') {
-		$result = myBMW::sendPOI(init('vin'),init('username'),init('pwd'),init('brand'),init('json'));
-		ajax::success($result);
-	}
-		
 	if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
 	
-	if (init('action') == 'synchronize') {
-		$result = myBMW::synchronize(init('vin'),init('username'),init('pwd'),init('brand'),init('hCaptchaResponse'));
+	if (init('action') == 'authenticate') {
+		$result = myBMW::authenticate(init('vin'),init('clientId'),init('brand'));
+		ajax::success($result);
+	}
+
+	if (init('action') == 'authenticate2') {
+		$result = myBMW::authenticate2(init('vin'),init('clientId'),init('brand'),init('device_code'),init('codeVerifier'), init('interval'), init('expires_in'));
 		ajax::success($result);
 	}
 	
@@ -50,18 +50,8 @@ try {
 		ajax::success($result);
 	}
 
-	if (init('action') == 'scheduleCron') {
-		$result = myBMW::scheduleCron(init('cronPattern'));
-		ajax::success($result);
-	}
-
-	if (init('action') == 'chargingTarget') {
-		$result = myBMW::setChargingTarget(init('vin'),init('chargingTarget'));
-		ajax::success($result);
-	}
-
-	if (init('action') == 'chargingPowerLimit') {
-		$result = myBMW::setChargingPowerLimit(init('vin'),init('chargingPowerLimit'));
+	if (init('action') == 'resetContainer') {
+		$result = myBMW::resetContainer(init('vin'));
 		ajax::success($result);
 	}
 		

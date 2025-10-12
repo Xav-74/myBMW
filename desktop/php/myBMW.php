@@ -66,7 +66,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 					$img = $eqLogic->getConfiguration('vehicle_vin').'.png';
 					$opacity = ($eqLogic->getIsEnable()) ? '' : 'disableCard';
 					echo '<div class="eqLogicDisplayCard cursor '.$opacity.'" data-eqLogic_id="' . $eqLogic->getId() . '">';
-					if ( file_exists($filename) ) { echo '<img id="img_eq" src="/plugins/myBMW/data/'.$img.'" style="transform:scale(80%); left:0px !important" />'; }
+					if ( file_exists($filename) ) { echo '<img id="img_eq" src="/plugins/myBMW/data/'.$img.'" style="transform:scale(125%);" />'; }
 					else { echo '<img id="img_eq" src="' . $plugin->getPathImgIcon() . '" />'; }
 					echo '<br/>';
 					echo '<div class="name" style="line-height:20px !important">' . $eqLogic->getHumanName(true, true) . '</div>';
@@ -175,27 +175,26 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<legend><i class="fas fa-cogs"></i> {{Paramètres du compte et du véhicule}}</legend>
 								<div id="div_user" class="form-group">						
-									<label class="col-sm-6 control-label">{{Identifiant}}</label>
+									<label class="col-sm-6 control-label">{{Client ID}}</label>
 									<div class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="username" placeholder="Identifiant utilisé pour vous connecter à votre compte My BMW">
-									</div>
-								</div>	
-									
-								<div id="div_pwd" class="form-group">		
-									<label class="col-sm-6 control-label">{{Mot de passe}}</label>
-									<div class="col-sm-6 pass_show">
-										<input type="password" id="pwd" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="password" placeholder="Mot de passe utilisé pour vous connecter à votre compte My BMW" style="margin-bottom:0px !important">
-										<span class="eye fa fa-fw fa-eye toggle-pwd"></span>
+										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="clientId" placeholder="Client ID à récupérer sur le site BMW">
 									</div>
 								</div>
 								
+								<div id="div_user" class="form-group">						
+									<label class="col-sm-6 control-label">{{CarData streaming username}}</label>
+									<div class="col-sm-6">
+										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="username" placeholder="CarData streaming username à récupérer sur le site BMW">
+									</div>
+								</div>
+									
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Marque}}</label>
 									<div class="col-sm-6">
-										<select id="sel_brand" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule">
+										<select id="sel_brand" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="vehicle_brand" placeholder="Marque du véhicule">
 											<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
-											<option value="1">BMW</option>
-											<option value="2">MINI</option>
+											<option value="bmw">BMW</option>
+											<option value="mini">MINI</option>
 										</select>
 									</div>
 								</div>   
@@ -203,52 +202,44 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div id="div_vin" class="form-group">		
 									<label class="col-sm-6 control-label">{{VIN}}</label>
 									<div class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_vin" placeholder="Numéro d'identification de votre véhicule disponible sur la carte grise (E)">
+										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="vehicle_vin" placeholder="Numéro d'identification de votre véhicule disponible sur la carte grise (E)">
 									</div>
 								</div>
 
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Modèle}}</label>
 									<div id="div_model" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="" readonly>
+										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="vehicle_model" placeholder="Modèle du véhicule" value="" readonly>
 									</div>
 								</div>
 								
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Année}}</label>
 									<div id="div_year" class="col-sm-6">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
+										<input type="text" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="vehicle_year" placeholder="Année de fabrication du véhicule" value="" readonly>
 									</div>
 								</div>
 								
 								<div class="form-group">		
 									<label class="col-sm-6 control-label">{{Type}}</label>
 									<div id="div_type" class="col-sm-6">
-										<input type="text" id="vehicle_type" class="eqLogicAttr form-control" style="margin: 1px 0px;" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
+										<input type="text" id="vehicle_type" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="vehicle_type" placeholder="Type de véhicule" value="" readonly>
 									</div>
 								</div>
 
 								</br>
 
-								<div class="form-group">						
-									<label class="col-sm-6 control-label help" data-help="{{Uniquement nécessaire à la première connexion ou en cas de suppression du token.<br/> Générez le captcha via la page de documentation du plugin et copiez le ici puis synchronisez !}}">Captcha</label>
-									<div class="col-sm-6">
-										<!--<div id="div_captcha" class="input-group">-->
-											<input type="text" id="captcha" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="hCaptcha">
-											<!--<span class="input-group-btn" title="{{Résoudre le captcha}}">
-                    							<a class="btn btn-primary" id="bt_Captcha"><i class="fas fa-key"></i></a>
-                							</span>
-										</div>-->
-									</div>
-								</div>								
-								
 								<div id="div_actions" class="form-group">						
-									<label class="col-sm-6 control-label help" data-help="{{Attention, la suppression du token nécessitera obligatoirement une nouvelle synchronisation !}}">{{Actions}}</label>	
+									<label class="col-sm-6 control-label help" data-help="{{Attention, la suppression du token ou du container nécessitera obligatoirement une nouvelle authentification !}}">{{Actions}}</label>	
 									<div class="col-sm-6">
-										<a class="btn btn-default btn-sm cmdAction" id="bt_Synchronization"><i class="fas fa-sync"></i> {{Synchronisation}}</a>
-										<a class="btn btn-danger btn-sm cmdAction" id="bt_resetToken"><i class="far fa-trash-alt"></i> {{Suppression token}}</a>
-										<a class="btn btn-primary btn-sm cmdAction" id="bt_Data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
+										<a class="btn btn-default btn-sm cmdAction" id="bt_authenticate"><i class="fas fa-sync"></i> {{Authentification}}</a>
+										<a class="btn btn-primary btn-sm cmdAction" id="bt_data"><i class="far fa-file-alt"></i> {{Données brutes}}</a>
 									</div>	
+									<label class="col-sm-6 control-label"></label>
+									<div class="col-sm-6" style="margin-top:3px">	
+										<a class="btn btn-danger btn-sm cmdAction" id="bt_resetToken"><i class="far fa-trash-alt"></i> {{Suppression token}}</a>
+										<a class="btn btn-danger btn-sm cmdAction" id="bt_resetContainer"><i class="far fa-trash-alt"></i> {{Suppression container}}</a>
+									</div>
 								</div>
 							
 								</br>
@@ -398,18 +389,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 								<div class="form-group">
 									<div class="col-sm-2"></div>	
-									<label class="col-sm-3">{{Charge électrique (On / Off)}}</label>
-									<div class="col-sm-1"><input type="checkbox" id="isChargingSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingSupported" disabled /></div>
 									<label class="col-sm-3">{{Ventilation}}</label>
 									<div class="col-sm-1"><input type="checkbox" id="isClimateSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isClimateSupported" disabled /></div>
-									<div class="col-sm-2"></div>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-2"></div>	
-									<label class="col-sm-3">{{Statistiques de charge}}</label>
-									<div class="col-sm-1"><input type="checkbox" id="isChargingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingHistorySupported" disabled /></div>
-									<label class="col-sm-3">{{Statistiques de conduite}}</label>
-									<div class="col-sm-1"><input type="checkbox" id="isDrivingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isDrivingHistorySupported" disabled /></div>
+									<label class="col-sm-3">{{Charge électrique (On / Off)}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingSupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingSupported" disabled /></div>
 									<div class="col-sm-2"></div>
 								</div>
 								<div class="form-group">
@@ -420,13 +403,21 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<div class="col-sm-1"><input type="checkbox" id="isChargingPowerLimitEnabled" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingPowerLimitEnabled" disabled /></div>
 									<div class="col-sm-2"></div>
 								</div>
-								
+								<div class="form-group">
+									<div class="col-sm-2"></div>	
+									<label class="col-sm-3">{{Statistiques de charge}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isChargingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isChargingHistorySupported" disabled /></div>
+									<label class="col-sm-3">{{Statistiques de conduite}}</label>
+									<div class="col-sm-1"><input type="checkbox" id="isDrivingHistorySupported" class="eqLogicAttr" data-l1key="configuration" data-l2key="isDrivingHistorySupported" disabled /></div>
+									<div class="col-sm-2"></div>
+								</div>
+																
 								</br></br></br>
 
 								<legend><i class="fas fa-camera"></i> {{Image}}</legend>
 								<div class="form-group">
 									<div id="div_img" class="col-sm-12" style="margin-bottom: 10px">
-										<img id="car_img" src=""/>
+										<img id="car_img" style="margin-top: -150px; margin-left: -100px" src=""/>
 									</div>
 								</div>
 
@@ -497,7 +488,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			}
 
 			function setDisplayCharge() {
-				if ( $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "PLUGIN_HYBRID" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC_WITH_RANGE_EXTENDER") {
+				$('#div_chargingParameters').hide();
+				/*if ( $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "PLUGIN_HYBRID" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC_WITH_RANGE_EXTENDER") {
 					$('#div_chargingParameters').hide();
 				}
 				else {
@@ -523,40 +515,11 @@ $eqLogics = eqLogic::byType($plugin->getId());
 				if ( $('.eqLogicAttr[data-l2key=isAcCurrentLimitActive]').value() == true ) {
 					$('#isAcCurrentLimitActive').prop('checked', true);
 				}
-				else { $('#isAcCurrentLimitActive').prop('checked', false); }
-
+				else { $('#isAcCurrentLimitActive').prop('checked', false); }*/
 			}
 
-			$('body').off('click', '.toggle-pwd').on('click', '.toggle-pwd', function () {
-				$(this).toggleClass("fa-eye fa-eye-slash");
-				var input = $("#pwd");
-				if (input.attr("type") === "password") {
-				input.attr("type", "text");
-				} else {
-				input.attr("type", "password");
-				}
-			});
-			
 			</script>
-			
-			<style>
-				
-				.pass_show {
-					position: relative
-				}
-
-				.pass_show .eye {
-					position: absolute;
-					top: 60% !important;
-					right: 20px;
-					z-index: 1;
-					margin-top: -10px;
-					cursor: pointer;
-					transition: .3s ease all;
-				}
-
-			</style>			
-						
+									
 			<div role="tabpanel" class="tab-pane" id="commandtab">
 				<!--<a class="btn btn-success btn-sm cmdAction pull-right" data-action="add" style="margin-top:5px;"><i class="fa fa-plus-circle"></i> {{Commandes}}</a><br/><br/>-->
 				<table id="table_cmd" class="table table-bordered table-condensed">

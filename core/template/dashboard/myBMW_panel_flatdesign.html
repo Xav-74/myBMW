@@ -12,7 +12,7 @@
 		
 				<div class="col-xs-12" id="tile" style="height:253px; width:444px;">
 					<div id="picture" style="height: 250px; width:440px;"> 
-						<img id="img_car#id#" src="plugins/myBMW/data/#vehicle_vin#id##.png" style="width:300px; margin-bottom: -40px" />
+						<img id="img_car#id#" src="plugins/myBMW/data/#vehicle_vin#id##.png" style="height:250px; margin-left: -20px" />
 					</div>
 				</div>
 				
@@ -278,7 +278,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-6 drivingStats_chart#id#" id="column" style="width:675px;">
+			<!-- <div class="col-xs-6 drivingStats_chart#id#" id="column" style="width:675px;">
 				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="drivingStats_chart#id#"></div>
 				</div>
@@ -288,7 +288,7 @@
 				<div class="col-xs-12" id="tile" style="width:669px;">
 					<div class="col-xs-12" id="trips_chart#id#"></div>
 				</div>
-			</div>
+			</div> -->
 			
 			<!-- Last row -->
 			<div class="col-xs-12" id="column">
@@ -301,14 +301,14 @@
 	
 	<script>
     
-    //----- Display options (Electric / Combustion / Hybrid)
+    //----- Display options (Electric (BEV) / Combustion (ICE/MHEV) / Hybrid (PHEV))
 	var panel_height = 2080;
 		
-	if ( '#vehicle_type#id##' == 'PLUGIN_HYBRID' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER' )  {
+	if ( '#vehicle_type#id##' == 'PHEV' )  {
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	if ( '#vehicle_type#id##' == 'ELECTRIC' )  {
+	if ( '#vehicle_type#id##' == 'BEV' )  {
 		$('.combustion_engine#id#').hide();
 		$('.fuel_chart#id#').hide();
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
@@ -316,7 +316,7 @@
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' )  {
+	if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' )  {
 		$('.electric_engine#id#').hide();
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
@@ -382,30 +382,30 @@
 		if ($('body').attr('data-theme').endsWith('Dark')) {
 			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_panel_style_dark.css';
 			theme = 'black';
-			if ( '#vehicle_brand#id##' == 1 )  {
+			if ( '#vehicle_brand#id##' == 'bmw' )  {
 				source = "plugins/myBMW/core/img/logo_bmw_white.png";
 			}
-			if ( '#vehicle_brand#id##' == 2 )  {
+			if ( '#vehicle_brand#id##' == 'mini' )  {
 				source = "plugins/myBMW/core/img/logo_mini_white.png";
 			}
 		}
 		else if ($('body').attr('data-theme').endsWith('Light')) {
 			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_panel_style_light.css';
 			theme = 'white';
-			if ( '#vehicle_brand#id##' == 1 )  {
+			if ( '#vehicle_brand#id##' == 'bmw' )  {
 				source = "plugins/myBMW/core/img/logo_bmw_black.png";
 			}
-			if ( '#vehicle_brand#id##' == 2 )  {
+			if ( '#vehicle_brand#id##' == 'mini' )  {
 				source = "plugins/myBMW/core/img/logo_mini_black.png";
 			}
 		}
 		if ($('body').attr('data-theme').endsWith('Legacy')) {
 			link.href = 'plugins/myBMW/core/template/dashboard/myBMW_panel_style_legacy.css';
 			theme = 'legacy';
-			if ( '#vehicle_brand#id##' == 1 )  {
+			if ( '#vehicle_brand#id##' == 'bmw' )  {
 				source = "plugins/myBMW/core/img/logo_bmw_black.png";
 			}
-			if ( '#vehicle_brand#id##' == 2 )  {
+			if ( '#vehicle_brand#id##' == 'mini' )  {
 				source = "plugins/myBMW/core/img/logo_mini_black.png";
 			}
 		}
@@ -887,9 +887,7 @@
 			$('.nb_message#id#').empty().append('<span>'+'('+Object.keys(messages.requiredServices).length+')'+'</span>');
 			table_html += '<ul class="list-group" style="text-align: left">';
 			jQuery.each(messages.requiredServices,function(key,message){
-				//if ( message.description != '' ) {
-					table_html += '<li class="list-group-item"><span class="label">'+message.type+message.date+message.mileage+message.state+'</span><br/><span class="label">'+message.title+'</span><br/><span class="label" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
-				//}
+				table_html += '<li class="list-group-item"><span class="label">'+message.type+message.date+message.mileage+'</span><br/><span class="label">'+message.title+'</span><br/><span class="label" style="white-space: normal; text-align: left">'+message.description+'</span></li>'
 			});
 			table_html += '</ul>';
 			$('.table_message#id#').empty().append(table_html);
@@ -1277,7 +1275,7 @@
 		
 
 		//----- driving Statistics
-		var stats_totalTrips;
+		/*var stats_totalTrips;
 		var stats_totalDistance;
 		var stats_totalDistanceUnit;
 		var stats_totalCombustionPercentage;
@@ -1292,17 +1290,17 @@
 				stats_totalDistance = Math.round(stats.totalDistance);
 				stats_totalDistanceUnit = stats.totalDistanceUnit;
 				
-				if ('#vehicle_type#id##' == 'ELECTRIC' || '#vehicle_type#id##' == 'ELECTRIC_WITH_RANGE_EXTENDER') {
+				if ('#vehicle_type#id##' == 'BEV') {
 					stats_totalCombustionPercentage = 0.00;
 					stats_totalElectricPercentage = 100.00; 
 					stats_totalConsumption = 'Consommation moyenne électrique : '+ stats.totalElectricConsumption.averageConsumption + ' ' + stats.totalElectricConsumption.averageUnit;
 				}
-				else if ( '#vehicle_type#id##' == 'COMBUSTION' || '#vehicle_type#id##' == 'MILD_HYBRID' || '#vehicle_type#id##' == 'HYBRID' ) {
+				else if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' ) {
 					stats_totalCombustionPercentage = 100.00;
 					stats_totalElectricPercentage = 0.00;
 					stats_totalConsumption = 'Consommation moyenne thermique : '+ stats.totalCombustionConsumption.averageConsumption + ' ' + stats.totalCombustionConsumption.averageUnit;
 				}
-				else if ('#vehicle_type#id##' == 'PLUGIN_HYBRID') {
+				else if ('#vehicle_type#id##' == 'PHEV') {
 					stats_totalCombustionPercentage = stats.eDriveShare.totalCombustionPercentage;
 					stats_totalElectricPercentage = stats.eDriveShare.totalElectricPercentage;
 					stats_totalConsumption = 'Consommation moyenne thermique : '+'<b>-&nbspL100Km</b>'+'&nbsp&nbsp/&nbsp&nbspConsommation moyenne électrique : '+'<b>-&nbspkWh100Km</b>';
@@ -1451,7 +1449,7 @@
 			credits: {
 				enabled: false
 			}
-		});
+		});*/
 
 
 		//----- Last update

@@ -23,6 +23,10 @@ if (!class_exists('BMWConnectedDrive_API')) {
 	require_once __DIR__ . '/../../3rdparty/BMWConnectedDrive_API.php';
 }
 
+if (!class_exists('BMWCarData_API')) {
+	require_once __DIR__ . '/../../3rdparty/BMWCarData_API.php';
+}
+
 
 class myBMW extends eqLogic {
 	
@@ -47,88 +51,151 @@ class myBMW extends eqLogic {
 		),
 	);
 	
-	public function decrypt() {
-		$this->setConfiguration('password', utils::decrypt($this->getConfiguration('password')));
+	public function decrypt()
+	{
+		$this->setConfiguration('clientId', utils::decrypt($this->getConfiguration('clientId')));
+		$this->setConfiguration('clientId', utils::decrypt($this->getConfiguration('username')));
 	}
 
-	public function encrypt() {
-		$this->setConfiguration('password', utils::encrypt($this->getConfiguration('password')));
+	public function encrypt()
+	{
+		$this->setConfiguration('clientId', utils::encrypt($this->getConfiguration('clientId')));
+		$this->setConfiguration('clientId', utils::encrypt($this->getConfiguration('username')));
 	}
+
 
     /*     * ***********************Methode static*************************** */
     
-    public static function pull() {
-		
-		log::add('myBMW', 'debug', 'Cron '.config::byKey('cronPattern', 'myBMW'));
+    public static function cronHourly()
+	{
+		log::add('myBMW', 'debug', 'Cron hourly');
 		foreach (eqLogic::byType('myBMW', true) as $myBMW) {										// type = myBMW et eqLogic enable
 			$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
 			if (!is_object($cmdRefresh) ) {															// Si la commande n'existe pas ou condition non respectée
 			  	continue; 																			// continue la boucle
 			}
-			$cmdRefresh->execCmd(); 
+			$cmdRefresh->execCmd();
 		}
 	}
 
-	public static function getConfigForCommunity() {
-
+	public static function getConfigForCommunity()
+	{
 		$index = 1;
 		$CommunityInfo = "```\n";
 		$CommunityInfo = $CommunityInfo . 'Custom cron : ' . config::byKey('cronPattern', 'myBMW') . "\n";
 		foreach (eqLogic::byType('myBMW', true) as $myBMW)  {
-			if ($myBMW->getConfiguration('vehicle_brand') == 1) { $brand = 'BMW'; }
-			else if ($myBMW->getConfiguration('vehicle_brand') == 2) { $brand = 'MINI'; }
-			else { $brand = $myBMW->getConfiguration('vehicle_brand'); }
-			$CommunityInfo = $CommunityInfo . "Vehicle #" . $index . " - Brand : " . $brand . " - Model : ". $myBMW->getConfiguration('vehicle_model') . " - Year : ". $myBMW->getConfiguration('vehicle_year') . " - Type : ". $myBMW->getConfiguration('vehicle_type') . "\n";
+			$CommunityInfo = $CommunityInfo . "Vehicle #" . $index . " - Brand : " . $myBMW->getConfiguration('vehicle_brand') . " - Model : ". $myBMW->getConfiguration('vehicle_model') . " - Year : ". $myBMW->getConfiguration('vehicle_year') . " - Type : ". $myBMW->getConfiguration('vehicle_type') . "\n";
 			$index++;
 		}
 		$CommunityInfo = $CommunityInfo . "```";
 		return $CommunityInfo;
 	}
 
-	public static function scheduleCron($cronPattern) {
-				
-		$cron = cron::byClassAndFunction('myBMW', 'pull');
-		if (!is_object($cron)) {
-			$cron = new cron();
-			$cron->setClass('myBMW');
-			$cron->setFunction('pull');
-			$cron->setEnable(1);
-			$cron->setDeamon(0);
-			$cron->setSchedule('*/30 * * * *');
-			$cron->setTimeout(5);
-			$cron->save();
-			log::add('myBMW', 'debug', 'Create cron pull');
+	public static function getBMWEqLogic($vehicle_vin)
+	{
+		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {
+			if ( $myBMW->getConfiguration('vehicle_vin') == $vehicle_vin )   {
+				$eqLogic = $myBMW;
+				break;
+			}
 		}
-		if ($cronPattern == '' || $cronPattern == null) {
-			$cron->setSchedule('*/30 * * * *');
+		return $eqLogic;
+	}
+	
+	public static function getLogLevelFromHttpStatus($httpStatus, $successList)
+	{
+		if (!is_array($successList)) {
+			$successList = [$successList];
 		}
-		else { $cron->setSchedule($cronPattern); }
-		$cron->save();
-		log::add('myBMW', 'debug', 'Update cron pull - setSchedule : '.$cronPattern);
+		return in_array($httpStatus, $successList) ? 'debug' : 'error';
+	}
+	
+	public static function getGPSCoordinates($vin)
+	{
+		$eqLogic = self::getBMWEqLogic($vin);
+		$cmd = $eqLogic->getCmd(null, 'gps_coordinates');
+		
+		if ( is_object($cmd) )  {
+			$coordinates = explode(",", $cmd->execCmd());
+			$gps = array( "latitude" => $coordinates[0], "longitude" => $coordinates[1] );
+		}
+		else  {
+			$gps = array( "latitude" => '0.000000', "longitude" => '0.000000' );
+		}
+		
+		log::add('myBMW', 'debug', '| Result getGPSCoordinates() : '.json_encode($gps));
+		return $gps;
 	}
 
+	public static function resetToken($vin)
+	{		
+		$filename = __DIR__.'/../../data/'.'auth_token_'.$vin.'.json';
+		if ( file_exists($filename) ) {
+			unlink($filename);
+			$result = array();
+			$result['res'] = "OK";
+			log::add('myBMW', 'debug', 'File '.$filename.' deleted');
+			return $result;
+		}
+		else { 
+			log::add('myBMW', 'debug', 'File '.$filename.' doesn\'t exist'); 
+			return null;
+		}
+	}
+
+	public static function resetContainer($vin)
+	{		
+		$eqLogic = self::getBMWEqLogic($vin);
+		log::add('myBMW', 'debug', '┌─Command execution : deleteContainer');
+		
+		$filename = __DIR__.'/../../data/'.'container_'.$vin.'.json';
+		if ( file_exists($filename) ) {
+			$myConnection = $eqLogic->getConnection();
+			$response = $myConnection->deleteContainer();
+			if ( $response->httpCode == '204 - NO CONTENT' ) {
+				unlink($filename);
+				$result = array();
+				$result['res'] = "OK";
+				log::add('myBMW', 'debug', '| File '.$filename.' deleted');
+				log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($response->httpCode, ['200 - OK', '204 - NO CONTENT']), '└─End of deleting container : ['.$response->httpCode.']');
+				return $result;
+			}
+			else {
+				log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($response->httpCode, ['200 - OK', '204 - NO CONTENT']), '└─End of deleting container : ['.$response->httpCode.']');
+				return null;
+			}
+		}
+		else { 
+			log::add('myBMW', 'debug', '| File '.$filename.' doesn\'t exist');
+			log::add('myBMW', 'debug', '└─End of deleting container');
+			return null;
+		}
+	}
+	
 
     /*     * *********************Méthodes d'instance************************* */
 
     /* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
      * dans la base de données pour une nouvelle entrée */
-    public function preInsert() {
+    public function preInsert()
+	{
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde après l'insertion 
      * dans la base de données pour une nouvelle entrée */
-    public function postInsert() {
+    public function postInsert()
+	{
     }
 
 	 /* fonction appelée avant le début de la séquence de sauvegarde */
-    public function preSave() {
-    
-		$this->setLogicalId($this->getConfiguration('vehicle_vin'));
+    public function preSave()
+	{
+    	$this->setLogicalId($this->getConfiguration('vehicle_vin'));
 	}
 
 	/* fonction appelée après la fin de la séquence de sauvegarde */
-    public function postSave() {
-		
+    public function postSave()
+	{
 		$this->createCmd('brand', 'Marque', 1, 'info', 'string');
 		$this->createCmd('model', 'Modèle', 2, 'info', 'string');
 		$this->createCmd('year', 'Année', 3, 'info', 'numeric');
@@ -207,18 +274,14 @@ class myBMW extends eqLogic {
 
 		$this->createCmd('drivingStats', 'Staistiques de conduite', 67, 'info', 'string');
 		$this->createCmd('trips', 'Trajets', 68, 'info', 'string');
-
 	}
 
 	/* fonction appelée pendant la séquence de sauvegarde avant l'insertion 
      * dans la base de données pour une mise à jour d'une entrée */
-    public function preUpdate() {
-		
-		if (empty($this->getConfiguration('username'))) {
-			throw new Exception('L\'identifiant ne peut pas être vide');
-		}
-		if (empty($this->getConfiguration('password'))) {
-			throw new Exception('Le mot de passe ne peut etre vide');
+    public function preUpdate()
+	{
+		if (empty($this->getConfiguration('clientId'))) {
+			throw new Exception('Le client ID ne peut pas être vide');
 		}
 		if (empty($this->getConfiguration('vehicle_brand'))) {
 			throw new Exception('La marque du véhicule ne peut pas être vide');
@@ -230,21 +293,24 @@ class myBMW extends eqLogic {
 
 	/* fonction appelée pendant la séquence de sauvegarde après l'insertion 
      * dans la base de données pour une mise à jour d'une entrée */
-    public function postUpdate() {
+    public function postUpdate()
+	{
 	}
 
 	/* fonction appelée avant l'effacement d'une entrée */
-    public function preRemove() {
+    public function preRemove()
+	{
     }
 
 	/* fonnction appelée aprés l'effacement d'une entrée */
-    public function postRemove() {
+    public function postRemove()
+	{
     }
     
     /* Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin */
-    public function toHtml($_version = 'dashboard') {
-    	
-		$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
+    public function toHtml($_version = 'dashboard')
+	{
+    	$this->emptyCacheWidget(); 		//vide le cache. Pratique pour le développement
 				
 		$panel = false;
 		if ($_version == 'panel') {
@@ -355,672 +421,336 @@ class myBMW extends eqLogic {
 	public function getConnection()
     {
         $vin = $this->getConfiguration("vehicle_vin");
-        $username = $this->getConfiguration("username");
-        $password = $this->getConfiguration("password");
-		$brand = $this->getConfiguration("vehicle_brand");
+        $clientId = $this->getConfiguration("clientId");
+        $brand = $this->getConfiguration("vehicle_brand");
 		
-		if ( $brand == 1 )
-		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'bmw');
-		log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username);
-		}
-		if ( $brand == 2 )
-		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'mini');
-		log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username);
-		}
-				
+		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
+		log::add('myBMW', 'debug', '| Brand : '.strtoupper($brand).' - Connection car vin : '.$vin.' with client ID : '.$clientId); 
 		return $myConnection;
 	}
 	
-	public static function synchronize($vin, $username, $password, $brand, $hCaptchaResponse)
+	public static function authenticate($vin, $clientId, $brand)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
-		
 		log::add('myBMW', 'debug', '┌─Command execution : synchronize');
-		if ( $brand == 1 )
-		{
-			$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'bmw', $hCaptchaResponse);
-			if ( $hCaptchaResponse == null || $hCaptchaResponse == '' ) { log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : No'); }
-			else { log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : '.$hCaptchaResponse); }
-		}
-		if ( $brand == 2 )
-		{
-			$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'mini', $hCaptchaResponse);
-			if ( $hCaptchaResponse == null || $hCaptchaResponse == '' ) { log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : No'); }
-			else { log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username.' - Captcha : '.$hCaptchaResponse); }
-		}
-				
+		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
+		log::add('myBMW', 'debug', '| Brand : '.strtoupper($brand).' - Connection car vin : '.$vin.' with client ID : '.$clientId); 
+		$result = $myConnection->getDeviceCode();
+		return $result;
+	}
+
+	public static function authenticate2($vin, $clientId, $brand, $device_code, $codeVerifier, $interval, $expires_in)
+	{
+		$eqLogic = self::getBMWEqLogic($vin);
+		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
+		$result = $myConnection->getTokens($device_code, $codeVerifier, $interval, $expires_in);
+		
 		$filename = dirname(__FILE__).'/../../data/'.$vin.'.png';
-		$result = $myConnection->getPictures();
-		$img = $result->body;
+		$image = $myConnection->getImage();
+		$img = $image->body;
 		file_put_contents($filename,$img);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '| End of car picture refresh : ['.$result->httpCode.']');
-				
-		$result = $myConnection->getVehicleProfile();
-		$result2 = $myConnection->getVehicleState();
-		$vehicle = json_decode($result->body, true) + json_decode($result2->body, true);
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($image->httpCode, '200 - OK'), '| Result getImage() : ['.$image->httpCode.']');
 		
-		if ( $vehicle['vin'] == $vin )
-		{
-			if ( isset($vehicle['brand']) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle['brand']); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
-			if ( isset($vehicle['model']) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle['model']); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
-			if ( isset($vehicle['year']) ) { $eqLogic->checkAndUpdateCmd('year', $vehicle['year']); } else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
-			if ( isset($vehicle['driveTrain']) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle['driveTrain']); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
-			log::add('myBMW', 'debug', '| Result getVehicleProfile() / getVehicleState() : '.str_replace('\n','',json_encode($vehicle,JSON_UNESCAPED_SLASHES)));
-			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
-			log::add('myBMW', 'debug', '┌─Command execution : refresh');
-			$eqLogic->refreshVehicleInfos();
-			return $vehicle;
+		$basicData = $myConnection->getBasicData();
+		$vehicle = json_decode($basicData->body, true);
+		if ( isset($vehicle['brand']) ) { $eqLogic->checkAndUpdateCmd('brand', $vehicle['brand']); } else { $eqLogic->checkAndUpdateCmd('brand', 'not available'); }
+		if ( isset($vehicle['modelName']) ) { $eqLogic->checkAndUpdateCmd('model', $vehicle['modelName']); } else { $eqLogic->checkAndUpdateCmd('model', 'not available'); }
+		if ( isset($vehicle['driveTrain']) ) { $eqLogic->checkAndUpdateCmd('type', $vehicle['driveTrain']); } else { $eqLogic->checkAndUpdateCmd('type', 'not available'); }
+		if ( isset($vehicle['constructionDate']) ) { 
+			$dateStr = $vehicle['constructionDate'];
+			$date = new DateTime($dateStr);
+			$formattedDate = $date->format('Y/m');
+			$eqLogic->checkAndUpdateCmd('year', $formattedDate);
+			$vehicle['constructionDate'] = $formattedDate;
 		}
-		else
-		{
-			log::add('myBMW', 'debug', '| Result getVehicleProfile() / getVehicleState() : no vehicle found with services BMWConnectedDrive activated');
-			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
-		}
+		else { $eqLogic->checkAndUpdateCmd('year', 'not available'); }
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($basicData->httpCode, '200 - OK'), '| Result getBasicData() : ['.$basicData->httpCode.'] '.$basicData->body);
+		
+		$getContainer = $myConnection->getContainer();
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($getContainer->httpCode, ['200 - OK', '201 - CREATED']), '| Result getContainer() : ['.$getContainer->httpCode.'] '.$getContainer->body);
+		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of synchronisation : ['.$result->httpCode.']');
+		
+		log::add('myBMW', 'debug', '┌─Command execution : refresh');
+		$eqLogic->refreshVehicleInfos();
+		
+		if 	( $result->httpCode == '200 - OK')	{ return $vehicle; }
+		else { return null; }
 	}
 	
-	public function vehiclesInfos()
-    {
+	public function listContainer()
+	{		
 		$myConnection = $this->getConnection();
-		$result = $myConnection->getVehicles();
-		$vehicles = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getVehicles() : '. str_replace('\n','',json_encode($vehicles)));
-		return $vehicles;
+		$result = $myConnection->listContainer();
+		$containers = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Result listContainer() : '. $result->body);
+		return $containers;
 	}
 	
-	public function vehicleProfile()
-    {
+	public function basicData()
+	{		
 		$myConnection = $this->getConnection();
-		$result = $myConnection->getVehicleProfile();
+		$result = $myConnection->getBasicData();
 		$vehicle = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getVehicleProfile() : '. str_replace('\n','',json_encode($vehicle)));
+		log::add('myBMW', 'debug', '| Result basicData() : '. $result->body);
 		return $vehicle;
-	}	
-	
+	}
+
 	public function vehicleState()
-    {
+	{		
 		$myConnection = $this->getConnection();
-		$result = $myConnection->getVehicleState();
+		$result = $myConnection->getTelematicData();
 		$vehicle = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
+		log::add('myBMW', 'debug', '| Result vehicleState() : '. $result->body);
 		return $vehicle;
 	}
-	
-	public function refreshVehicleInfos()
-    {
+
+	public function chargingHistory()
+	{		
 		$myConnection = $this->getConnection();
+		$result = $myConnection->getChargingHistory();
+		$chargingHistory = json_decode($result->body);
+		log::add('myBMW', 'debug', '| Result chargingHistory() : '. $result->body);
+		return $chargingHistory;
+	}
+
+	public function refreshVehicleInfos()
+	{
+		$myConnection = $this->getConnection();
+		$result = $myConnection->getTelematicData();
+		$vehicle = json_decode($result->body, true);
 		
-		$retry = 5;
-		for ( $i = 1; $i <= $retry; $i++ ) {
-			$result = $myConnection->getVehicleState();
-			$vehicle = json_decode($result->body);
-
-			if ( isset($vehicle->statusCode) ) {
-				if ( $vehicle->statusCode == 429 ) {
-					log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
-					if ( preg_match_all('/\d+/', $vehicle->message, $matches) ) {
-						$wait_time = implode('', $matches[0])*2;
-						log::add('myBMW', 'debug', '| Wait '.$wait_time.'s'); 
-					}
-					else {
-						$wait_time = 2*$i;
-						log::add('myBMW', 'debug', '| Wait '.$wait_time.'s'); 
-					}
-					sleep($wait_time);
-				}
-			}
-			else { break; }
-		}
-
-		if ($vehicle != null && isset($vehicle->state)) {
+		if ( is_array($vehicle) ) {
 
 			//States
-			if ( isset($vehicle->state->currentMileage) ) { $this->checkAndUpdateCmd('mileage', $vehicle->state->currentMileage); } else { $this->checkAndUpdateCmd('mileage', 'not available'); }
-						
-			if ( isset($vehicle->state->doorsState->combinedSecurityState) ) { $this->checkAndUpdateCmd('doorLockState', $vehicle->state->doorsState->combinedSecurityState); } else { $this->checkAndUpdateCmd('doorLockState', 'not available'); }
-			if ( isset($vehicle->state->doorsState->combinedState) ) { $this->checkAndUpdateCmd('allDoorsState', $vehicle->state->doorsState->combinedState); } else { $this->checkAndUpdateCmd('allDoorsState', 'not available'); }
-			if ( isset($vehicle->state->windowsState->combinedState) ) { $this->checkAndUpdateCmd('allWindowsState', $vehicle->state->windowsState->combinedState); } else { $this->checkAndUpdateCmd('allWindowsState', 'not available'); }
-			if ( isset($vehicle->state->doorsState->leftFront) ) { $this->checkAndUpdateCmd('doorDriverFront', $vehicle->state->doorsState->leftFront); } else { $this->checkAndUpdateCmd('doorDriverFront', 'not available'); }
-			if ( isset($vehicle->state->doorsState->leftRear) ) { $this->checkAndUpdateCmd('doorDriverRear', $vehicle->state->doorsState->leftRear); } else { $this->checkAndUpdateCmd('doorDriverRear', 'not available'); }
-			if ( isset($vehicle->state->doorsState->rightFront) ) { $this->checkAndUpdateCmd('doorPassengerFront', $vehicle->state->doorsState->rightFront); } else { $this->checkAndUpdateCmd('doorPassengerFront', 'not available'); }
-			if ( isset($vehicle->state->doorsState->rightRear) ) { $this->checkAndUpdateCmd('doorPassengerRear', $vehicle->state->doorsState->rightRear); } else { $this->checkAndUpdateCmd('doorPassengerRear', 'not available'); }
-			if ( isset($vehicle->state->windowsState->leftFront) ) { $this->checkAndUpdateCmd('windowDriverFront', $vehicle->state->windowsState->leftFront); } else { $this->checkAndUpdateCmd('windowDriverFront', 'not available'); }
-			if ( isset($vehicle->state->windowsState->leftRear) ) { $this->checkAndUpdateCmd('windowDriverRear', $vehicle->state->windowsState->leftRear); } else { $this->checkAndUpdateCmd('windowDriverRear', 'not available'); }
-			if ( isset($vehicle->state->windowsState->rightFront) ) { $this->checkAndUpdateCmd('windowPassengerFront', $vehicle->state->windowsState->rightFront); } else { $this->checkAndUpdateCmd('windowPassengerFront', 'not available'); }
-			if ( isset($vehicle->state->windowsState->rightRear) ) { $this->checkAndUpdateCmd('windowPassengerRear', $vehicle->state->windowsState->rightRear); } else { $this->checkAndUpdateCmd('windowPassengerRear', 'not available'); }
-			if ( isset($vehicle->state->doorsState->trunk) ) { $this->checkAndUpdateCmd('trunk_state', $vehicle->state->doorsState->trunk); } else { $this->checkAndUpdateCmd('trunk_state', 'not available'); }
-			if ( isset($vehicle->state->doorsState->hood) ) { $this->checkAndUpdateCmd('hood_state', $vehicle->state->doorsState->hood); } else { $this->checkAndUpdateCmd('hood_state', 'not available'); }
-			if ( isset($vehicle->state->roofState) ) { $this->checkAndUpdateCmd('moonroof_state', $vehicle->state->roofState->roofState); } else { $this->checkAndUpdateCmd('moonroof_state', 'not available'); }
-			
-			if ( isset($vehicle->state->tireState->frontLeft->status->currentPressure) ) { $this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle->state->tireState->frontLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_pressure', 0); }
-			if ( isset($vehicle->state->tireState->frontLeft->status->targetPressure) ) { $this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle->state->tireState->frontLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontLeft_target', 0); }
-			if ( isset($vehicle->state->tireState->frontRight->status->currentPressure) ) { $this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle->state->tireState->frontRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_pressure', 0); }
-			if ( isset($vehicle->state->tireState->frontRight->status->targetPressure) ) { $this->checkAndUpdateCmd('tireFrontRight_target', $vehicle->state->tireState->frontRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireFrontRight_target', 0); }
-			if ( isset($vehicle->state->tireState->rearLeft->status->currentPressure) ) { $this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle->state->tireState->rearLeft->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_pressure', 0); }
-			if ( isset($vehicle->state->tireState->rearLeft->status->targetPressure) ) { $this->checkAndUpdateCmd('tireRearLeft_target', $vehicle->state->tireState->rearLeft->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearLeft_target', 0); }
-			if ( isset($vehicle->state->tireState->rearRight->status->currentPressure) ) { $this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle->state->tireState->rearRight->status->currentPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_pressure', 0); }
-			if ( isset($vehicle->state->tireState->rearRight->status->targetPressure) ) { $this->checkAndUpdateCmd('tireRearRight_target', $vehicle->state->tireState->rearRight->status->targetPressure/100); } else { $this->checkAndUpdateCmd('tireRearRight_target', 0); }
-					
-			if ( isset($vehicle->state->electricChargingState->chargingStatus) ) { $this->checkAndUpdateCmd('chargingStatus', $vehicle->state->electricChargingState->chargingStatus); } else { $this->checkAndUpdateCmd('chargingStatus', 'not available'); }
-			if ( isset($vehicle->state->electricChargingState->isChargerConnected) ) { $this->checkAndUpdateCmd('connectorStatus', $vehicle->state->electricChargingState->isChargerConnected); } else { $this->checkAndUpdateCmd('connectorStatus', 'not available'); }
-			if ( isset($vehicle->state->electricChargingState->range) ) { $this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeElectric', 'not available'); }
-			if ( isset($vehicle->state->electricChargingState->chargingLevelPercent) ) { $this->checkAndUpdateCmd('chargingLevelHv', $vehicle->state->electricChargingState->chargingLevelPercent); } else { $this->checkAndUpdateCmd('chargingLevelHv', 'not available'); }
-			if ( isset($vehicle->state->electricChargingState->remainingChargingMinutes) ) { 
-				$remainingMinutes = $vehicle->state->electricChargingState->remainingChargingMinutes;
-				$currentTime = $vehicle->state->lastUpdatedAt;
+			$this->checkAndUpdateCmd('mileage', $vehicle['telematicData']['vehicle.vehicle.travelledDistance']['value'] ?? 0);
+
+			$this->checkAndUpdateCmd('doorLockState', $vehicle['telematicData']['vehicle.cabin.door.lock.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorDriverFront', $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorDriverRear', $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorPassengerFront', $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorPassengerRear', $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] ?? 'not available');
+			if (
+				($vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] === 'not available') )
+			{
+				$this->checkAndUpdateCmd('allDoorsState', 'CLOSED');
+			} 
+			else { $this->checkAndUpdateCmd('allDoorsState', 'CLOSED'); }
+			$this->checkAndUpdateCmd('windowDriverFront', $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowDriverRear', $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowPassengerFront', $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowPassengerRear', $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] ?? 'not available');
+			if (
+				($vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] === 'not available') &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] === 'not available') )
+			{
+				$this->checkAndUpdateCmd('allWindowsState', 'CLOSED');
+			} 
+			else { $this->checkAndUpdateCmd('allWindowsState', 'CLOSED'); }
+			$this->checkAndUpdateCmd('trunk_state', $vehicle['telematicData']['vehicle.body.trunk.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('hood_state', $vehicle['telematicData']['vehicle.body.hood.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('moonroof_state', $vehicle['telematicData']['vehicle.cabin.sunroof.overallStatus']['value'] ?? 'not available');
+
+			$this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.left.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.right.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontRight_target', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.left.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearLeft_target', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.right.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearRight_target', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget']['value']/100 ?? 0);
+
+			$this->checkAndUpdateCmd('chargingStatus', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('connectorStatus', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
+			$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.level']['value'] ?? 0);
+			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'] != null ) { 
+				$remainingMinutes = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'];
+				$currentTime = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['timestamp'];
 				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
 				$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
 			}
 			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
-			//if ( isset($vehicle->state->electricChargingState->chargingTarget) ) { $this->checkAndUpdateCmd('chargingTarget', $vehicle->state->electricChargingState->chargingTarget); } else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
-			if ( isset($vehicle->state->chargingProfile->chargingSettings->targetSoc) ) { 
-				$this->checkAndUpdateCmd('chargingTarget', $vehicle->state->chargingProfile->chargingSettings->targetSoc);
-				$this->setConfiguration('chargingTarget', $vehicle->state->chargingProfile->chargingSettings->targetSoc);
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value'] != null ) { 
+				$this->checkAndUpdateCmd('chargingTarget', $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value']);
+				$this->setConfiguration('chargingTarget', $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value']);
 				$this->save(true);
 			}
-			else { $this->checkAndUpdateCmd('chargingTarget', '100'); }
-			if ( isset($vehicle->state->chargingProfile->chargingSettings->acCurrentLimit) ) { 
-				$this->checkAndUpdateCmd('acCurrentLimit', $vehicle->state->chargingProfile->chargingSettings->acCurrentLimit);
-				$this->setConfiguration('chargingPowerLimit', $vehicle->state->chargingProfile->chargingSettings->acCurrentLimit);
+			else { $this->checkAndUpdateCmd('chargingTarget', 100); }
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value'] != null ) { 
+				$this->checkAndUpdateCmd('acCurrentLimit', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value']);
+				$this->setConfiguration('chargingPowerLimit', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value']);
 				$this->save(true);
 			}
-			else { $this->checkAndUpdateCmd('acCurrentLimit', 'not available'); }
-			if ( isset($vehicle->state->chargingProfile->chargingSettings->isAcCurrentLimitActive) ) { 
-				$this->checkAndUpdateCmd('isAcCurrentLimitActive', $vehicle->state->chargingProfile->chargingSettings->isAcCurrentLimitActive);
-				$this->setConfiguration('isAcCurrentLimitActive', $vehicle->state->chargingProfile->chargingSettings->isAcCurrentLimitActive);
+			else { $this->checkAndUpdateCmd('acCurrentLimit', 0); }
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value'] != null) { 
+				$this->checkAndUpdateCmd('isAcCurrentLimitActive', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value']);
+				$this->setConfiguration('isAcCurrentLimitActive', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value']);
 				$this->save(true);
 			}
-			else { $this->checkAndUpdateCmd('isAcCurrentLimitActive', 'not available'); }
+			else { $this->checkAndUpdateCmd('isAcCurrentLimitActive', 0); }
 						
-			if ( $this->getConfiguration('vehicle_type') == 'ELECTRIC_WITH_RANGE_EXTENDER' ) {
-				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-			}
-			else {
-				if ( isset($vehicle->state->combustionFuelLevel->range) ) { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle->state->combustionFuelLevel->range - $vehicle->state->electricChargingState->range); } else { $this->checkAndUpdateCmd('beRemainingRangeFuelKm', 'not available'); }
-			}
-			if ( isset($vehicle->state->combustionFuelLevel->remainingFuelLiters) ) {
-				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelLiters);
-				$this->setConfiguration('fuel_value_unit','L');
-				$this->save(true);
-			}
-			else if ( isset($vehicle->state->combustionFuelLevel->remainingFuelPercent) ) {
-				$this->checkAndUpdateCmd('remaining_fuel', $vehicle->state->combustionFuelLevel->remainingFuelPercent);
-				$this->setConfiguration('fuel_value_unit','%');
-				$this->save(true);
-			}
-			else { $this->checkAndUpdateCmd('remaining_fuel', 'not available'); }
-			
+			$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value'] ?? 0);
+			$this->setConfiguration('fuel_value_unit','%');
+			$this->save(true);
+			$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle['telematicData']['vehicle.drivetrain.totalRemainingRange']['value']-$vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
+
+
 			//Messages
-			$control_messages = $vehicle->state->checkControlMessages;
-			$services_messages = $vehicle->state->requiredServices;
-			$table_temp = array();
+			$control_messages = json_decode($vehicle['telematicData']['vehicle.status.checkControlMessages']['value']);
+			$services_messages = json_decode($vehicle['telematicData']['vehicle.status.conditionBasedServices']['value']);
 			$table_messages = array();
 			
-			foreach ($control_messages as $message) {
-				if ( isset($message->type) ) { $message_type = $message->type; } else { $message_type = ''; }
-				if ( isset($message->severity) ) { $message_severity = $message->severity; } else { $message_severity = ''; }
-				if ( isset($message->description) ) { $message_description = $message->description; } else { $message_description = ''; }
-				$table_temp[] = array( "type" => $message_type, "severity" => $message_severity, "description" => str_replace("'", " ",$message_description) );
+			$table_temp = array();
+			if (is_array($control_messages)) {
+				foreach ($control_messages as $message) {
+					$values = json_decode($message->value);
+					foreach ($values as $value) {
+						$message_type = $value->messageType;
+						$message_severity = $value->status;
+						$message_description = $value->text;
+						$table_temp[] = array(
+							"type" => $message_type,
+							"severity" => $message_severity,
+							"description" => str_replace("'", " ",$message_description)
+						);
+					}
+				}
 			}
 			$table_messages['checkControlMessages'] = $table_temp;
 			
 			$table_temp = array();
-			foreach ($services_messages as $message) {
-				if ( isset($message->dateTime) ) {
-					$mois =array(1 => " - Janvier "," - Février "," - Mars "," - Avril "," - Mai "," - Juin "," - Juillet "," - Août "," - Septembre "," - Octobre "," - Novembre "," - Décembre ");
-					$message_date = $mois[date('n', strtotime($message->dateTime))]." ".date('Y', strtotime($message->dateTime))." ";
-					if ( isset($message->mileage) ) { $message_mileage = ' ou '.$message->mileage." kms "; } else { $message_mileage = ''; }
+			if (is_array($services_messages)) {
+				foreach ($services_messages as $message) {
+					$mois = [
+						1 => "- Janvier", 2 => "- Février", 3 => "- Mars", 4 => "- Avril",
+						5 => "- Mai", 6 => "- Juin", 7 => "- Juillet", 8 => "- Août",
+						9 => "- Septembre", 10 => "- Octobre", 11 => "- Novembre", 12 => "- Décembre"
+					];
+					[$year, $month] = explode('-', $message->date);
+					$message_date = $mois[(int)$month] . " " . $year;
+					if ( $message->unitOfLengthRemaining != "-" ) {
+						$message_mileage = ' ou '.$message->unitOfLengthRemaining." km";
+						$message_description = "La prochaine maintenance arrive à échéance à la date définie ou au kilométrage défini";
+					}
+					else { 
+						$message_mileage = '';
+						$message_description = "La prochaine maintenance arrive à échéance à la date définie";
+					}
+				
+					$message_status = $message->status;
+					
+					if ($message->title == "Engine oil") { $message_title = "Huile moteur"; }
+					elseif ($message->title == "Brake fluid") { $message_title = "Liquide de frein"; }
+					elseif ($message->title == "Vehicle check") { $message_title = "Révision"; }
+					elseif ($message->title == "Vehicle tuv") { $message_title = "Contrôle technique"; }
+					elseif ($message->title == "Brake pads front") { $message_title = "Plaquettes de frein avant"; }
+					elseif ($message->title == "Brake pads rear") { $message_title = "Plaquettes de frein arrière"; }
+					elseif ($message->title == "Tire year front") { $message_title = "Usure pneus avant"; }
+					elseif ($message->title == "Tire year rear") { $message_title = "Usure pneus arrière"; }
+					elseif ($message->title == "Washing fluid") { $message_title = "Liquide de lave-glace"; }
+					else { $message_title = $message->title; }
+					
+					$table_temp[] = array(
+						"type" => "SERVICE ",
+						"date" => $message_date,
+						"mileage" => $message_mileage,
+						"state" => $message_status,
+						"title" => $message_title,
+						"description" => $message_description
+					);
 				}
-				else { 
-					$message_date = '';
-					if ( isset($message->mileage) ) { $message_mileage = " - ".$message->mileage." kms "; } else { $message_mileage = ''; }
-				}
-				$message_status = '';
-				if ( isset($message->type) ) {
-					if ($message->type == "OIL") { $message_title = "Huile moteur"; }
-					elseif ($message->type == "BRAKE_FLUID") { $message_title = "Liquide de frein"; }
-					elseif ($message->type == "VEHICLE_CHECK") { $message_title = "Révision"; }
-					elseif ($message->type == "VEHICLE_TUV") { $message_title = "Contrôle technique"; }
-					elseif ($message->type == "BRAKE_PADS_FRONT") { $message_title = "Plaquettes de frein avant"; }
-					elseif ($message->type == "BRAKE_PADS_REAR") { $message_title = "Plaquettes de frein arrière"; }
-					elseif ($message->type == "TIRE_WEAR_FRONT") { $message_title = "Usure pneus avant"; }
-					elseif ($message->type == "TIRE_WEAR_REAR") { $message_title = "Usure pneus arrière"; }
-					elseif ($message->type == "WASHING_FLUID") { $message_title = "Liquide de lave-glace"; }
-					else { $message_title = $message->type; }
-				}
-				else { $message_title = ''; }
-				if ( isset($message->description) ) { $message_description = $message->description; } else { $message_description = ''; }							
-				$table_temp[] = array( "type" => "SERVICE ", "date" => $message_date, "mileage" => $message_mileage, "state" => $message_status, "title" => $message_title, "description" => str_replace("'", " ",$message_description) );
 			}
 			$table_messages['requiredServices'] = $table_temp;
 			$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
 			
+
 			//Location - Presence
-			if ( isset($vehicle->state->location->coordinates->latitude) && isset($vehicle->state->location->coordinates->longitude) ) { $this->checkAndUpdateCmd('gps_coordinates', $vehicle->state->location->coordinates->latitude.','.$vehicle->state->location->coordinates->longitude); } else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
-			$distance = $this->getDistanceLocation( $vehicle->state->location->coordinates->latitude, $vehicle->state->location->coordinates->longitude );
+			if ( $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'] != null && $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value'] != null ) {
+				 $this->checkAndUpdateCmd('gps_coordinates', $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'].','.$vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value']);
+				}
+			else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
+			$distance = $this->getDistanceLocation( $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'], $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value'] );
 			$this->checkAndUpdateCmd('distance', $distance);
 			if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
 			else { $this->checkAndUpdateCmd('presence', 0); }
 			
+
 			//Last update
-			if ( isset($vehicle->state->lastUpdatedAt) ) { 
-				if ( $vehicle->state->lastUpdatedAt == "0001-01-01T00:00:00Z" ) { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
-				else { $this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle->state->lastUpdatedAt))); } 
+			$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle['telematicData']['vehicle.vehicle.travelledDistance']['timestamp'])) ?? 'not available');
+		}	
+
+		log::add('myBMW', 'debug', '| Result getTelematicData() : '. $result->body);
+		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
+
+
+		// chargingHistory
+		$currentHour = (int)date('G');
+		if ($currentHour % 2 === 0) {
+            if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV ') {
+				$this->refreshChargingHistory();
 			}
-			else { $this->checkAndUpdateCmd('lastUpdate', 'not available'); }
 		}
 
-		log::add('myBMW', 'debug', '| Result getVehicleState() : '. str_replace('\n','',json_encode($vehicle)));
-		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
-		
+		return $vehicle;
+	}	
+	
+	public function refreshChargingHistory()
+    {
+		log::add('myBMW', 'debug', '┌─Command execution : chargingHistory');
+		$myConnection = $this->getConnection();
+		$result = $myConnection->getChargingHistory();
+		$chargingHistory = json_decode($result->body);
+
 		//Charging sessions
-		if ( $this->getConfiguration("isChargingHistorySupported") == "1" ) {
+		$totalEnergyCharged = 0;
+		$totalEnergyCost = 0;
 
-			$result2 = $myConnection->getChargingSessions();
-			$sessions = json_decode($result2->body);
-			
-			if ($sessions != null) {
+		$tab_temp = array();
+		if (is_array($chargingHistory->data)) {
+			$datas = $chargingHistory->data;
+			foreach ($datas as $data) {
 
-				if ( isset($sessions->chargingSessions->totalValue) ) { 
-					$this->checkAndUpdateCmd('totalEnergyCharged', round($sessions->chargingSessions->totalValue,2)); 
-				}
-				else { $this->checkAndUpdateCmd('totalEnergyCharged', 0); }
-							
-				if ( isset($sessions->chargingSessions->costsGroupedByCurrencyValue->EUR) ) { 
-					$this->checkAndUpdateCmd('totalEnergyCost', round($sessions->chargingSessions->costsGroupedByCurrencyValue->EUR,2)); 
-				}
-				else { $this->checkAndUpdateCmd('totalEnergyCost', 0); }
-								
-				$tab_temp = array();
-				if ( isset($sessions->chargingSessions->sessions) ) { 
-					$tab_sessions = $sessions->chargingSessions->sessions;
-										
-					foreach ($tab_sessions as $session) {
-						$date = substr($session->id, 0, 10);
-						$date = DateTime::createFromFormat('Y-m-d', $date);
-						$date = $date->format('d/m/Y');
-						$tab_info = explode('•', $session->subtitle);
-						$energyCharged = preg_replace('/\D+/', '', $session->energyCharged);
-						$energyCharged = (int) $energyCharged;
-						$cost = preg_match('/[0-9]+(?:[\.,][0-9]+)?/', $tab_info[2], $matches);
-						$cost = str_replace(',', '.', $matches[0]);
-						$cost = (float) $cost;
+				$date = date('d-m-Y', $data->startTime);
+				$energyCharged = round($data->energyConsumedFromPowerGridKwh,2);
+				$totalEnergyCharged = $totalEnergyCharged + $energyCharged;
+				
+				$totalSeconds = $data->totalChargingDurationSec;
+				$hours = floor($totalSeconds / 3600);
+				$minutes = floor(($totalSeconds % 3600) / 60);
+				$time = "{$hours} h {$minutes} min";
 
-						$tab_temp[] = array( "date" => $date, "energyCharged" => $energyCharged, "time" => $tab_info[1], "cost" => $cost, "address" => str_replace("'", " ", $tab_info[0]));
-					}
-					$tab_temp = array_reverse($tab_temp);
-					$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
-				}
-				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
+				$cost = round($data->chargingCostInformation->calculatedChargingCost,2);
+				$totalEnergyCost = $totalEnergyCost + $cost;
+
+				$address = $data->chargingLocation->formattedAddress;
+
+				$tab_temp[] = array(
+					"date" => $date,
+					"energyCharged" => $energyCharged,
+					"time" => $time,
+					"cost" => $cost,
+					"address" => str_replace("'", " ", $address)
+				);
 			}
-
-			log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
+			$this->checkAndUpdateCmd('totalEnergyCharged', $totalEnergyCharged);
+			$this->checkAndUpdateCmd('totalEnergyCost', $totalEnergyCost);
+			$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 		}
 		else {
 			$this->checkAndUpdateCmd('totalEnergyCharged', 0);
 			$this->checkAndUpdateCmd('totalEnergyCost', 0);
-			$this->checkAndUpdateCmd('chargingSessions', json_encode(array()));
+			$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 		}
 
-		//Driving statistics
-		if ( $this->getConfiguration("isDrivingHistorySupported") == "1" ) {
-			$result3 = $myConnection->getLastTrip();
-			$data = json_decode($result3->body);
-			
-			$cmd = $this->getCmd(null, 'trips');
-			$trips = array();
-			if ( $cmd->execCmd() == null || $cmd->execCmd() == '[]') {
-				$trips = [ 'trips' => [] ];
-			}
-			else { $trips = json_decode($cmd->execCmd(), true); }
-			
-			if ( isset($data->status) ) {
-				if ( $data->status == 'Success' ) {
-					$stats = json_encode($data->monthly);
-					$this->checkAndUpdateCmd('drivingStats', $stats);
-					
-					if ( count($trips['trips']) == 0 ) {
-						$data->lastTrip->date = date('d/m/Y');
-						$trips['trips'][] = $data->lastTrip;
-						log::add('myBMW', 'debug', '| Update trips : Add first trip');
-					}
-					else {
-						$last_id = $trips['trips'][count($trips['trips'])-1]['id'];
-						$new_id = $data->lastTrip->id;
-						$actual_month = date('m');
-						$last_month = date_parse_from_format('d/m/Y', $trips['trips'][count($trips['trips'])-1]['date'])['month'];
-						
-						if ( $new_id != $last_id && $actual_month == $last_month ) {
-							$data->lastTrip->date = date('d/m/Y');
-							$trips['trips'][] = $data->lastTrip;
-							log::add('myBMW', 'debug', '| Update trips : Add new trip');
-						}
-						else if ( $new_id != $last_id && $actual_month != $last_month ) {
-							$trips = [ 'trips' => [] ];
-							$data->lastTrip->date = date('d/m/Y');
-							$trips['trips'][] = $data->lastTrip;
-							log::add('myBMW', 'debug', '| Update trips : Reset trips & add new trip');
-						}
-						else { log::add('myBMW', 'debug', '| Update trips : no change'); }
-					}
-					$this->checkAndUpdateCmd('trips', json_encode($trips));
-				}
-				else if ($data->status == "TripHistoryNotActive" || $data->status == "NoTripsYet") {
-					if ( $this->getCmd(null, 'drivingStats')->execCmd() == null || $this->getCmd(null, 'drivingStats')->execCmd() == '[]') { $this->checkAndUpdateCmd('drivingStats', json_encode(array())); }
-					if ( $this->getCmd(null, 'trips')->execCmd() == null || $this->getCmd(null, 'trips')->execCmd() == '[]') { $this->checkAndUpdateCmd('trips', json_encode(array())); }
-				}
-			}
-
-			log::add('myBMW', 'debug', '| Result getLastTrip() : '. str_replace('\n','',json_encode($data)));
-		}
-		else {
-			$this->checkAndUpdateCmd('drivingStats', json_encode(array()));
-			$this->checkAndUpdateCmd('trips', json_encode(array()));
-		}
-
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
-		return $vehicle;
-	}
-
-	public function doHornBlow()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->doHornBlow();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('hornBlow_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}		
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event hornBlow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-	}
-
-    public function doLightFlash()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->doLightFlash();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('lightFlash_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event lightFlash : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-	}
-
-    public function doDoorLock()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->doDoorLock();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('doorLock_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorLock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshVehicleInfos();
-	}
-
-    public function doDoorUnlock()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->doDoorUnlock();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('doorUnlock_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event doorUnlock : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshVehicleInfos();
-	}
-
-    public function doClimateNow()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->doClimateNow();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('climateNow_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event climateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-	}
-
-    public function stopClimateNow()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->stopClimateNow();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('stopClimateNow_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('stopClimateNow_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event stopClimateNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-	}
-
-    public function doChargeNow()
-    {
-       	$myConnection = $this->getConnection();
-		$result = $myConnection->doChargeNow();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event chargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshVehicleInfos();
-	}
-
-	public function stopChargeNow()
-    {
-        $myConnection = $this->getConnection();
-		$result = $myConnection->stopChargeNow();
-        $response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('stopChargeNow_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('chargeNow_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event stopChargeNow : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$this->refreshVehicleInfos();
-	}
-
-	public function vehicleFinder()
-	{
-		$myConnection = $this->getConnection();
-		$result = $myConnection->vehicleFinder(); 
-		$response = json_decode($result->body);
-		
-		$eventStatus = 'PENDING';
-		$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			$this->checkAndUpdateCmd('vehicleFinder_status', $eventStatus);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}
-		
-		if ( $eventStatus == 'EXECUTED' )
-		{
-			$gps_source = $this->getGPSCoordinates($this->getConfiguration('vehicle_vin'));
-			$position = $myConnection->getEventPosition($response->eventId, $gps_source['latitude'], $gps_source['longitude']);
-			$eventPosition = json_decode($position->body);
-			$gps_coordinates = $eventPosition->positionData->position->latitude.','.$eventPosition->positionData->position->longitude;
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($position->httpCode, '200 - OK'), '| Result getEventPosition() : ['.$position->httpCode.'] - '.$position->body);
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-			return $gps_coordinates; 
-		}
-		else 
-		{ 
-			log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event vehicleFinder : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-			return false;
-		}
-	}
-
-	public static function sendPOI($vin, $username, $password, $brand, $json_POI)
-    {
-		$eqLogic = self::getBMWEqLogic($vin);
-		log::add('myBMW', 'debug', '┌─Command execution : sendPOI');
-		
-		if ( $brand == 1 )
-		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'bmw');
-		log::add('myBMW', 'debug', '| Brand : BMW - Connection car vin : '.$vin.' with username : '.$username);
-		}
-		if ( $brand == 2 )
-		{
-		$myConnection = new BMWConnectedDrive_API($vin, $username, $password, 'mini');
-		log::add('myBMW', 'debug', '| Brand : MINI - Connection car vin : '.$vin.' with username : '.$username);
-		}
-		
-		$eqLogic->checkAndUpdateCmd('sendPOI_status', 'PENDING');
-		$result = $myConnection->sendPOI(json_decode($json_POI));
-		$response = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Send json : '.$json_POI);
-		if ( $result->httpCode == "201 - CREATED" )
-		{
-			$eqLogic->checkAndUpdateCmd('sendPOI_status', 'EXECUTED');
-		}
-		else { $eqLogic->checkAndUpdateCmd('sendPOI_status', 'ERROR'); }
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '| Result sendPOI() : ['.$result->httpCode.'] - '.$result->body);
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '201 - CREATED'), '└─End of car event sendPOI : ['.$result->httpCode.'] - eventId : '.$response->id);
-	}
-	
-	public function chargingStatistics()
-    {
-		$myConnection = $this->getConnection();
-		$result = $myConnection->getChargingStatistics();
-		$statistics = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getChargingStatistics() : '. str_replace('\n','',json_encode($statistics)));
-		return $statistics;
-	}
-
-	public function chargingSessions()
-    {
-		$myConnection = $this->getConnection();
-		$result = $myConnection->getChargingSessions();
-		$sessions = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getChargingSessions() : '. str_replace('\n','',json_encode($sessions)));
-		return $sessions;
-	}
-
-	public function lastTrip()
-    {
-		$myConnection = $this->getConnection();
-		$result = $myConnection->getLastTrip();
-		$trip = json_decode($result->body);
-		log::add('myBMW', 'debug', '| Result getLastTrip() : '. str_replace('\n','',json_encode($trip)));
-		return $trip;
-	}
-
-	public static function getBMWEqLogic($vehicle_vin)
-	{
-		foreach ( eqLogic::byTypeAndSearhConfiguration('myBMW', 'vehicle_vin') as $myBMW ) {
-			if ( $myBMW->getConfiguration('vehicle_vin') == $vehicle_vin )   {
-				$eqLogic = $myBMW;
-				break;
-			}
-		}
-		return $eqLogic;
-	}
-	
-	public static function getLogLevelFromHttpStatus($httpStatus, $success)
-	{
-		return ( $httpStatus == $success ) ? 'debug' : 'error';
-	}
-	
-	public function getIcon()
-	{
-		$filename = 'plugins/myBMW/data/'.$this->getConfiguration("vehicle_vin").'.png';
-		if ( file_exists($filename) ) { return $filename; }
-		else { return 'plugins/myBMW/plugin_info/myBMW_icon.png'; }
+		log::add('myBMW', 'debug', '| Result getChargingHistory() : '. $result->body);
+		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of charging history refresh : ['.$result->httpCode.']');
+		return $chargingHistory;
 	}
 	
 	public function getDistanceLocation($lat1, $lng1)
@@ -1049,94 +779,6 @@ class myBMW extends eqLogic {
 		$d = 2 * atan2(sqrt($a), sqrt(1 - $a));
 		return round(($earth_radius * $d * 1000), 1); //retour en m
 	}
-	
-	public static function getGPSCoordinates($vin)	{
-		
-		$eqLogic = self::getBMWEqLogic($vin);
-		$cmd = $eqLogic->getCmd(null, 'gps_coordinates');
-		
-		if ( is_object($cmd) )  {
-			$coordinates = explode(",", $cmd->execCmd());
-			$gps = array( "latitude" => $coordinates[0], "longitude" => $coordinates[1] );
-		}
-		else  {
-			$gps = array( "latitude" => '0.000000', "longitude" => '0.000000' );
-		}
-		
-		log::add('myBMW', 'debug', '| Result getGPSCoordinates() : '.json_encode($gps));
-		return $gps;
-	}
-
-	public static function resetToken($vin)	{		
-
-		$filename = __DIR__.'/../../data/'.'auth_token_'.$vin.'.json';
-		if ( file_exists($filename) ) {
-			unlink($filename);
-			$result = array();
-			$result['res'] = "OK";
-			log::add('myBMW', 'debug', 'Suppression du fichier '.$filename);
-			return $result;
-		}
-		else { 
-			log::add('myBMW', 'debug', 'Le fichier '.$filename.' n\'existe pas'); 
-			return null;
-		}
-	}
-	
-	public static function setChargingTarget($vin, $chargingTarget)	{
-		
-		$eqLogic = self::getBMWEqLogic($vin);
-
-		log::add('myBMW', 'debug', '┌─Command execution : setChargingTarget');
-		$myConnection = $eqLogic->getConnection();
-		$result = $myConnection->setChargingTarget($chargingTarget);
-		$response = json_decode($result->body);
-
-		$eventStatus = 'PENDING';
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}	
-		
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingTarget : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$eqLogic->refreshVehicleInfos();
-		return $result->httpCode;
-	}
-
-	public static function setChargingPowerLimit($vin, $chargingPowerLimit)	{
-		
-		$eqLogic = self::getBMWEqLogic($vin);
-		
-		log::add('myBMW', 'debug', '┌─Command execution : setChargingPowerLimit');
-		$myConnection = $eqLogic->getConnection();
-		$result = $myConnection->setChargingPowerLimit($chargingPowerLimit);
-		$response = json_decode($result->body);
-
-		$eventStatus = 'PENDING';
-		sleep(10);
-		$retry = 12;
-		while ($retry > 0 && $eventStatus == 'PENDING')
-		{
-			$status = $myConnection->getRemoteServiceStatus($response->eventId);
-			$eventStatus = json_decode($status->body)->eventStatus;
-			log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($status->httpCode, '200 - OK'), '| Result getRemoteServiceStatus() : ['.$status->httpCode.'] - '.$status->body);
-			if ($eventStatus === 'PENDING') { sleep(10); }
-			$retry--;
-		}
-
-		log::add('myBMW', $eqLogic->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of car event setChargingPowerLimit : ['.$result->httpCode.'] - eventId : '.$response->eventId.' - creationTime : '.$response->creationTime);
-		log::add('myBMW', 'debug', '┌─Command execution : refresh');
-		$eqLogic->refreshVehicleInfos();
-		return $result->httpCode;
-	}
-
 }
 
 
@@ -1166,7 +808,7 @@ class myBMWCmd extends cmd {
                 case 'refresh':
                     $eqLogic->refreshVehicleInfos();
 					break;
-                case 'hornBlow':
+				/*case 'hornBlow':
                     $eqLogic->doHornBlow();
                     break;
                 case 'lightFlash':
@@ -1189,7 +831,7 @@ class myBMWCmd extends cmd {
                     break;
 				case 'stopChargeNow':
 					$eqLogic->stopChargeNow();
-					break;
+					break;*/
 				default:
                     throw new \Exception("Unknown command", 1);
                     break;

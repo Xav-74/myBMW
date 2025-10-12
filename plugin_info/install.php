@@ -20,41 +20,20 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 function myBMW_install() {
 
-    // Création du cron avec valeur par défaut
+    // Suppression du cron de la version précédente
     $cron = cron::byClassAndFunction('myBMW', 'pull');
-    if (!is_object($cron)) {
-        $cron = new cron();
-        $cron->setClass('myBMW');
-        $cron->setFunction('pull');
-        $cron->setEnable(1);
-        $cron->setDeamon(0);
-        $cron->setSchedule('*/30 * * * *');
-        $cron->setTimeout(5);
-        $cron->save();
-        log::add('myBMW', 'debug', 'Create cron pull');
+    if (is_object($cron)) {
+        $cron->remove();
+        log::add('myBMW', 'debug', 'Remove cron pull');
     }
-
+    
 	message::add('myBMW', 'Merci pour l\'installation du plugin MyBMW. Lisez bien la documentation avant utilisation et n\'hésitez pas à laisser un avis sur le Market Jeedom !');
 	
 }
 
 function myBMW_update() {
 
-    // Mise à jour du cron
-    $cron = cron::byClassAndFunction('myBMW', 'pull');
-    if (!is_object($cron)) {
-        $cron = new cron();
-        $cron->setClass('myBMW');
-        $cron->setFunction('pull');
-        $cron->setEnable(1);
-        $cron->setDeamon(0);
-        $cron->setSchedule('*/30 * * * *');
-        $cron->setTimeout(5);
-        $cron->save();
-        log::add('myBMW', 'debug', 'Update cron pull');
-    }
-
-	// Mise à jour de l'ensemble des commandes pour chaque équipement
+   	// Mise à jour de l'ensemble des commandes pour chaque équipement
     log::add('myBMW', 'debug', 'Update myBMW plugin commands');
     foreach (eqLogic::byType('myBMW') as $eqLogic) {
         $eqLogic->save();
@@ -67,14 +46,7 @@ function myBMW_update() {
 
 function myBMW_remove() {
 
-    // Suppression du cron
-    $cron = cron::byClassAndFunction('myBMW', 'pull');
-    if (is_object($cron)) {
-        $cron->remove();
-        log::add('myBMW', 'debug', 'Remove cron pull');
-    }
-
-	message::add('myBMW', 'Le plugin myBMW a été correctement désinstallé. N\'hésitez pas à laisser un avis sur le Market Jeedom !');
+    message::add('myBMW', 'Le plugin myBMW a été correctement désinstallé. N\'hésitez pas à laisser un avis sur le Market Jeedom !');
 
 }
 
