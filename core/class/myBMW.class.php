@@ -592,10 +592,19 @@ class myBMW extends eqLogic {
 				$this->save(true);
 			}
 			else { $this->checkAndUpdateCmd('isAcCurrentLimitActive', 0); }
-						
-			$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value'] ?? 0);
-			$this->setConfiguration('fuel_value_unit','%');
-			$this->save(true);
+			
+			if ( $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value'] != null ) { 
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value']);
+				$this->setConfiguration('fuel_value_unit','%');
+				$this->save(true);
+			}
+			elseif ( $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value'] != null ) { 
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value']);
+				$this->setConfiguration('fuel_value_unit','L');
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('remaining_fuel', 0); } 
+
 			$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle['telematicData']['vehicle.drivetrain.totalRemainingRange']['value']-$vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
 
 
