@@ -515,7 +515,7 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getTelematicData();
 		$vehicle = json_decode($result->body, true);
 		
-		if ( is_array($vehicle) && !isset($vehicle['exveErrorId'] ) {
+		if ( is_array($vehicle) && !isset($vehicle['exveErrorId']) ) {
 
 			//States
 			$this->checkAndUpdateCmd('mileage', $vehicle['telematicData']['vehicle.vehicle.travelledDistance']['value'] ?? 0);
