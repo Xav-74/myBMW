@@ -561,7 +561,10 @@ class myBMW extends eqLogic {
 			$this->checkAndUpdateCmd('tireRearRight_target', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget']['value']/100 ?? 0);
 
 			$this->checkAndUpdateCmd('chargingStatus', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.status']['value'] ?? 'not available');
-			$this->checkAndUpdateCmd('connectorStatus', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] ?? 'not available');
+			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] != null) {
+				if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] == 'CONNECTED') { $this->checkAndUpdateCmd('connectorStatus', 1); }
+				else { $this->checkAndUpdateCmd('connectorStatus', 0); }
+			}
 			$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
 			$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.level']['value'] ?? 0);
 			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'] != null ) { 
