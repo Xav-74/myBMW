@@ -515,7 +515,7 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getTelematicData();
 		$vehicle = json_decode($result->body, true);
 		
-		if ( is_array($vehicle) ) {
+		if ( is_array($vehicle) && !isset($vehicle['exveErrorId'] ) {
 
 			//States
 			$this->checkAndUpdateCmd('mileage', $vehicle['telematicData']['vehicle.vehicle.travelledDistance']['value'] ?? 0);
@@ -706,45 +706,47 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getChargingHistory();
 		$chargingHistory = json_decode($result->body);
 
-		//Charging sessions
-		$totalEnergyCharged = 0;
-		$totalEnergyCost = 0;
+		if ( is_array($chargingHistory) && !isset($chargingHistory->exveErrorId) ) {
+			//Charging sessions
+			$totalEnergyCharged = 0;
+			$totalEnergyCost = 0;
 
-		$tab_temp = array();
-		if (is_array($chargingHistory->data)) {
-			$datas = $chargingHistory->data;
-			foreach ($datas as $data) {
+			$tab_temp = array();
+			if (is_array($chargingHistory->data)) {
+				$datas = $chargingHistory->data;
+				foreach ($datas as $data) {
 
-				$date = date('d-m-Y', $data->startTime);
-				$energyCharged = round($data->energyConsumedFromPowerGridKwh,2);
-				$totalEnergyCharged = $totalEnergyCharged + $energyCharged;
-				
-				$totalSeconds = $data->totalChargingDurationSec;
-				$hours = floor($totalSeconds / 3600);
-				$minutes = floor(($totalSeconds % 3600) / 60);
-				$time = "{$hours} h {$minutes} min";
+					$date = date('d-m-Y', $data->startTime);
+					$energyCharged = round($data->energyConsumedFromPowerGridKwh,2);
+					$totalEnergyCharged = $totalEnergyCharged + $energyCharged;
+					
+					$totalSeconds = $data->totalChargingDurationSec;
+					$hours = floor($totalSeconds / 3600);
+					$minutes = floor(($totalSeconds % 3600) / 60);
+					$time = "{$hours} h {$minutes} min";
 
-				$cost = round($data->chargingCostInformation->calculatedChargingCost,2);
-				$totalEnergyCost = $totalEnergyCost + $cost;
+					$cost = round($data->chargingCostInformation->calculatedChargingCost,2);
+					$totalEnergyCost = $totalEnergyCost + $cost;
 
-				$address = $data->chargingLocation->formattedAddress;
+					$address = $data->chargingLocation->formattedAddress;
 
-				$tab_temp[] = array(
-					"date" => $date,
-					"energyCharged" => $energyCharged,
-					"time" => $time,
-					"cost" => $cost,
-					"address" => str_replace("'", " ", $address)
-				);
+					$tab_temp[] = array(
+						"date" => $date,
+						"energyCharged" => $energyCharged,
+						"time" => $time,
+						"cost" => $cost,
+						"address" => str_replace("'", " ", $address)
+					);
+				}
+				$this->checkAndUpdateCmd('totalEnergyCharged', $totalEnergyCharged);
+				$this->checkAndUpdateCmd('totalEnergyCost', $totalEnergyCost);
+				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
 			}
-			$this->checkAndUpdateCmd('totalEnergyCharged', $totalEnergyCharged);
-			$this->checkAndUpdateCmd('totalEnergyCost', $totalEnergyCost);
-			$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
-		}
-		else {
-			$this->checkAndUpdateCmd('totalEnergyCharged', 0);
-			$this->checkAndUpdateCmd('totalEnergyCost', 0);
-			$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
+			else {
+				$this->checkAndUpdateCmd('totalEnergyCharged', 0);
+				$this->checkAndUpdateCmd('totalEnergyCost', 0);
+				$this->checkAndUpdateCmd('chargingSessions', json_encode($tab_temp));
+			}
 		}
 
 		log::add('myBMW', 'debug', '| Result getChargingHistory() : '. $result->body);
