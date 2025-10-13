@@ -301,7 +301,7 @@
 	
 	<script>
     
-    //----- Display options (Electric (BEV) / Combustion (ICE/MHEV) / Hybrid (PHEV))
+    //----- Display options (Electric (BEV) / Combustion (ICE/MHEV/CONV) / Hybrid (PHEV))
 	var panel_height = 2080;
 		
 	if ( '#vehicle_type#id##' == 'PHEV' )  {
@@ -316,7 +316,7 @@
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 	}
-	if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' )  {
+	if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' || '#vehicle_type#id##' == 'CONV' )  {
 		$('.electric_engine#id#').hide();
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
 		$('.column_1#id#').append('<div class="col-xs-4" id="tile_off" style="height:144px; width:144px;"></div>');
@@ -1289,7 +1289,7 @@
 					stats_totalElectricPercentage = 100.00; 
 					stats_totalConsumption = 'Consommation moyenne électrique : '+ stats.totalElectricConsumption.averageConsumption + ' ' + stats.totalElectricConsumption.averageUnit;
 				}
-				else if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' ) {
+				else if ( '#vehicle_type#id##' == 'ICE' || '#vehicle_type#id##' == 'MHEV' || '#vehicle_type#id##' == 'CONV' ) {
 					stats_totalCombustionPercentage = 100.00;
 					stats_totalElectricPercentage = 0.00;
 					stats_totalConsumption = 'Consommation moyenne thermique : '+ stats.totalCombustionConsumption.averageConsumption + ' ' + stats.totalCombustionConsumption.averageUnit;

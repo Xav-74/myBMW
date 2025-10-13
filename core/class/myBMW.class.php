@@ -600,7 +600,7 @@ class myBMW extends eqLogic {
 			}
 			elseif ( $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value'] != null ) { 
 				$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value']);
-				$this->setConfiguration('fuel_value_unit','L');
+				$this->setConfiguration('fuel_value_unit','l');
 				$this->save(true);
 			}
 			else { $this->checkAndUpdateCmd('remaining_fuel', 0); } 
