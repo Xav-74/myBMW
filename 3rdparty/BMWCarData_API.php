@@ -328,7 +328,7 @@ class BMWCarData_API
 		if ($this->access_token && time() > ($this->expires_in-30))
 		{
             log::add('myBMW', 'debug', '| Token about to expire, refreshing...');
-            $this->refreshTokens();
+            return $this->refreshTokens();
         }
 		
 		$expires_in = $this->expires_in - time();
