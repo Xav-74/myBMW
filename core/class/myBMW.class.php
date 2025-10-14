@@ -604,8 +604,7 @@ class myBMW extends eqLogic {
 				$this->save(true);
 			}
 			else { $this->checkAndUpdateCmd('remaining_fuel', 0); } 
-
-			$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle['telematicData']['vehicle.drivetrain.totalRemainingRange']['value']-$vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
+ 			$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle['telematicData']['vehicle.drivetrain.totalRemainingRange']['value']-$vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
 
 
 			//Messages

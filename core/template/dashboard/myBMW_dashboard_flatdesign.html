@@ -331,29 +331,23 @@
 			jeedom.cmd.update['#connectorStatus_id#']({display_value:'#connectorStatus#'});
 					
 			jeedom.cmd.update['#chargingStatus_id#'] = function(_options) {
-				if ( _options.display_value == "DEFAULT" || _options.display_value == "ERROR" )  {	
+				if ( _options.display_value == "CHARGINGERROR" )  {	
 					$('.Cmd#chargingStatus_id#').empty().append('<span style="color:rgb(185,58,62) !important; font-weight:bold !important">Erreur</span>');
 				}
-				if ( _options.display_value == "CHARGING" )  {	
+				if ( _options.display_value == "CHARGINGACTIVE" )  {	
 					$('.Cmd#chargingStatus_id#').empty().append('<span>En cours</span>');
 				}
-				if ( _options.display_value == "COMPLETE" || _options.display_value == "FULLY_CHARGED" || _options.display_value == "FINISHED_FULLY_CHARGED" )  {	
+				if ( _options.display_value == "CHARGINGENDED" )  {	
 					$('.Cmd#chargingStatus_id#').empty().append('<span>Complète</span>');
 				}
-				if ( _options.display_value == "FINISHED_NOT_FULL" )  {	
-					$('.Cmd#chargingStatus_id#').empty().append('<span>Interrompue</span>');
+				if ( _options.display_value == "INITIALIZATION" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>Initialisation</span>');
 				}
-				if ( _options.display_value == "NOT_CHARGING" )  {	
+				if ( _options.display_value == "NOCHARGING" )  {	
 					$('.Cmd#chargingStatus_id#').empty().append('<span>Aucune</span>');
 				}
-				if ( _options.display_value == "PLUGGED_IN" )  {	
-					$('.Cmd#chargingStatus_id#').empty().append('<span>Branchée</span>');
-				}
-				if ( _options.display_value == "WAITING_FOR_CHARGING" )  {	
-					$('.Cmd#chargingStatus_id#').empty().append('<span>En attente</span>');
-				}
-				if ( _options.display_value == "TARGET_REACHED" )  {	
-					$('.Cmd#chargingStatus_id#').empty().append('<span>Atteinte</span>');
+				if ( _options.display_value == "CHARGINGPAUSED" )  {	
+					$('.Cmd#chargingStatus_id#').empty().append('<span>En pause</span>');
 				}
 				if ( _options.display_value == "UNKNOWN" || _options.display_value == "INVALID" )  {	
 					$('.Cmd#chargingStatus_id#').empty().append('<span> - </span>');
