@@ -383,8 +383,7 @@ class BMWCarData_API
     {
         $this->_checkAuth();
         
-        $date = new DateTime("first day of last month");
-        $formatDate = $date->format('Y-m-d\TH:i:s\Z');
+        $date = date('Y-m-d\TH:i:s\Z');
         $telematicsData = json_decode(file_get_contents(dirname(__FILE__).'/../data/TelematicsDataCatalogue.json'), true);
         $technicalDescriptors = array_values(array_filter(array_map(function($item) {
             if (isset($item['Technical descriptor'])) {
@@ -399,7 +398,7 @@ class BMWCarData_API
 		$headers[] = 'Content-Type: application/json';
 		$headers[] = 'Accept: application/json';
         $data = [
-            'name' => 'Jeedom BMW Telematic Data for '.$this->vin.' '.$formatDate,
+            'name' => 'Jeedom BMW Telematic Data for '.$this->vin.' '.$date,
             'purpose' => 'Container for BMW telematic data endpoints used by Jeedom',
             'technicalDescriptors' => $technicalDescriptors,
         ];

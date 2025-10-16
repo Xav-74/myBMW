@@ -714,7 +714,7 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getChargingHistory();
 		$chargingHistory = json_decode($result->body);
 
-		if ( is_array($chargingHistory) && !isset($chargingHistory->exveErrorId) ) {
+		if ( is_object($chargingHistory) && !isset($chargingHistory->exveErrorId) ) {
 			//Charging sessions
 			$totalEnergyCharged = 0;
 			$totalEnergyCost = 0;
@@ -722,9 +722,15 @@ class myBMW extends eqLogic {
 			$tab_temp = array();
 			if (is_array($chargingHistory->data)) {
 				$datas = $chargingHistory->data;
+				
+				// Sort sessions by ascending date
+				usort($datas, function($a, $b) {
+					return $a->startTime <=> $b->startTime;
+				});
+				
 				foreach ($datas as $data) {
 
-					$date = date('d-m-Y', $data->startTime);
+					$date = date('d/m/Y', $data->startTime);
 					$energyCharged = round($data->energyConsumedFromPowerGridKwh,2);
 					$totalEnergyCharged = $totalEnergyCharged + $energyCharged;
 					
