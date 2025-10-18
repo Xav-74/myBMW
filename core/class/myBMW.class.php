@@ -691,7 +691,7 @@ class myBMW extends eqLogic {
 			$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle['telematicData']['vehicle.vehicle.travelledDistance']['timestamp'])) ?? 'not available');
 		}	
 
-		log::add('myBMW', 'debug', '| Result getTelematicData() : '. $result->body);
+		log::add('myBMW', 'debug', '| Result getTelematicData() : '. str_replace('\n','',$result->body));
 		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
 
