@@ -28,36 +28,14 @@ class myBMW extends eqLogic {
 	
     /*     * *************************Attributs****************************** */
 
+	const PYTHON_PATH = __DIR__ . '/../../resources/venv/bin/python3';
+
+	public static $_encryptConfigKey = array('clientId', 'username');
+	
 	public static $_widgetPossibility = array(
 		'custom' => true,
-		//'custom::layout' => false,
-		'parameters' => array(
-			/*'info' => array(
-                'name' => 'Les différents paramètres optionnels sont les suivant :',
-            ),
-			'param_1' => array(
-                'name' => ' - doors_windows_display (text /icon) : affiche l\'état des portes / fenêtres sous forme de texte ou icône',
-            ),
-			'param_2' => array(
-                'name' => ' - all_info_display (show / hide) : affiche ou non les tuiles "Toutes les portes / fenêtres"',
-            ),
-			'param_3' => array(
-                'name' => ' - color_icon_closed (green) : affiche l\'état "fermé" des portes / fenêtres en vert',
-            ),*/
-		),
+		'parameters' => array(),
 	);
-	
-	public function decrypt()
-	{
-		$this->setConfiguration('clientId', utils::decrypt($this->getConfiguration('clientId')));
-		$this->setConfiguration('username', utils::decrypt($this->getConfiguration('username')));
-	}
-
-	public function encrypt()
-	{
-		$this->setConfiguration('clientId', utils::encrypt($this->getConfiguration('clientId')));
-		$this->setConfiguration('username', utils::encrypt($this->getConfiguration('username')));
-	}
 
 
     /*     * ***********************Methode static*************************** */
@@ -65,20 +43,197 @@ class myBMW extends eqLogic {
     public static function cronHourly()
 	{
 		log::add('myBMW', 'debug', 'Cron hourly');
-		foreach (eqLogic::byType('myBMW', true) as $myBMW) {										// type = myBMW et eqLogic enable
-			$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
-			if (!is_object($cmdRefresh) ) {															// Si la commande n'existe pas ou condition non respectée
-			  	continue; 																			// continue la boucle
+		$currentHour = (int)date('G');
+		foreach (eqLogic::byType('myBMW', true) as $myBMW) {			// type = myBMW et eqLogic enable
+			if ($currentHour % 2 === 0) {
+				$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
+				if (!is_object($cmdRefresh) ) {							// Si la commande n'existe pas ou condition non respectée
+					continue; 											// continue la boucle
+				}
+				$cmdRefresh->execCmd();
 			}
-			$cmdRefresh->execCmd();
 		}
 	}
+
+	public static function dependancy_info()
+	{
+    	$pythonBin = __DIR__ . '/../../resources/venv/bin/python3';
+        $pythonReq = __DIR__ . '/../../resources/requirements.txt';
+		
+		$return = array();
+        $return['log'] = log::getPathToLog(__CLASS__ . '_update');
+        $return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependance';
+        $return['state'] = 'ok';
+        if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependance')) {
+            $return['state'] = 'in_progress';
+        } elseif (!file_exists($pythonBin)) {
+            $return['state'] = 'nok';
+        } elseif (!self::pythonRequirementsInstalled($pythonBin, $pythonReq)) {
+            $return['state'] = 'nok';
+        }
+        return $return;
+    }
+
+	public static function dependancy_install()
+	{
+        log::remove(__CLASS__ . '_update');
+        return array('script' => __DIR__ . '/../../resources/install_#stype#.sh', 'log' => log::getPathToLog(__CLASS__ . '_update'));
+    }
+
+	private static function pythonRequirementsInstalled(string $pythonPath, string $requirementsPath)
+	{
+        if (!file_exists($pythonPath) || !file_exists($requirementsPath)) {
+        	return false;
+        }
+        exec("{$pythonPath} -m pip freeze", $packages_installed);
+        $packages = join("||", $packages_installed);
+        exec("cat {$requirementsPath}", $packages_needed);
+        foreach ($packages_needed as $line) {
+          if (preg_match('/([^\s]+)[\s]*([>=~]=)[\s]*([\d+\.?]+)$/', $line, $need) === 1) {
+            if (preg_match('/' . $need[1] . '==([\d+\.?]+)/', $packages, $install) === 1) {
+              if ($need[2] == '==' && $need[3] != $install[1]) {
+                return false;
+              } elseif (version_compare($need[3], $install[1], '>')) {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+        }
+        return true;
+    }
+
+	public static function backupExclude()
+	{
+        return ['resources/venv'];
+    }
+
+	public static function deamon_info()
+	{
+        $return = array();
+        $return['log'] = __CLASS__;
+        $return['state'] = 'nok';
+        $pid_file = jeedom::getTmpFolder(__CLASS__) . '/daemon.pid';
+        if (file_exists($pid_file)) {
+            if (@posix_getsid(trim(file_get_contents($pid_file)))) {
+                $return['state'] = 'ok';
+            } else {
+                shell_exec(system::getCmdSudo() . 'rm -rf ' . $pid_file . ' 2>&1 > /dev/null');
+            }
+        }
+
+        $return['launchable'] = 'ok';
+        $clientId = config::byKey('clientId', __CLASS__);
+        $username = config::byKey('username', __CLASS__);
+		if ($clientId == '') {
+            $return['launchable'] = 'nok';
+            $return['launchable_message'] = 'Client ID not configured';
+        } elseif ($username == '') {
+            $return['launchable'] = 'nok';
+            $return['launchable_message'] = 'Username not configured';
+        }	
+		
+		return $return;
+    }
+
+    public static function deamon_start()
+	{
+		self::deamon_stop();
+       	$deamon_info = self::deamon_info();
+        if ($deamon_info['launchable'] != 'ok') {
+            throw new Exception('Please check the configuration');
+        }
+
+		$username = config::byKey('username', __CLASS__);
+		$password = self::getIdToken();
+		$host = config::byKey('host', __CLASS__, 'customer.streaming-cardata.bmwgroup.com');
+		$port = (int) (config::byKey('port', __CLASS__, 9000));
+		$socketPort = (int) (config::byKey('socketPort', __CLASS__, 44074));
+		
+		$path = realpath(__DIR__ . '/../../resources');
+        $cmd = self::PYTHON_PATH . " {$path}/myBMW.py";
+        $cmd .= ' --loglevel ' . log::convertLogLevel(log::getLogLevel(__CLASS__));
+        $cmd .= ' --host ' . $host;
+        $cmd .= ' --port ' . $port;
+        $cmd .= ' --username ' . escapeshellarg(trim($username));
+        $cmd .= ' --password ' . escapeshellarg(trim($password));
+		$cmd .= ' --socketport ' . $socketPort;
+		$cmd .= ' --callback ' . network::getNetworkAccess('internal', 'proto:127.0.0.1:port:comp') . '/plugins/myBMW/core/php/jeemyBMW.php';
+        $cmd .= ' --apikey ' . jeedom::getApiKey(__CLASS__);
+        $cmd .= ' --pid ' . jeedom::getTmpFolder(__CLASS__) . '/daemon.pid';
+        log::add(__CLASS__, 'debug', 'Lancement démon');
+        log::add('myBMW', 'debug', 'Command : ' . $cmd);
+		$result = exec($cmd . ' >> ' . log::getPathToLog(__CLASS__ . '_daemon') . ' 2>&1 &');
+
+		$i = 0;
+        while ($i < 10) {
+            $deamon_info = self::deamon_info();
+            if ($deamon_info['state'] == 'ok') {
+                break;
+            }
+            sleep(1);
+            $i++;
+        }
+        if ($i >= 10) {
+            log::add(__CLASS__, 'error', 'Unable to start daemon', 'unableStartDeamon');
+            return false;
+        }
+        message::removeAll(__CLASS__, 'unableStartDeamon');
+
+		sleep(1);
+		/*foreach (eqLogic::byType('myBMW', true) as $myBMW) {			// type = myBMW et eqLogic enable
+			$vin = $myBMW->getConfiguration('vehicle_vin');		
+			self::sendToDaemon('subscribe',$vin);
+			sleep(1);
+		}*/
+		self::sendToDaemon('subscribe','+');
+		return true;
+	}
+		
+	public static function deamon_stop()
+	{
+        $pid_file = jeedom::getTmpFolder(__CLASS__) . '/daemon.pid';
+        if (file_exists($pid_file)) {
+            $pid = intval(trim(file_get_contents($pid_file)));
+            system::kill($pid);
+        }
+        sleep(1);
+        system::kill('myBMW.py');
+        sleep(1);
+    }
+
+	public static function sendToDaemon($action, $param)
+	{
+        $deamon_info = self::deamon_info();
+        if ($deamon_info['state'] != 'ok') {
+            throw new Exception('Daemon is not started');
+        }
+		$payload = array(
+            'apikey' => jeedom::getApiKey(__CLASS__),
+			'action' => $action,
+            'param' => $param
+        );
+        $msg = json_encode($payload);
+
+		$socket = socket_create(AF_INET, SOCK_STREAM, 0);
+        socket_connect($socket, '127.0.0.1', config::byKey('socketPort', __CLASS__, 44074));
+        socket_write($socket, $msg, strlen($msg));
+        socket_close($socket);
+        log::add(__CLASS__, 'debug', 'Send to daemon : ' . $msg);
+    }
 
 	public static function getConfigForCommunity()
 	{
 		$index = 1;
 		$CommunityInfo = "```\n";
-		$CommunityInfo = $CommunityInfo . 'Custom cron : ' . config::byKey('cronPattern', 'myBMW') . "\n";
+		if ( !empty(config::byKey('clientId', 'myBMW')) ) { $CommunityInfo = $CommunityInfo . 'ClientId configured' . "\n"; }
+        else { $CommunityInfo = $CommunityInfo . 'ClientId missing' . "\n"; }
+		if ( !empty(config::byKey('username', 'myBMW')) ) { $CommunityInfo = $CommunityInfo . 'Stream username configured' . "\n"; }
+        else { $CommunityInfo = $CommunityInfo . 'Stream username' . "\n"; }
+        $CommunityInfo = $CommunityInfo . 'Host : ' . config::byKey('host', 'myBMW', 'customer.streaming-cardata.bmwgroup.com') . "\n";
+        $CommunityInfo = $CommunityInfo . 'Port : ' . config::byKey('port', 'myBMW', 9000) . "\n";
+        $CommunityInfo = $CommunityInfo . 'SocketPort : ' . config::byKey('socketPort', 'myBMW', 44074) . "\n";
 		foreach (eqLogic::byType('myBMW', true) as $myBMW)  {
 			$CommunityInfo = $CommunityInfo . "Vehicle #" . $index . " - Brand : " . $myBMW->getConfiguration('vehicle_brand') . " - Model : ". $myBMW->getConfiguration('vehicle_model') . " - Year : ". $myBMW->getConfiguration('vehicle_year') . " - Type : ". $myBMW->getConfiguration('vehicle_type') . "\n";
 			$index++;
@@ -96,6 +251,19 @@ class myBMW extends eqLogic {
 			}
 		}
 		return $eqLogic;
+	}
+
+	public static function getIdToken()
+	{
+		log::add('myBMW', 'debug', '┌─Command execution : getIdToken');
+		foreach (eqLogic::byType('myBMW', true) as $myBMW) {
+			$myConnection = $myBMW->getConnection();
+			$IdToken = $myConnection->getIdToken();
+			if ( $IdToken != '') { break; }
+		}
+		log::add('myBMW', 'debug', '| ID Token : '.$IdToken);
+		log::add('myBMW', 'debug', '└─End of getting ID Token');
+		return $IdToken;
 	}
 	
 	public static function getLogLevelFromHttpStatus($httpStatus, $successList)
@@ -276,9 +444,6 @@ class myBMW extends eqLogic {
      * dans la base de données pour une mise à jour d'une entrée */
     public function preUpdate()
 	{
-		if (empty($this->getConfiguration('clientId'))) {
-			throw new Exception('Le client ID ne peut pas être vide');
-		}
 		if (empty($this->getConfiguration('vehicle_brand'))) {
 			throw new Exception('La marque du véhicule ne peut pas être vide');
 		}
@@ -417,17 +582,18 @@ class myBMW extends eqLogic {
 	public function getConnection()
     {
         $vin = $this->getConfiguration("vehicle_vin");
-        $clientId = $this->getConfiguration("clientId");
-        $brand = $this->getConfiguration("vehicle_brand");
+        $clientId = config::byKey("clientId", "myBMW");
+		$brand = $this->getConfiguration("vehicle_brand");
 		
 		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
 		log::add('myBMW', 'debug', '| Brand : '.strtoupper($brand).' - Connection car vin : '.$vin.' with client ID : '.$clientId); 
 		return $myConnection;
 	}
 	
-	public static function authenticate($vin, $clientId, $brand)
+	public static function authenticate($vin, $brand)
     {
 		$eqLogic = self::getBMWEqLogic($vin);
+		$clientId = config::byKey("clientId", "myBMW");
 		log::add('myBMW', 'debug', '┌─Command execution : authenticate');
 		$myConnection = new BMWCarData_API($vin, $clientId, $brand);
 		log::add('myBMW', 'debug', '| Brand : '.strtoupper($brand).' - Connection car vin : '.$vin.' with client ID : '.$clientId); 
@@ -509,6 +675,286 @@ class myBMW extends eqLogic {
 		return $chargingHistory;
 	}
 
+	public function handleMqttMessage($message)
+	{
+        if (!is_array($message) || !isset($message['data'])) {
+			log::add('myBMW', 'debug', 'MQTT message ignored : invalid format');
+			return;
+		}
+				
+		$data = $message['data'];
+		$key = array_key_first($data);
+		$value = $data[$key]['value'] ?? null;
+		$timestamp = $data[$key]['timestamp'] ?? null;
+		
+		switch ($key) {
+
+			//States
+			case 'vehicle.vehicle.travelledDistance':
+				$this->checkAndUpdateCmd('mileage', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - mileage = '.$value);
+				$val = date('d/m/Y H:i:s', strtotime($timestamp));
+				$this->checkAndUpdateCmd('lastUpdate', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - lastUpdate = '.$val);
+				break;
+
+			case 'vehicle.cabin.door.lock.status':
+				$this->checkAndUpdateCmd('doorLockState', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - doorLockState = '.$value);
+				break;
+			
+			case 'vehicle.cabin.door.row1.driver.isOpen':
+			case 'vehicle.cabin.door.row2.driver.isOpen':
+			case 'vehicle.cabin.door.row1.passenger.isOpen':
+			case 'vehicle.cabin.door.row2.passenger.isOpen':
+				$doorMap = [
+					'vehicle.cabin.door.row1.driver.isOpen'     => 'doorDriverFront',
+					'vehicle.cabin.door.row2.driver.isOpen'     => 'doorDriverRear',
+					'vehicle.cabin.door.row1.passenger.isOpen'  => 'doorPassengerFront',
+					'vehicle.cabin.door.row2.passenger.isOpen'  => 'doorPassengerRear'
+				];
+				$doorCmd = $doorMap[$key];
+				if ($value == 'CLOSED' || $value == false) {
+					$val = 'CLOSED';
+				} elseif ($value == 'OPEN' || $value == true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd($doorCmd, $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - '.$doorCmd.' = '.$val);
+			
+				$doors = [
+					$this->getCmd(null, 'doorDriverFront')->execCmd(),
+					$this->getCmd(null, 'doorDriverRear')->execCmd(),
+					$this->getCmd(null, 'doorPassengerFront')->execCmd(),
+					$this->getCmd(null, 'doorPassengerRear')->execCmd()
+				];
+
+				$allClosed = true;
+				foreach ($doors as $state) {
+					if (!in_array($state, ['CLOSED', 'not available'])) {
+						$allClosed = false;
+						break;
+					}
+				}
+
+				$this->checkAndUpdateCmd('allDoorsState', $allClosed ? 'CLOSED' : 'OPEN');
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : allDoorsState = '.($allClosed ? 'CLOSED' : 'OPEN'));
+				break;			
+			
+			case 'vehicle.cabin.window.row1.driver.status':
+			case 'vehicle.cabin.window.row2.driver.status':
+			case 'vehicle.cabin.window.row1.passenger.status':
+			case 'vehicle.cabin.window.row2.passenger.status':
+				$windowMap = [
+					'vehicle.cabin.window.row1.driver.status'     => 'windowDriverFront',
+					'vehicle.cabin.window.row2.driver.status'     => 'windowDriverRear',
+					'vehicle.cabin.window.row1.passenger.status'  => 'windowPassengerFront',
+					'vehicle.cabin.window.row2.passenger.status'  => 'windowPassengerRear'
+				];
+				$windowCmd = $windowMap[$key];
+				$this->checkAndUpdateCmd($windowCmd, $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - '.$windowCmd.' = '.$value);
+			
+				$windows = [
+					$this->getCmd(null, 'windowDriverFront')->execCmd(),
+					$this->getCmd(null, 'windowDriverRear')->execCmd(),
+					$this->getCmd(null, 'windowPassengerFront')->execCmd(),
+					$this->getCmd(null, 'windowPassengerRear')->execCmd()
+				];
+
+				$allClosed = true;
+				foreach ($windows as $state) {
+					if (!in_array($state, ['CLOSED', 'not available'])) {
+						$allClosed = false;
+						break;
+					}
+				}
+
+				$this->checkAndUpdateCmd('allWindowsState', $allClosed ? 'CLOSED' : 'OPEN');
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : allWindowsState = '.($allClosed ? 'CLOSED' : 'OPEN'));
+				break;					
+
+			case 'vehicle.body.trunk.isOpen':
+				if ($value == 'CLOSED' || $value == false) {
+					$val = 'CLOSED';
+				} elseif ($value == 'OPEN' || $value == true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd('trunk_state', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - trunk_state = '.$val);
+				break;
+
+			case 'vehicle.body.hood.isOpen':
+				if ($value == 'CLOSED' || $value == false) {
+					$val = 'CLOSED';
+				} elseif ($value == 'OPEN' || $value == true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd('hood_state', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - hood_state = '.$val);
+				break;
+
+			case 'vehicle.cabin.sunroof.overallStatus':
+				$this->checkAndUpdateCmd('moonroof_state', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - moonroof_state = '.$value);
+				break;
+		
+			case 'vehicle.chassis.axle.row1.wheel.left.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontLeft_pressure', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontLeft_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontLeft_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontLeft_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.right.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontRight_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontRight_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontRight_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontRight_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.left.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearLeft_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearLeft_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearLeft_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearLeft_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.right.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearRight_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearRight_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearRight_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearRight_target = '.$val);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.status':
+				$this->checkAndUpdateCmd('chargingStatus', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingStatus = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.connectorStatus':
+				$val = ($value == 'CONNECTED') ? 1 : 0;
+				$this->checkAndUpdateCmd('connectorStatus', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - connectorStatus = '.$val);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.remainingElectricRange':
+				$this->checkAndUpdateCmd('beRemainingRangeElectric', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeElectric = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.level':
+				$this->checkAndUpdateCmd('chargingLevelHv', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingLevelHv = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.timeRemaining':
+				$remainingMinutes = $value;
+				$currentTime = $timestamp;
+				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
+				$val = date('H:i', $chargingEndTime);
+				$this->checkAndUpdateCmd('chargingEndTime', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingEndTime = '.$val);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.stateOfCharge.target':
+				$this->checkAndUpdateCmd('chargingTarget', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingTarget = '.$value);
+				$this->setConfiguration('chargingTarget', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.charging.acLimit.max':
+				$this->checkAndUpdateCmd('acCurrentLimit', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - acCurrentLimit = '.$value);
+				$this->setConfiguration('chargingPowerLimit', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.charging.acLimit.isActive':
+				$this->checkAndUpdateCmd('isAcCurrentLimitActive', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - isAcCurrentLimitActive = '.$value);
+				$this->setConfiguration('isAcCurrentLimitActive', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.drivetrain.fuelSystem.level':
+				$this->checkAndUpdateCmd('remaining_fuel', $value);
+				$this->setConfiguration('fuel_value_unit','%');
+				$this->save(true);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - remaining_fuel = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.fuelSystem.remainingFuel':
+				$this->checkAndUpdateCmd('remaining_fuel', $value);
+				$this->setConfiguration('fuel_value_unit','l');
+				$this->save(true);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - remaining_fuel = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.totalRemainingRange':
+				$val = $value - $this->getCmd(null, 'beRemainingRangeElectric')->execCmd();
+				$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeFuelKm = '.$value);
+				break;
+
+			//Location
+			case 'vehicle.cabin.infotainment.navigation.currentLocation.latitude':
+			case 'vehicle.cabin.infotainment.navigation.currentLocation.longitude':
+				$lastValue = $this->getCmd(null, 'gps_coordinates')->execCmd();
+				$coordinates = explode(',', $lastValue);
+				$lat = $coordinates[0];
+				$long = $coordinates[1];
+
+				if ($key == 'vehicle.cabin.infotainment.navigation.currentLocation.latitude') {
+					$lat = $value;
+				} elseif  ($key == 'vehicle.cabin.infotainment.navigation.currentLocation.longitude') {
+					$long = $value;
+				}
+
+				$val =  $lat . ',' . $long;
+				$this->checkAndUpdateCmd('gps_coordinates', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - gps_coordinates = '.$val);
+				
+				$distance = $this->getDistanceLocation($lat, $long);
+				$this->checkAndUpdateCmd('distance', $distance);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : distance = '.$distance);
+				if ( $distance <= $this->getConfiguration("home_distance") ) {
+					$this->checkAndUpdateCmd('presence', 1);
+					log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : presence = 1');
+				}
+				else { 
+					$this->checkAndUpdateCmd('presence', 0);
+					log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : presence = 0');
+				}
+				break;
+			
+			/*default:
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd ignored : '.$key);
+				break;*/
+		}
+	}
+		
 	public function refreshVehicleInfos()
 	{
 		$myConnection = $this->getConnection();
@@ -526,27 +972,27 @@ class myBMW extends eqLogic {
 			$this->checkAndUpdateCmd('doorPassengerFront', $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('doorPassengerRear', $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] ?? 'not available');
 			if (
-				($vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] === 'not available') )
+				($vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] == null) )
 			{
 				$this->checkAndUpdateCmd('allDoorsState', 'CLOSED');
 			} 
-			else { $this->checkAndUpdateCmd('allDoorsState', 'CLOSED'); }
+			else { $this->checkAndUpdateCmd('allDoorsState', 'OPEN'); }
 			$this->checkAndUpdateCmd('windowDriverFront', $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('windowDriverRear', $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('windowPassengerFront', $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('windowPassengerRear', $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] ?? 'not available');
 			if (
-				($vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] === 'not available') &&
-				($vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] === 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] === 'not available') )
+				($vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] == null) )
 			{
 				$this->checkAndUpdateCmd('allWindowsState', 'CLOSED');
 			} 
-			else { $this->checkAndUpdateCmd('allWindowsState', 'CLOSED'); }
+			else { $this->checkAndUpdateCmd('allWindowsState', 'OPEN'); }
 			$this->checkAndUpdateCmd('trunk_state', $vehicle['telematicData']['vehicle.body.trunk.isOpen']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('hood_state', $vehicle['telematicData']['vehicle.body.hood.isOpen']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('moonroof_state', $vehicle['telematicData']['vehicle.cabin.sunroof.overallStatus']['value'] ?? 'not available');
@@ -697,13 +1143,10 @@ class myBMW extends eqLogic {
 
 
 		// chargingHistory
-		$currentHour = (int)date('G');
-		if ($currentHour % 2 === 0) {
-            if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV ') {
-				$this->refreshChargingHistory();
-			}
-		}
-
+		if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV ') {
+			$this->refreshChargingHistory();
+		}		
+		
 		return $vehicle;
 	}	
 	

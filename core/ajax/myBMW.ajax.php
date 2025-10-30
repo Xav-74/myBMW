@@ -31,7 +31,7 @@ try {
     }
 	
 	if (init('action') == 'authenticate') {
-		$result = myBMW::authenticate(init('vin'),init('clientId'),init('brand'));
+		$result = myBMW::authenticate(init('vin'),init('brand'));
 		ajax::success($result);
 	}
 

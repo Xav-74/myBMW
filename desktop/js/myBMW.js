@@ -103,7 +103,6 @@ function authenticate()  {
 		data: {
 			action: "authenticate",
 			vin: $('.eqLogicAttr[data-l2key=vehicle_vin]').value(),
-			clientId: $('.eqLogicAttr[data-l2key=clientId]').value(),
 			brand: $('.eqLogicAttr[data-l2key=vehicle_brand]').value(),
 		},
 		dataType: 'json',

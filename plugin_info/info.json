@@ -1,21 +1,39 @@
 {
 	"id" : "myBMW",
 	"name" : "My BMW",
-	"description" : "Ce plugin vous permet d'interagir avec votre voiture BMW ou Mini équipée des services Connected Drive, au même titre que l’application officielle “My BMW”. Vous retrouverez les principales fonctionnalités de l’application : détail de votre véhicule / localisation / verrouillage et déverrouillage à distance / lancement de la ventilation / appel de phares / klaxon.",
+	"description" : {
+		"fr_FR" : "Ce plugin vous permet d'interagir avec votre voiture BMW ou Mini équipée des services Connected Drive, au même titre que l’application officielle “My BMW”. Vous retrouverez les principales fonctionnalités de l’application : détail de votre véhicule / localisation / verrouillage et déverrouillage à distance / lancement de la ventilation / appel de phares / klaxon."
+	},
 	"licence" : "AGPL",
 	"author" : "Xav-74",
-	"require" : "4.0",
+	"require" : "4.2",
+	"os": {
+		"min": 11
+	},
 	"category" : "devicecommunication",
 	"display": "panel",
-	"hasDependency" : false,
-	"hasOwnDeamon" : false,
-	"maxDependancyInstallTime" : 0,
+	"hasDependency" : true,
+	"hasOwnDeamon" : true,
+	"maxDependancyInstallTime" : 60,
 	"changelog" : "https://xav-74.github.io/Documentation/myBMW/#language#/changelog",
+	"changelog_beta": "https://xav-74.github.io/Documentation/myBMW/#language#/changelog",
 	"documentation" : "https://xav-74.github.io/Documentation/myBMW/#language#/",
+	"documentation_beta": "https://xav-74.github.io/Documentation/myBMW/#language#/",
 	"link" : {
 		"forum" : "https://community.jeedom.com/t/plugin-my-bmw-presentation-actualites/81759",
 		"video" : ""
 	},
-	"language" : ["fr_FR"],
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","v4","atlas"]
+	"language" : [
+		"fr_FR"
+	],
+	"compatibility" : [
+		"miniplus",
+		"smart",
+		"atlas",
+		"luna",
+		"rpi",
+		"docker",
+		"diy",
+		"v4"
+	]
 }

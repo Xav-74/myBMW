@@ -317,7 +317,14 @@ class BMWCarData_API
     }
 
 
-	private function _checkAuth()
+	public function getIdToken()
+    {
+        $this->_checkAuth();
+        return $this->id_token;
+    }
+
+    
+    private function _checkAuth()
     {
        	if (!$this->access_token)
 		{
