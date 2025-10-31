@@ -31,6 +31,7 @@ try
     }
     
     $input = file_get_contents('php://input');
+    $input = str_replace(["'", "False", "True"], ['"', 'false', 'true'], $input);
     $message = json_decode($input, true);
     
     if (!is_array($message)) {

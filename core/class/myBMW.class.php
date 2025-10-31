@@ -714,9 +714,9 @@ class myBMW extends eqLogic {
 					'vehicle.cabin.door.row2.passenger.isOpen'  => 'doorPassengerRear'
 				];
 				$doorCmd = $doorMap[$key];
-				if ($value == 'CLOSED' || $value == false) {
+				if ($value === 'CLOSED' || $value === false) {
 					$val = 'CLOSED';
-				} elseif ($value == 'OPEN' || $value == true) {
+				} elseif ($value === 'OPEN' || $value === true) {
 					$val = 'OPEN';
 				}
 				$this->checkAndUpdateCmd($doorCmd, $val);
@@ -775,9 +775,9 @@ class myBMW extends eqLogic {
 				break;					
 
 			case 'vehicle.body.trunk.isOpen':
-				if ($value == 'CLOSED' || $value == false) {
+				if ($value === 'CLOSED' || $value === false) {
 					$val = 'CLOSED';
-				} elseif ($value == 'OPEN' || $value == true) {
+				} elseif ($value === 'OPEN' || $value === true) {
 					$val = 'OPEN';
 				}
 				$this->checkAndUpdateCmd('trunk_state', $val);
@@ -785,9 +785,9 @@ class myBMW extends eqLogic {
 				break;
 
 			case 'vehicle.body.hood.isOpen':
-				if ($value == 'CLOSED' || $value == false) {
+				if ($value === 'CLOSED' || $value === false) {
 					$val = 'CLOSED';
-				} elseif ($value == 'OPEN' || $value == true) {
+				} elseif ($value === 'OPEN' || $value === true) {
 					$val = 'OPEN';
 				}
 				$this->checkAndUpdateCmd('hood_state', $val);
