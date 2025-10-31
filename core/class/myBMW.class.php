@@ -698,7 +698,7 @@ class myBMW extends eqLogic {
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - lastUpdate = '.$val);
 				break;
 
-			case 'vehicle.cabin.door.lock.status':
+			case 'vehicle.cabin.door.status':
 				$this->checkAndUpdateCmd('doorLockState', $value);
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - doorLockState = '.$value);
 				break;
@@ -912,7 +912,7 @@ class myBMW extends eqLogic {
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - remaining_fuel = '.$value);
 				break;
 
-			case 'vehicle.drivetrain.totalRemainingRange':
+			case 'vehicle.drivetrain.lastRemainingRange':
 				$val = $value - $this->getCmd(null, 'beRemainingRangeElectric')->execCmd();
 				$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $val);
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeFuelKm = '.$value);
@@ -949,9 +949,9 @@ class myBMW extends eqLogic {
 				}
 				break;
 			
-			/*default:
-				log::add('myBMW', 'debug', 'MQTT message received - Cmd ignored : '.$key);
-				break;*/
+			default:
+				log::add('myBMW', 'debug', 'MQTT message received - CMD IGNORED : '.$key.' - '.$value);
+				break;
 		}
 	}
 		
