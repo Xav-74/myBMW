@@ -1133,10 +1133,29 @@
 			dateStart: dateDebut, 
 			dateEnd: dateFin,
 			success:  function(result) {
-				for(let i = 0; i<result.data.length; i++) {
-					km_chart#id#.series[0].addPoint(result.data[i][1], false) 	// false permet de ne pas redesiner le chart à chaque ajout
-					date.push(formattedDate(new Date(result.data[i][0])))
+				var data = result.data;
+				var filteredData = [];
+				let lastTime = 0; 
+				const interval = 30 * 60 * 1000;
+
+				for (let i = 0; i < data.length; i++) {
+					const timestamp = data[i][0];
+					const value = data[i][1];
+					if (i === 0 || timestamp - lastTime >= interval) {			// 1 seul point par 30 min
+						filteredData.push(value);
+						date.push(formattedDate(new Date(timestamp)));
+						lastTime = timestamp;
+					}
+					if (i === data.length - 1 && timestamp !== lastTime) {		// ajout dernier point 
+						filteredData.push(value);
+						date.push(formattedDate(new Date(timestamp)));
+					}
 				}
+
+				for (let i = 0; i < filteredData.length; i++) {
+					km_chart#id#.series[0].addPoint(filteredData[i], false);	// false permet de ne pas redesiner le chart à chaque ajout
+				}
+
 				km_chart#id#.redraw();
 				km_chart#id#.xAxis[0].setCategories(date);
 			}
@@ -1147,10 +1166,29 @@
 			dateStart: dateDebut, 
 			dateEnd: dateFin,
 			success:  function(result) {
-				for(let i = 0; i<result.data.length; i++) {
-					fuel_chart#id#.series[0].addPoint(result.data[i][1], false) 	// false permet de ne pas redesiner le chart à chaque ajout
-					date2.push(formattedDate(new Date(result.data[i][0])))
+				var data = result.data;
+				var filteredData = [];
+				let lastTime = 0;
+				const interval = 30 * 60 * 1000;
+
+				for (let i = 0; i < data.length; i++) {
+					const timestamp = data[i][0];
+					const value = data[i][1];
+					if (i === 0 || timestamp - lastTime >= interval) {
+						filteredData.push(value);
+						date2.push(formattedDate(new Date(timestamp)));
+						lastTime = timestamp;
+					}
+					if (i === data.length - 1 && timestamp !== lastTime) {
+						filteredData.push(value);
+						date2.push(formattedDate(new Date(timestamp)));
+					}
 				}
+
+				for (let i = 0; i < filteredData.length; i++) {
+					fuel_chart#id#.series[0].addPoint(filteredData[i], false);
+				}
+
 				fuel_chart#id#.redraw();
 				fuel_chart#id#.xAxis[0].setCategories(date2);
 			}
@@ -1161,10 +1199,29 @@
 			dateStart: dateDebut, 
 			dateEnd: dateFin,
 			success:  function(result) {
-				for(let i = 0; i<result.data.length; i++) {
-					charge_chart#id#.series[0].addPoint(result.data[i][1], false) // false permet de ne pas redesiner le chart à chaque ajout
-					date3.push(formattedDate(new Date(result.data[i][0])))
+				var data = result.data;
+				var filteredData = [];
+				let lastTime = 0;
+				const interval = 30 * 60 * 1000;
+
+				for (let i = 0; i < data.length; i++) {
+					const timestamp = data[i][0];
+					const value = data[i][1];
+					if (i === 0 || timestamp - lastTime >= interval) {
+						filteredData.push(value);
+						date3.push(formattedDate(new Date(timestamp)));
+						lastTime = timestamp;
+					}
+					if (i === data.length - 1 && timestamp !== lastTime) {
+						filteredData.push(value);
+						date3.push(formattedDate(new Date(timestamp)));
+					}
 				}
+
+				for (let i = 0; i < filteredData.length; i++) {
+					charge_chart#id#.series[0].addPoint(filteredData[i], false);
+				}
+
 				charge_chart#id#.redraw();
 				charge_chart#id#.xAxis[0].setCategories(date3);
 			}
