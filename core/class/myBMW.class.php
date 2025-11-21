@@ -1143,7 +1143,7 @@ class myBMW extends eqLogic {
 
 
 		// chargingHistory
-		if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV ') {
+		if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV') {
 			$this->refreshChargingHistory();
 		}		
 		
