@@ -950,7 +950,7 @@ class myBMW extends eqLogic {
 				break;
 			
 			default:
-				log::add('myBMW', 'debug', 'MQTT message received - CMD IGNORED : '.$key.' - '.$value);
+				//log::add('myBMW', 'debug', 'MQTT message received - CMD IGNORED : '.$key.' - '.$value);
 				break;
 		}
 	}

@@ -26,6 +26,21 @@ if (!isConnect()) {
 
 <form class="form-horizontal">
     <fieldset>
+
+    <legend><i class="fas fa-code-branch"></i> {{Version des API BMW}}</legend>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{Device Code Flow}}</label>
+        <div class="col-sm-4">
+            <input class="configKey form-control" value="1.6.0" readonly/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">{{CarData API}}</label>
+        <div class="col-sm-4">
+            <input class="configKey form-control" value="1.0.0" readonly/>
+        </div>
+    </div>
     
     <legend><i class="fas fa-wrench"></i> {{Paramètres BMW CarData API}}</legend>
 

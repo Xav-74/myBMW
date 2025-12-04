@@ -235,9 +235,9 @@ class BMWCarData_API
         $device_code = $response->device_code;
         $interval = $response->interval;
         $expires_in = $response->expires_in;
-        $verification_uri_complete = $response->verification_uri_complete;
+        $verification_uri = $response->verification_uri;
 
-        return array($user_code, $device_code, $interval, $expires_in, $verification_uri_complete, $this->vin, $this->clientId, $this->brand, $codeVerifier);
+        return array($user_code, $device_code, $interval, $expires_in, $verification_uri, $this->vin, $this->clientId, $this->brand, $codeVerifier);
     }
 
 
