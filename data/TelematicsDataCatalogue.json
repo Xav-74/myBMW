@@ -2,7 +2,7 @@
     {
         "CarData Element": "Activation status of the installed SIM card",
         "Description": "This value indicates whether the SIM card installed in the vehicle is activated.",
-        "Technical descriptor": "vehicle.​sim.​status",
+        "Technical descriptor": "vehicle.sim.status",
         "Data type": "-",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -11,7 +11,7 @@
     {
         "CarData Element": "Basic vehicle data",
         "Description": "This value indicates a list of basic vehicle data, e.g. vehicle brand and full model name.",
-        "Technical descriptor": "vehicle.​vehicleIdentification.​basicVehicleData",
+        "Technical descriptor": "vehicle.vehicleIdentification.basicVehicleData",
         "Data type": "-",
         "Typical value range": "Details can be found in the corresponding Swagger documentation: ../basicData",
         "Unit": "-",
@@ -20,7 +20,7 @@
     {
         "CarData Element": "High-voltage battery size",
         "Description": "This value indicates the size of the installed high-voltage battery.",
-        "Technical descriptor": "vehicle.​drivetrain.​batteryManagement.​batterySizeMax",
+        "Technical descriptor": "vehicle.drivetrain.batteryManagement.batterySizeMax",
         "Data type": "float",
         "Typical value range": "0 - 300 kWh, INVALID",
         "Unit": "kWh",
@@ -28,8 +28,8 @@
     },
     {
         "CarData Element": "List of optional equipment",
-        "Description": "This value indicates a list with information about the optional equipment of the vehicle.",
-        "Technical descriptor": "vehicle.​extras.​optionalEquipment.​code",
+        "Description": "This value indicates a list with information about the optional equipment of the vehicle.",
+        "Technical descriptor": "vehicle.extras.optionalEquipment.code",
         "Data type": "-",
         "Typical value range": "4-digit number and/or letter code comma-separated from each other.",
         "Unit": "-",
@@ -38,7 +38,7 @@
     {
         "CarData Element": "Maximum energy content of the high-voltage battery",
         "Description": "This value indicates the maximum available energy content of the high-voltage battery.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​hvsMaxEnergyAbsolute",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.hvsMaxEnergyAbsolute",
         "Data type": "-",
         "Typical value range": "0 - 300 kWh, INVALID",
         "Unit": "kWh",
@@ -47,7 +47,7 @@
     {
         "CarData Element": "Vehicle image",
         "Description": "This value provides an image of the vehicle as a PNG file.",
-        "Technical descriptor": "vehicle.​look.​image",
+        "Technical descriptor": "vehicle.look.image",
         "Data type": "-",
         "Typical value range": "PNG file",
         "Unit": "-",
@@ -56,7 +56,7 @@
     {
         "CarData Element": "AntiTheftAlarm activation time",
         "Description": "Timestamp of the last alarm activation time. The value comes without timezone information.",
-        "Technical descriptor": "vehicle.​vehicle.​antiTheftAlarmSystem.​alarm.​activationTime",
+        "Technical descriptor": "vehicle.vehicle.antiTheftAlarmSystem.alarm.activationTime",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -65,7 +65,7 @@
     {
         "CarData Element": "AntiTheftAlarm arm status",
         "Description": "Anti theft alarm. Arming status.",
-        "Technical descriptor": "vehicle.​vehicle.​antiTheftAlarmSystem.​alarm.​armStatus",
+        "Technical descriptor": "vehicle.vehicle.antiTheftAlarmSystem.alarm.armStatus",
         "Data type": "string",
         "Typical value range": "unarmed, doorsOnly, doorsTiltCabin",
         "Unit": "-",
@@ -74,7 +74,7 @@
     {
         "CarData Element": "AntiTheftAlarm is on",
         "Description": "Anti theft alarm is active (car is honking).",
-        "Technical descriptor": "vehicle.​vehicle.​antiTheftAlarmSystem.​alarm.​isOn",
+        "Technical descriptor": "vehicle.vehicle.antiTheftAlarmSystem.alarm.isOn",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -83,7 +83,7 @@
     {
         "CarData Element": "Availability of teleservices",
         "Description": "This value indicates whether teleservices are available for this vehicle.",
-        "Technical descriptor": "vehicle.​channel.​teleservice.​status",
+        "Technical descriptor": "vehicle.channel.teleservice.status",
         "Data type": "string",
         "Typical value range": "PENDING, IDLE, SUCCESSFUL, ERROR",
         "Unit": "-",
@@ -91,8 +91,8 @@
     },
     {
         "CarData Element": "Battery voltage",
-        "Description": "The value indicates the current battery voltage in the vehicle's electrical system. This value is always given in voltage, e.g. 14.4 V.",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery.​voltage",
+        "Description": "The value indicates the current battery voltage in the vehicle's electrical system. \nThis value is always given in voltage, e.g. 14.4 V.",
+        "Technical descriptor": "vehicle.electricalSystem.battery.voltage",
         "Data type": "float",
         "Typical value range": "5 V to 20 V",
         "Unit": "V",
@@ -101,7 +101,7 @@
     {
         "CarData Element": "Charging profile",
         "Description": "The charging profile provides information about the charging mode most recently selected for your vehicle. Where appropriate, CarData element may also be used to display individual attributes in cars without an electric drive, e.g. the preconditioning settings.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​mode",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.mode",
         "Data type": "string",
         "Typical value range": "The XML structure is appended at the end of the table (1).",
         "Unit": "-",
@@ -110,7 +110,7 @@
     {
         "CarData Element": "Convertible roof status",
         "Description": "Convertible Roof Retractable State. BMW Mini vehicles have the additionally option to only open the folding roof. This signal represents the Mini folding roof state. It should be read together with the convertible roof state as well, see Vehicle.Cabin.Convertible.RoofStatus.",
-        "Technical descriptor": "vehicle.​cabin.​convertible.​roofRetractableStatus",
+        "Technical descriptor": "vehicle.cabin.convertible.roofRetractableStatus",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -119,34 +119,34 @@
     {
         "CarData Element": "Coolant temperature",
         "Description": "The value indicates the current coolant temperature in degrees centigrade or Fahrenheit at the time of data collection.",
-        "Technical descriptor": "vehicle.​drivetrain.​internalCombustionEngine.​engine.​ect",
+        "Technical descriptor": "vehicle.drivetrain.internalCombustionEngine.engine.ect",
         "Data type": "int16",
-        "Typical value range": "0 °C to 150 °C or 32 °F to 302 °F",
+        "Typical value range": "0 °C to 150 °C\nor\n32 °F to 302 °F",
         "Unit": "Celsius",
         "Streamable": "true"
     },
     {
         "CarData Element": "Date and time in vehicle",
         "Description": "These values indicate the time shown in the vehicle at the time of recording the data.",
-        "Technical descriptor": "vehicle.​channel.​ngtp.​timeVehicle",
+        "Technical descriptor": "vehicle.channel.ngtp.timeVehicle",
         "Data type": "string",
-        "Typical value range": "00:00 to 23:59 or 12:00 am to 11:59 pm",
+        "Typical value range": "00:00 to 23:59\nor\n12:00 am to 11:59 pm",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Date of next inspection",
-        "Description": "This value indicates when the next inspection is due. A date will be shown respectively, for example 30.09.2018 23:00 UTC or 09.30.2018 23:00 UTC.",
-        "Technical descriptor": "vehicle.​status.​serviceTime.​inspectionDateLegal",
+        "Description": "This value indicates when the next inspection is due. \nA date will be shown respectively, for example 30.09.2018 23:00 UTC or 09.30.2018 23:00 UTC.",
+        "Technical descriptor": "vehicle.status.serviceTime.inspectionDateLegal",
         "Data type": "string",
-        "Typical value range": "dd.mm.yyyy hh:mm UTC or mm/dd/yyyy hh:mm UTC",
+        "Typical value range": "dd.mm.yyyy hh:mm UTC\nor\nmm/dd/yyyy hh:mm UTC",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Deep Sleep Mode",
-        "Description": "This value indicates whether Deep Sleep Mode is activated (“true”) or deactivated (“false”) at the time of the request.If the customer has activated Deep Sleep Mode, the vehicle can be parked for a longer time without charging the battery. In this mode, most consumers are deactivated to save energy. The customer can end Deep Sleep Mode by deactivating it or starting the vehicle.",
-        "Technical descriptor": "vehicle.​vehicle.​deepSleepModeActive",
+        "Description": "This value indicates whether Deep Sleep Mode is activated (“true”) or deactivated (“false”) at the time of the request.\nIf the customer has activated Deep Sleep Mode, the vehicle can be parked for a longer time without charging the battery. In this mode, most consumers are deactivated to save energy. The customer can end Deep Sleep Mode by deactivating it or starting the vehicle.",
+        "Technical descriptor": "vehicle.vehicle.deepSleepModeActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -155,7 +155,7 @@
     {
         "CarData Element": "Default front driver seat cooling",
         "Description": "Default settings for front driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row1.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row1.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -164,7 +164,7 @@
     {
         "CarData Element": "Default front driver seat heating",
         "Description": "Default settings for front driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row1.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row1.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -173,7 +173,7 @@
     {
         "CarData Element": "Default front passenger seat cooling",
         "Description": "Default settings for front passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row1.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row1.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -182,7 +182,7 @@
     {
         "CarData Element": "Default front passenger seat heating",
         "Description": "Default settings for front passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row1.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row1.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -191,7 +191,7 @@
     {
         "CarData Element": "Default rear driver seat cooling",
         "Description": "Default settings for rear driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row2.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row2.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -200,7 +200,7 @@
     {
         "CarData Element": "Default rear driver seat heating",
         "Description": "Default settings for rear driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row2.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row2.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -209,7 +209,7 @@
     {
         "CarData Element": "Default rear passenger seat cooling",
         "Description": "Default settings for rear passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row2.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row2.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -218,7 +218,7 @@
     {
         "CarData Element": "Default rear passenger seat heating",
         "Description": "Default settings for rear passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row2.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row2.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -227,7 +227,7 @@
     {
         "CarData Element": "Default steering wheel heating",
         "Description": "Default settings for steering wheel heating for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​steeringWheel.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.steeringWheel.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -236,7 +236,7 @@
     {
         "CarData Element": "Default third row driver seat cooling",
         "Description": "Default settings for third row driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row3.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row3.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -245,7 +245,7 @@
     {
         "CarData Element": "Default third row driver seat heating",
         "Description": "Default settings for third row driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row3.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row3.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -254,7 +254,7 @@
     {
         "CarData Element": "Default third row passenger seat cooling",
         "Description": "Default settings for third row passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row3.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row3.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -263,7 +263,7 @@
     {
         "CarData Element": "Default third row passenger seat heating",
         "Description": "Default settings for third row passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​seat.​row3.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.seat.row3.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -272,7 +272,7 @@
     {
         "CarData Element": "Direct start target temp",
         "Description": "DirectStart settings for target temperature for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​targetTemperature",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.targetTemperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "celsius",
@@ -281,7 +281,7 @@
     {
         "CarData Element": "Display unit of instrument panel in vehicle",
         "Description": "This value indicates the units (kilometres or miles) in which distances are indicated on the vehicle instrument panel.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​displayUnit.​distance",
+        "Technical descriptor": "vehicle.cabin.infotainment.displayUnit.distance",
         "Data type": "string",
         "Typical value range": "km, miles",
         "Unit": "-",
@@ -289,44 +289,44 @@
     },
     {
         "CarData Element": "Distance threshold for service information",
-        "Description": "The static value indicated is stored in the vehicle and indicates the first time that the customer receives a mileage-related message to inform him that the vehicle will soon be due for a service. It is given in kilometres or miles (for example 2000 km or 1243 mi).",
-        "Technical descriptor": "vehicle.​status.​serviceDistance.​yellow",
+        "Description": "The static value indicated is stored in the vehicle and indicates the first time that the customer receives a mileage-related message to inform him that the vehicle will soon be due for a service. \nIt is given in kilometres or miles (for example 2000 km or 1243 mi).",
+        "Technical descriptor": "vehicle.status.serviceDistance.yellow",
         "Data type": "uint16",
-        "Typical value range": "2000 km or 1243 mi",
+        "Typical value range": "2000 km\nor\n1243 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Distance to navigation destination",
-        "Description": "This value indicates the distance to the active navigation destination in kilometres or miles at the time of data collection. The values range from 0 km to 100000 km or from 0mi to 62137mi.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​destinationSet.​distance",
+        "Description": "This value indicates the distance to the active navigation destination in kilometres or miles at the time of data collection. \nThe values range from 0 km to 100000 km or from 0mi to 62137mi.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.distance",
         "Data type": "uint16",
-        "Typical value range": "0 km to 100000 km or 0 mi to 62137 mi",
+        "Typical value range": "0 km to 100000 km\nor\n0 mi to 62137 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Distance to the next service",
-        "Description": "This value indicates how many kilometres or miles remain before the next service at the time of recording the data. Note: This value is calculated based on the individual CBS scopes and is not determined with every data transfer.For more details, see \"Condition Based Service\".",
-        "Technical descriptor": "vehicle.​status.​serviceDistance.​next",
+        "Description": "This value indicates how many kilometres or miles remain before the next service at the time of recording the data. \nNote: This value is calculated based on the individual CBS scopes and is not determined with every data transfer.\nFor more details, see \"Condition Based Service\".",
+        "Technical descriptor": "vehicle.status.serviceDistance.next",
         "Data type": "uint16",
-        "Typical value range": "0 km to 100,000 km or 0 mi to 62,137 mi",
+        "Typical value range": "0 km to 100,000 km\nor\n0 mi to 62,137 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Door status",
-        "Description": "This value indicates the status of the doors, but is only sporadically recorded and transmitted. Note: It is recommended to use only the individual door status instead of this value.",
-        "Technical descriptor": "vehicle.​cabin.​door.​status",
+        "Description": "This value indicates the status of the doors, but is only sporadically recorded and transmitted. \nNote: It is recommended to use only the individual door status instead of this value.",
+        "Technical descriptor": "vehicle.cabin.door.status",
         "Data type": "string",
-        "Typical value range": "oldDoorStatus: ASN_securedASN_unlockedASN_unknownASN_selective-LockednewDoorStatus:ASN_lockedASN_unlockedASN_selective-LockedASN_unknownallDoorsLocked:ASN_isUnknownASN_isTrueASN_isFalsetrunkLocked:ASN_isUnknownASN_isTrueASN_isFalse",
+        "Typical value range": "oldDoorStatus: ASN_secured\nASN_unlocked\nASN_unknown\nASN_selective-Locked\n\nnewDoorStatus:\nASN_locked\nASN_unlocked\nASN_selective-Locked\nASN_unknown\n\nallDoorsLocked:\nASN_isUnknown\nASN_isTrue\nASN_isFalse\n\ntrunkLocked:\nASN_isUnknown\nASN_isTrue\nASN_isFalse",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Exterior mirror heating active",
         "Description": "Current status of the exterior mirror heating.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​status.​isExteriorMirrorHeatingActive",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.status.isExteriorMirrorHeatingActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -335,16 +335,16 @@
     {
         "CarData Element": "Fault memory",
         "Description": "The fault memory provides information about potential errors or technical faults in the vehicle. This information is intended for workshops. Customer-relevant errors that are displayed to the driver in the vehicle can be found under the CarData Element “Check control messages”. Details about this are documented in the operating manual of the vehicle.",
-        "Technical descriptor": "vehicle.​electronicControlUnit.​diagnosticTroubleCodes.​raw",
+        "Technical descriptor": "vehicle.electronicControlUnit.diagnosticTroubleCodes.raw",
         "Data type": "-",
-        "Typical value range": "The JSON structure is appended at the end of the table (4).",
+        "Typical value range": "-",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Front driver door position",
         "Description": "Driver-side front door opening position in percent. 0% represents fully closed and 100% represents fully opened.",
-        "Technical descriptor": "vehicle.​cabin.​door.​row1.​driver.​position",
+        "Technical descriptor": "vehicle.cabin.door.row1.driver.position",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -353,7 +353,7 @@
     {
         "CarData Element": "Front driver seat cooling",
         "Description": "Front driver seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row1.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row1.driverSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -362,7 +362,7 @@
     {
         "CarData Element": "Front driver seat direct cool",
         "Description": "DirectStart settings for front driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row1.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row1.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -371,7 +371,7 @@
     {
         "CarData Element": "Front driver seat direct heat",
         "Description": "DirectStart settings for front driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row1.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row1.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -380,7 +380,7 @@
     {
         "CarData Element": "Front driver seat heating",
         "Description": "Front driver seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row1.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row1.driverSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -389,7 +389,7 @@
     {
         "CarData Element": "Front passenger direct cool",
         "Description": "DirectStart settings for front passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row1.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row1.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -398,7 +398,7 @@
     {
         "CarData Element": "Front passenger direct heat",
         "Description": "DirectStart settings for front passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row1.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row1.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -407,7 +407,7 @@
     {
         "CarData Element": "Front passenger door position",
         "Description": "Passenger-side front door opening position in percent. 0% represents fully closed and 100% represents fully opened.",
-        "Technical descriptor": "vehicle.​cabin.​door.​row1.​passenger.​position",
+        "Technical descriptor": "vehicle.cabin.door.row1.passenger.position",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -416,7 +416,7 @@
     {
         "CarData Element": "Front passenger seat cooling",
         "Description": "Front passenger seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row1.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row1.passengerSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -425,7 +425,7 @@
     {
         "CarData Element": "Front passenger seat heating",
         "Description": "Front passenger seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row1.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row1.passengerSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -433,17 +433,17 @@
     },
     {
         "CarData Element": "Health status of the battery",
-        "Description": "This value indicates the health status of the battery.200 = Adequate health status of the battery140 = Limited - Battery replacement recommended110 = Inadequate - Battery replacement required80 = Degraded - Battery replacement urgently required",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery.​serviceDemand.​replace",
+        "Description": "This value indicates the health status of the battery.\n\n200 = Adequate health status of the battery\n140 = Limited – Battery replacement recommended\n110 = Inadequate – Battery replacement required\n80 = Degraded – Battery replacement urgently required",
+        "Technical descriptor": "vehicle.electricalSystem.battery.serviceDemand.replace",
         "Data type": "-",
-        "Typical value range": "20014011080",
+        "Typical value range": "200\n140\n110\n80",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "HVAC air purification status",
         "Description": "Actual status of the air purification.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​statusAirPurification",
+        "Technical descriptor": "vehicle.cabin.hvac.statusAirPurification",
         "Data type": "string",
         "Typical value range": "UNFILTERED, PURIFYING_ONGOING, PURIFIED, INVALID",
         "Unit": "-",
@@ -452,7 +452,7 @@
     {
         "CarData Element": "Last teleservice breakdown call time",
         "Description": "Auto break down. The Breakdown Call allows the customer to contact a Roadside Assistance Call Center (RSA CC) Agent in case of a breakdown, which will assist the driver with troubleshooting or towing of the vehicle. The Breakdown Call allows the customer to contact a Roadside Assistance Call Center (RSA CC) Agent in case of a breakdown, which will assist the driver with troubleshooting or towing of the vehicle. The service can be started from the iDrive menu of the vehicle and is available in 3 Levels depending on availability and roll-out in the market.",
-        "Technical descriptor": "vehicle.​channel.​teleservice.​lastBreakdownCallTime",
+        "Technical descriptor": "vehicle.channel.teleservice.lastBreakdownCallTime",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -461,7 +461,7 @@
     {
         "CarData Element": "Last teleservice manual call time",
         "Description": "Customer triggers a manual service call via the vehicle HMI (iDrive). Service relevant data is transferred by the vehicle to the Teleservices backend systemA new Teleservice ticket is created and assigned to customer's preferred service partner.The Teleservice ticket is transferred to the service partner system to process it according to the respective business process",
-        "Technical descriptor": "vehicle.​channel.​teleservice.​lastManualCallTime",
+        "Technical descriptor": "vehicle.channel.teleservice.lastManualCallTime",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -470,7 +470,7 @@
     {
         "CarData Element": "Low-voltage battery",
         "Description": "The value indicates the state of charge of the low-voltage battery in percent measured at the time of data collection.",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery.​stateOfCharge",
+        "Technical descriptor": "vehicle.electricalSystem.battery.stateOfCharge",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "%",
@@ -479,7 +479,7 @@
     {
         "CarData Element": "Low-voltage battery plausibility",
         "Description": "This value indicates whether the measured state of charge of the low-voltage battery in percent is plausible.",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery.​stateOfChargePlausibility",
+        "Technical descriptor": "vehicle.electricalSystem.battery.stateOfChargePlausibility",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "-",
@@ -488,7 +488,7 @@
     {
         "CarData Element": "Maximum number of POIs stored in the navigation system",
         "Description": "This value indicates how many POIs (points of interest) can be stored in the navigation system.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​pointsOfInterests.​max",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.pointsOfInterests.max",
         "Data type": "uint16",
         "Typical value range": "25",
         "Unit": "-",
@@ -497,16 +497,16 @@
     {
         "CarData Element": "Mileage",
         "Description": "The value indicates the current mileage at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​travelledDistance",
+        "Technical descriptor": "vehicle.vehicle.travelledDistance",
         "Data type": "float",
-        "Typical value range": "0 km to 500000 km or 0 mi to 310686 mi",
+        "Typical value range": "0 km to 500000 km\nor\n0 mi to 310686 mi",
         "Unit": "null",
         "Streamable": "true"
     },
     {
         "CarData Element": "Mobile phone connection",
         "Description": "This value indicates whether a mobile phone was linked to the vehicle at the time of data collection or whether the connection status is unknown.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​isMobilePhoneConnected",
+        "Technical descriptor": "vehicle.cabin.infotainment.isMobilePhoneConnected",
         "Data type": "boolean",
         "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
         "Unit": "-",
@@ -515,25 +515,25 @@
     {
         "CarData Element": "Motion status of the vehicle",
         "Description": "This value indicates whether the vehicle was in motion at the time of data collection.",
-        "Technical descriptor": "vehicle.​isMoving",
+        "Technical descriptor": "vehicle.isMoving",
         "Data type": "boolean",
         "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
         "Unit": "-",
         "Streamable": "true"
     },
     {
-        "CarData Element": "Navigation destination - latitude",
-        "Description": "This value indicates the coordinate of the active navigation destination - latitude at the time of data collection in billionths of a second.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​destinationSet.​latitude",
+        "CarData Element": "Navigation destination – latitude",
+        "Description": "This value indicates the coordinate of the active navigation destination – latitude at the time of data collection in billionths of a second.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.latitude",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "-",
         "Streamable": "false"
     },
     {
-        "CarData Element": "Navigation destination - longitude",
-        "Description": "This value indicates the coordinate of the active navigation destination - longitude at the time of data collection in billionths of a second.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​destinationSet.​longitude",
+        "CarData Element": "Navigation destination – longitude",
+        "Description": "This value indicates the coordinate of the active navigation destination – longitude at the time of data collection in billionths of a second.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.longitude",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "-",
@@ -541,26 +541,26 @@
     },
     {
         "CarData Element": "Necessity for recharging of the battery",
-        "Description": "This value indicates whether recharging of the battery is necessary.1 = Recharging necessary0 = Recharging not necessary",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery.​serviceDemand.​recharge",
+        "Description": "This value indicates whether recharging of the battery is necessary.\n\n1 = Recharging necessary\n0 = Recharging not necessary",
+        "Technical descriptor": "vehicle.electricalSystem.battery.serviceDemand.recharge",
         "Data type": "-",
-        "Typical value range": "10",
+        "Typical value range": "1\n0",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "Number of CBS reports",
         "Description": "The value specifies the maximum number of service notifications transmitted from the vehicle to BMW via telematics. The actual number of service notifications transmitted (see separate CBS key) varies depending on how the vehicle is used and whether relevant thresholds have been reached. Note: Not all Condition Based service messages which occur in the vehicle are also transferred.",
-        "Technical descriptor": "vehicle.​status.​conditionBasedServicesCount",
+        "Technical descriptor": "vehicle.status.conditionBasedServicesCount",
         "Data type": "uint16",
-        "Typical value range": "0 to 60Messages",
+        "Typical value range": "0 to 60\nMessages",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Number of free POI spaces in navigation system",
         "Description": "This value indicates how many POIs (points of interest) are still open in the navigation system.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​pointsOfInterests.​available",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.pointsOfInterests.available",
         "Data type": "uint16",
         "Typical value range": "25",
         "Unit": "-",
@@ -569,7 +569,7 @@
     {
         "CarData Element": "Orientation of the vehicle",
         "Description": "This value indicates the orientation of the vehicle in degrees at the time of data collection. If the value is 180, the vehicle is pointing directly south. If the value is 0, the vehicle is pointing directly north. The values thus range from 0 to 359. The determined orientation of the vehicle may differ from its actual orientation due to inaccuracies in the GPS positioning.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​heading",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.heading",
         "Data type": "double",
         "Typical value range": "0° to 359°",
         "Unit": "degrees",
@@ -578,7 +578,7 @@
     {
         "CarData Element": "Permission to use the engine for pre-conditioning",
         "Description": "This value indicated whether permission was granted to use the engine for the pre-conditioning of the stationary air conditioning at the time of data collection. This is determined by the customer.",
-        "Technical descriptor": "vehicle.​vehicle.​preConditioning.​isRemoteEngineStartAllowed",
+        "Technical descriptor": "vehicle.vehicle.preConditioning.isRemoteEngineStartAllowed",
         "Data type": "boolean",
         "Typical value range": "true, false, INVALID",
         "Unit": "-",
@@ -587,7 +587,7 @@
     {
         "CarData Element": "Preconditioning comfort state",
         "Description": "Status of the comfort state of the climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​status.​comfortState",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.status.comfortState",
         "Data type": "string",
         "Typical value range": "NOT_ACTIVE, COMFORT_HEATING, COMFORT_COOLING, COMFORT_VENTILATION, DEFROST, COMFORT_UNDEFINED",
         "Unit": "-",
@@ -596,7 +596,7 @@
     {
         "CarData Element": "Preconditioning progress",
         "Description": "Progress of the currently active climate preconditioning in percent.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​status.​progress",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.status.progress",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -605,7 +605,7 @@
     {
         "CarData Element": "Preconditioning remaining time",
         "Description": "Remaining runtime of climate preconditioning in seconds.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​status.​remainingRunningTime",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.status.remainingRunningTime",
         "Data type": "uint32",
         "Typical value range": "0 - 10000000",
         "Unit": "s",
@@ -614,16 +614,16 @@
     {
         "CarData Element": "Pre-conditioning status of the stationary air conditioning",
         "Description": "Current status of the pre-conditioning of the stationary air conditioning before commencing travel at the time of data collection. The value “Inactive” may be transmitted if the pre-conditioning has not been booked or if the pre-conditioning is not active at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​preConditioning.​activity",
+        "Technical descriptor": "vehicle.vehicle.preConditioning.activity",
         "Data type": "string",
-        "Typical value range": "standby,heating,cooling,ventilation,inactive",
+        "Typical value range": "standby,\nheating,\ncooling,\nventilation,\ninactive",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Preferred service partner",
         "Description": "Indicates the current service partner allocation of the vehicle.",
-        "Technical descriptor": "vehicle.​sevice.​preferredSevicePartner",
+        "Technical descriptor": "vehicle.sevice.preferredSevicePartner",
         "Data type": "-",
         "Typical value range": "string",
         "Unit": "-",
@@ -632,7 +632,7 @@
     {
         "CarData Element": "Rear defrost active",
         "Description": "Current status of the rear window heating.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​status.​rearDefrostActive",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.status.rearDefrostActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -641,7 +641,7 @@
     {
         "CarData Element": "Rear driver direct cool",
         "Description": "DirectStart settings for rear driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row2.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row2.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -650,7 +650,7 @@
     {
         "CarData Element": "Rear driver direct heat",
         "Description": "DirectStart settings for rear driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row2.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row2.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -659,7 +659,7 @@
     {
         "CarData Element": "Rear driver door position",
         "Description": "Driver-side rear door opening position in percent. 0% represents fully closed and 100% represents fully opened.",
-        "Technical descriptor": "vehicle.​cabin.​door.​row2.​driver.​position",
+        "Technical descriptor": "vehicle.cabin.door.row2.driver.position",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -668,7 +668,7 @@
     {
         "CarData Element": "Rear driver seat cooling",
         "Description": "Rear driver seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row2.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row2.driverSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -677,7 +677,7 @@
     {
         "CarData Element": "Rear driver seat heating",
         "Description": "Rear driver seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row2.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row2.driverSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -686,7 +686,7 @@
     {
         "CarData Element": "Rear passenger direct cool",
         "Description": "DirectStart settings for rear passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row2.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row2.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -695,7 +695,7 @@
     {
         "CarData Element": "Rear passenger direct heat",
         "Description": "DirectStart settings for rear passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row2.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row2.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -704,7 +704,7 @@
     {
         "CarData Element": "Rear passenger door position",
         "Description": "Passenger-side rear door opening position in percent. 0% represents fully closed and 100% represents fully opened.",
-        "Technical descriptor": "vehicle.​cabin.​door.​row2.​passenger.​position",
+        "Technical descriptor": "vehicle.cabin.door.row2.passenger.position",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -713,7 +713,7 @@
     {
         "CarData Element": "Rear passenger seat cooling",
         "Description": "Rear passenger seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row2.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row2.passengerSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -722,7 +722,7 @@
     {
         "CarData Element": "Rear passenger seat heating",
         "Description": "Rear passenger seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row2.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row2.passengerSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -731,7 +731,7 @@
     {
         "CarData Element": "Rear window unlocking",
         "Description": "This value indicates whether the rear window is unlocked (TRUE) or closed (FALSE).",
-        "Technical descriptor": "vehicle.​body.​trunk.​window.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.window.isOpen",
         "Data type": "boolean",
         "Typical value range": "CLOSED, OPEN, INVALID",
         "Unit": "-",
@@ -740,34 +740,34 @@
     {
         "CarData Element": "Reason for not carrying out pre-conditioning of the stationary air conditioning",
         "Description": "Reason for not carrying out pre-conditioning of the stationary air conditioning at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​preConditioning.​error",
+        "Technical descriptor": "vehicle.vehicle.preConditioning.error",
         "Data type": "string",
-        "Typical value range": "LowFuel,LowBattery,QuotaExceeded,HeaterFailure,ComponentFailure,OpenOrUnlocked,OK,INVALID",
+        "Typical value range": "LowFuel,\nLowBattery,\nQuotaExceeded,\nHeaterFailure,\nComponentFailure,\nOpenOrUnlocked,\nOK,\nINVALID",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Remaining duration of pre-conditioning",
         "Description": "This value indicates the remaining duration for the pre-conditioning of the stationary air conditioning in minutes at the time of data collection. This value may also be transmitted if the pre-conditioning has not been booked or if the pre-conditioning status of the stationary air conditioning is not active (“inactive”) at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​preConditioning.​remainingTime",
+        "Technical descriptor": "vehicle.vehicle.preConditioning.remainingTime",
         "Data type": "uint8",
-        "Typical value range": "0-60 min, INVALID",
+        "Typical value range": "0-60 min,  INVALID",
         "Unit": "min",
         "Streamable": "true"
     },
     {
         "CarData Element": "Remaining range",
         "Description": "This value indicates the remaining range of fuel in kilometres or miles at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​remainingRange",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.remainingRange",
         "Data type": "uint16",
-        "Typical value range": "0 km to 100000 km or 0 mi to 62137 mi",
+        "Typical value range": "0 km to 100000 km\nor\n0 mi to 62137 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Remote climate control disclaimer",
         "Description": "True if remote engine start option is set, otherwise false.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​isRemoteEngineStartDisclaimer",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.isRemoteEngineStartDisclaimer",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -776,7 +776,7 @@
     {
         "CarData Element": "Smart Maintenance: Digital tyre diagnostics",
         "Description": "This value contains information about the tyres currently and previously installed on the vehicle. This data is collected by the vehicle and automatically sent according to defined cycles.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​wheel.​tire.​diagnosis",
+        "Technical descriptor": "vehicle.chassis.axle.wheel.tire.diagnosis",
         "Data type": "-",
         "Typical value range": "Details can be found in the corresponding Swagger documentation: ../smartMaintenanceTyreDiagnosis",
         "Unit": "-",
@@ -785,7 +785,7 @@
     {
         "CarData Element": "Smart Maintenance: Live diagnostics",
         "Description": "This value indicates which service requirements have been determined for the vehicle based on the live diagnostics. These are composed of the title, category and current status of the required service. The vehicle collects error data for the service requirements, and automatically sends them according to defined cycles.",
-        "Technical descriptor": "vehicle.​serviceDemand.​defect.​id",
+        "Technical descriptor": "vehicle.serviceDemand.defect.id",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "-",
@@ -794,7 +794,7 @@
     {
         "CarData Element": "State of ignition",
         "Description": "This value indicates whether the ignition was on or off at the time of data collection or whether the status is unknown.",
-        "Technical descriptor": "vehicle.​drivetrain.​engine.​isActive",
+        "Technical descriptor": "vehicle.drivetrain.engine.isActive",
         "Data type": "boolean",
         "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
         "Unit": "-",
@@ -803,7 +803,7 @@
     {
         "CarData Element": "Status information about the last transfer of OBFCM* values",
         "Description": "This value indicates the status information about the last transfer of OBFCM* values performed in a workshop (i.e. wired). (OK for a valid transfer where the OBFCM values have been updated, ECU_COMMUNICATION_ERROR for errors in collecting data from the control units, VEHICLE_MANIPULATION_DETECTED if vehicle tampering has been detected and MANUFACTURER_EXCLUDED if the vehicle manufacturer is excluded from the OBFCM* collection (e.g. Alpina, Toyota Supra).",
-        "Technical descriptor": "vehicle.​channel.​ista.​obfcm.​lastTransmissionStatus",
+        "Technical descriptor": "vehicle.channel.ista.obfcm.lastTransmissionStatus",
         "Data type": "string",
         "Typical value range": "OK, ECU_COMMUNICATION_ERROR, VEHICLE_MANIPULATION_DETECTED, MANUFACTURER_EXCLUDED",
         "Unit": "-",
@@ -812,7 +812,7 @@
     {
         "CarData Element": "Status of boot lid",
         "Description": "This value indicates whether the boot lid was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​body.​trunk.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.isOpen",
         "Data type": "boolean",
         "Typical value range": "CLOSED, OPEN, INVALID",
         "Unit": "-",
@@ -820,8 +820,8 @@
     },
     {
         "CarData Element": "Status of convertible roof",
-        "Description": "Indicates the current status of the convertible roof at the time of data collection, e.g. whether it was closed (CLOSED), open (OPEN) or - in an emergency - locked (EMERGENCYLOCKED). The following additional status values are possible: CLOSEDSECURED = convertible roof closed, vehicle secured OPENSECURED = convertible roof open, vehicle secured HARDTOPMOUNTED = hard top mounted and closed (removable hard top) INTERMEDIATEPOSITION = convertible roof in intermediate position LOADINGPOSITION = roof is in a position that allows for easy loading of the boot LOADINGPOSITIONIMMEDIATE = roof is in a position that allows for easy loading of the boot",
-        "Technical descriptor": "vehicle.​cabin.​convertible.​roofStatus",
+        "Description": "Indicates the current status of the convertible roof at the time of data collection, e.g. whether it was closed (CLOSED), open (OPEN) or – in an emergency – locked (EMERGENCYLOCKED). \nThe following additional status values are possible: \nCLOSEDSECURED = convertible roof closed, vehicle secured \nOPENSECURED = convertible roof open, vehicle secured \nHARDTOPMOUNTED = hard top mounted and closed (removable hard top) \nINTERMEDIATEPOSITION = convertible roof in intermediate position \nLOADINGPOSITION = roof is in a position that allows for easy loading of the boot \nLOADINGPOSITIONIMMEDIATE = roof is in a position that allows for easy loading of the boot",
+        "Technical descriptor": "vehicle.cabin.convertible.roofStatus",
         "Data type": "string",
         "Typical value range": "CLOSEDSECURED, OPENSECURED",
         "Unit": "-",
@@ -829,8 +829,8 @@
     },
     {
         "CarData Element": "Status of doors",
-        "Description": "This indicates whether the vehicle's doors were locked (LOCKED) or unlocked (UNLOCKED) at the time of data collection. Other possible values are: SELECTIVELOCKED = vehicle locked with the exception of the left front door (state after a remote service door unlock was first performed) SECURED = vehicle has been secured = all doors locked and alarm system activated",
-        "Technical descriptor": "vehicle.​cabin.​door.​lock.​status",
+        "Description": "This indicates whether the vehicle's doors were locked (LOCKED) or unlocked (UNLOCKED) at the time of data collection. \nOther possible values are: \nSELECTIVELOCKED = vehicle locked with the exception of the left front door (state after a remote service door unlock was first performed) \nSECURED = vehicle has been secured = all doors locked and alarm system activated",
+        "Technical descriptor": "vehicle.cabin.door.lock.status",
         "Data type": "-",
         "Typical value range": "SECURED, UNLOCKED, SELECTIVE-LOCKED, LOCKED, INVALID, UNKNOWN",
         "Unit": "-",
@@ -839,7 +839,7 @@
     {
         "CarData Element": "Status of engine (on/off)",
         "Description": "This value indicates whether the engine was on or off at the time of data collection or whether the status is unknown.",
-        "Technical descriptor": "vehicle.​drivetrain.​engine.​isIgnitionOn",
+        "Technical descriptor": "vehicle.drivetrain.engine.isIgnitionOn",
         "Data type": "boolean",
         "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
         "Unit": "-",
@@ -848,7 +848,7 @@
     {
         "CarData Element": "Status of front left door",
         "Description": "This value indicates whether the front left door was closed at the time of data collection (CLOSED) or open (OPEN).",
-        "Technical descriptor": "vehicle.​cabin.​door.​row1.​driver.​isOpen",
+        "Technical descriptor": "vehicle.cabin.door.row1.driver.isOpen",
         "Data type": "boolean",
         "Typical value range": "OPEN, CLOSED, INVALID, UNKNOWN",
         "Unit": "-",
@@ -857,7 +857,7 @@
     {
         "CarData Element": "Status of front left window",
         "Description": "This value indicates whether the front left window was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​window.​row1.​driver.​status",
+        "Technical descriptor": "vehicle.cabin.window.row1.driver.status",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -866,7 +866,7 @@
     {
         "CarData Element": "Status of front right door",
         "Description": "This value indicates whether the front right door was closed at the time of data collection (CLOSED) or open (OPEN).",
-        "Technical descriptor": "vehicle.​cabin.​door.​row1.​passenger.​isOpen",
+        "Technical descriptor": "vehicle.cabin.door.row1.passenger.isOpen",
         "Data type": "boolean",
         "Typical value range": "OPEN, CLOSED, INVALID, UNKNOWN",
         "Unit": "-",
@@ -875,7 +875,7 @@
     {
         "CarData Element": "Status of front right window",
         "Description": "This value indicates whether the front right window was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​window.​row1.​passenger.​status",
+        "Technical descriptor": "vehicle.cabin.window.row1.passenger.status",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -884,7 +884,7 @@
     {
         "CarData Element": "Status of hood",
         "Description": "This value indicates whether the vehicle's hood was closed at the time of data collection (CLOSED) or open (OPEN).",
-        "Technical descriptor": "vehicle.​body.​hood.​isOpen",
+        "Technical descriptor": "vehicle.body.hood.isOpen",
         "Data type": "boolean",
         "Typical value range": "CLOSED, OPEN, INVALID",
         "Unit": "-",
@@ -893,7 +893,7 @@
     {
         "CarData Element": "Status of lights",
         "Description": "This value indicates whether the vehicle light was on or off at the time of data collection or whether the status is unknown.",
-        "Technical descriptor": "vehicle.​body.​lights.​isRunningOn",
+        "Technical descriptor": "vehicle.body.lights.isRunningOn",
         "Data type": "boolean",
         "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
         "Unit": "-",
@@ -902,7 +902,7 @@
     {
         "CarData Element": "Status of rear left door",
         "Description": "This value indicates whether the rear left door was closed at the time of data collection (CLOSED) or open (OPEN).",
-        "Technical descriptor": "vehicle.​cabin.​door.​row2.​driver.​isOpen",
+        "Technical descriptor": "vehicle.cabin.door.row2.driver.isOpen",
         "Data type": "boolean",
         "Typical value range": "OPEN, CLOSED, INVALID, UNKNOWN",
         "Unit": "-",
@@ -911,7 +911,7 @@
     {
         "CarData Element": "Status of rear left window",
         "Description": "This value indicates whether the rear left window was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​window.​row2.​driver.​status",
+        "Technical descriptor": "vehicle.cabin.window.row2.driver.status",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -920,7 +920,7 @@
     {
         "CarData Element": "Status of rear right door",
         "Description": "This value indicates whether the rear right door was closed at the time of data collection (CLOSED) or open (OPEN).",
-        "Technical descriptor": "vehicle.​cabin.​door.​row2.​passenger.​isOpen",
+        "Technical descriptor": "vehicle.cabin.door.row2.passenger.isOpen",
         "Data type": "boolean",
         "Typical value range": "OPEN, CLOSED, INVALID, UNKNOWN",
         "Unit": "-",
@@ -929,7 +929,7 @@
     {
         "CarData Element": "Status of rear right window",
         "Description": "This value indicates whether the rear right window was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​window.​row2.​passenger.​status",
+        "Technical descriptor": "vehicle.cabin.window.row2.passenger.status",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -938,7 +938,7 @@
     {
         "CarData Element": "Status of sunroof",
         "Description": "This value indicates whether the sunroof (if the vehicle has one) was open (OPEN), half-open (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​sunroof.​status",
+        "Technical descriptor": "vehicle.cabin.sunroof.status",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -947,7 +947,7 @@
     {
         "CarData Element": "Steering wheel direct heat",
         "Description": "DirectStart settings for steering wheel heating for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​steeringWheel.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.steeringWheel.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -956,7 +956,7 @@
     {
         "CarData Element": "Steering wheel heating",
         "Description": "Actual value of the steering wheel heating in percent.",
-        "Technical descriptor": "vehicle.​cabin.​steeringWheel.​heating",
+        "Technical descriptor": "vehicle.cabin.steeringWheel.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -965,7 +965,7 @@
     {
         "CarData Element": "Sunroof overall status",
         "Description": "Overall status of the vehicle's sunroof.",
-        "Technical descriptor": "vehicle.​cabin.​sunroof.​overallStatus",
+        "Technical descriptor": "vehicle.cabin.sunroof.overallStatus",
         "Data type": "string",
         "Typical value range": "INVALID, OPEN, OPEN_TILT, INTERMEDIATE_TILT, CLOSED",
         "Unit": "-",
@@ -974,7 +974,7 @@
     {
         "CarData Element": "Sunroof relative position",
         "Description": "Openingt state of the sunroof in percent. -100 means full tilt position. 0% represents fully closed and 100% represents fully opened.",
-        "Technical descriptor": "vehicle.​cabin.​sunroof.​relativePosition",
+        "Technical descriptor": "vehicle.cabin.sunroof.relativePosition",
         "Data type": "int8",
         "Typical value range": "-100% to 100%",
         "Unit": "percent",
@@ -983,7 +983,7 @@
     {
         "CarData Element": "Sunshade position",
         "Description": "Item position. 0 = Start position 100 = End position.",
-        "Technical descriptor": "vehicle.​cabin.​sunroof.​shade.​position",
+        "Technical descriptor": "vehicle.cabin.sunroof.shade.position",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -992,25 +992,25 @@
     {
         "CarData Element": "Tank content",
         "Description": "The value indicates the current fuel tank level in litres or gallons at the time of data collection. Depending on the position of the tank float, the specified value may differ by up to 6 litres or 1.6 gallons.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​remainingFuel",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.remainingFuel",
         "Data type": "float",
-        "Typical value range": "0 L to 100 L or 0 gal to 26.5 gal",
+        "Typical value range": "0 L to 100 L\nor\n0 gal to 26.5 gal",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Tank level in %",
         "Description": "This value indicates the tank level in percent at the time of data collection.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​level",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.level",
         "Data type": "uint8",
-        "Typical value range": "0 % to 100 %,INVALID",
+        "Typical value range": "0 % to 100 %,\nINVALID",
         "Unit": "%",
         "Streamable": "true"
     },
     {
         "CarData Element": "Target temperature",
         "Description": "Default settings for target temperature for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​defaultSettings.​targetTemperature",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.defaultSettings.targetTemperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "celsius",
@@ -1019,7 +1019,7 @@
     {
         "CarData Element": "Third row driver direct cool",
         "Description": "DirectStart settings for third row driver seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row3.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row3.driverSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -1028,7 +1028,7 @@
     {
         "CarData Element": "Third row driver direct heat",
         "Description": "DirectStart settings for third row driver seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row3.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row3.driverSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -1037,7 +1037,7 @@
     {
         "CarData Element": "Third row driver seat cooling",
         "Description": "Third row driver seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row3.​driverSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row3.driverSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -1046,7 +1046,7 @@
     {
         "CarData Element": "Third row driver seat heating",
         "Description": "Third row driver seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row3.​driverSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row3.driverSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -1055,7 +1055,7 @@
     {
         "CarData Element": "Third row passenger direct cool",
         "Description": "DirectStart settings for third row passenger seat cooling/ventilation of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row3.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row3.passengerSide.cooling",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -1064,7 +1064,7 @@
     {
         "CarData Element": "Third row passenger direct heat",
         "Description": "DirectStart settings for third row passenger seat heating of the seat for climate preconditioning.",
-        "Technical descriptor": "vehicle.​cabin.​hvac.​preconditioning.​configuration.​directStartSettings.​seat.​row3.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.directStartSettings.seat.row3.passengerSide.heating",
         "Data type": "string",
         "Typical value range": "OFF, ON, AUTOMATIC, NO_CHANGE",
         "Unit": "-",
@@ -1073,7 +1073,7 @@
     {
         "CarData Element": "Third row passenger seat cooling",
         "Description": "Third row passenger seat Cooling. 0 = off. +100 = max cold.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row3.​passengerSide.​cooling",
+        "Technical descriptor": "vehicle.cabin.seat.row3.passengerSide.cooling",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -1082,7 +1082,7 @@
     {
         "CarData Element": "Third row passenger seat heating",
         "Description": "Third row passenger seat heating. 0 = off. +100 = max heat.",
-        "Technical descriptor": "vehicle.​cabin.​seat.​row3.​passengerSide.​heating",
+        "Technical descriptor": "vehicle.cabin.seat.row3.passengerSide.heating",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -1091,7 +1091,7 @@
     {
         "CarData Element": "Tilting status of sunroof",
         "Description": "This value indicates whether the sunroof (if the vehicle has one) was tilted (OPEN), half-tilted (INTERMEDIATE) or closed (CLOSED) at the time of data collection.",
-        "Technical descriptor": "vehicle.​cabin.​sunroof.​tiltStatus",
+        "Technical descriptor": "vehicle.cabin.sunroof.tiltStatus",
         "Data type": "string",
         "Typical value range": "CLOSED, INTERMEDIATE, OPEN, INVALID",
         "Unit": "-",
@@ -1100,16 +1100,16 @@
     {
         "CarData Element": "Time threshold for main and exhaust gas inspection",
         "Description": "The threshold indicates how many months before the main and exhaust gas inspection is due the service advisor will be notified.",
-        "Technical descriptor": "vehicle.​status.​serviceTime.​hUandAuServiceYellow",
+        "Technical descriptor": "vehicle.status.serviceTime.hUandAuServiceYellow",
         "Data type": "uint16",
-        "Typical value range": "0 to 10months",
+        "Typical value range": "0 to 10\nmonths",
         "Unit": "months",
         "Streamable": "true"
     },
     {
         "CarData Element": "Time threshold for service information",
-        "Description": "The static value indicated is stored in the vehicle and indicates the first time that the customer receives a message to inform them that the vehicle will soon be due for a service. This is given in weeks (for example 4).",
-        "Technical descriptor": "vehicle.​status.​serviceTime.​yellow",
+        "Description": "The static value indicated is stored in the vehicle and indicates the first time that the customer receives a message to inform them that the vehicle will soon be due for a service. \nThis is given in weeks (for example 4).",
+        "Technical descriptor": "vehicle.status.serviceTime.yellow",
         "Data type": "uint16",
         "Typical value range": "4 weeks",
         "Unit": "weeks",
@@ -1118,7 +1118,7 @@
     {
         "CarData Element": "Time to the navigation destination",
         "Description": "This value indicates the arrival time at the navigation destination and is given in hours and minutes.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​destinationSet.​arrivalTime",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.arrivalTime",
         "Data type": "string",
         "Typical value range": "hh:mm",
         "Unit": "-",
@@ -1127,16 +1127,16 @@
     {
         "CarData Element": "Time zone setting in the vehicle",
         "Description": "This value indicates the current setting for the time display in the vehicle at the time of data collection. For example, this may be winter time, summer time, UTC or manual.",
-        "Technical descriptor": "vehicle.​vehicle.​timeSetting",
+        "Technical descriptor": "vehicle.vehicle.timeSetting",
         "Data type": "string",
-        "Typical value range": "wintertime,summertime,utc,manual,INVALID",
+        "Typical value range": "wintertime,\nsummertime,\nutc,\nmanual,\nINVALID",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Trunk door open status",
         "Description": "Trunk door state.",
-        "Technical descriptor": "vehicle.​body.​trunk.​door.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.door.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1145,7 +1145,7 @@
     {
         "CarData Element": "Trunk left door open",
         "Description": "Left door of trunk state.",
-        "Technical descriptor": "vehicle.​body.​trunk.​left.​door.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.left.door.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1154,7 +1154,7 @@
     {
         "CarData Element": "Trunk locked status",
         "Description": "Indicated weather the trunk is locked or not.",
-        "Technical descriptor": "vehicle.​body.​trunk.​isLocked",
+        "Technical descriptor": "vehicle.body.trunk.isLocked",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1163,7 +1163,7 @@
     {
         "CarData Element": "Trunk lower door open",
         "Description": "Lower door of trunk state.",
-        "Technical descriptor": "vehicle.​body.​trunk.​lower.​door.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.lower.door.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1172,7 +1172,7 @@
     {
         "CarData Element": "Trunk right door open",
         "Description": "Right door of trunk state.",
-        "Technical descriptor": "vehicle.​body.​trunk.​right.​door.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.right.door.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1181,7 +1181,7 @@
     {
         "CarData Element": "Trunk upper door open",
         "Description": "Upper door of trunk state.",
-        "Technical descriptor": "vehicle.​body.​trunk.​upper.​door.​isOpen",
+        "Technical descriptor": "vehicle.body.trunk.upper.door.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1190,7 +1190,7 @@
     {
         "CarData Element": "Use of engine for pre-conditioning",
         "Description": "This value indicates whether the engine was active during pre-conditioning of the stationary air conditioning at the time of data collection. The value “Inactive” may be transmitted if the pre-conditioning has not been booked or if the pre-conditioning is not active at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​preConditioning.​isRemoteEngineRunning",
+        "Technical descriptor": "vehicle.vehicle.preConditioning.isRemoteEngineRunning",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1198,35 +1198,35 @@
     },
     {
         "CarData Element": "Vehicle altitude",
-        "Description": "This value indicates the height of the vehicle above sea-level at the time of data collection. The value range reaches from -100m to 6000m or from -328ft to 19685ft.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​altitude",
+        "Description": "This value indicates the height of the vehicle above sea-level at the time of data collection. \nThe value range reaches from -100m to 6000m or from -328ft to 19685ft.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.altitude",
         "Data type": "double",
-        "Typical value range": "-100 m to 6000 m or -328 ft to 19685 ftor -NA-",
+        "Typical value range": "-100 m to 6000 m\nor\n-328 ft to 19685 ft\nor -NA-",
         "Unit": "-",
         "Streamable": "true"
     },
     {
-        "CarData Element": "Vehicle position - degree of latitude",
-        "Description": "This value indicates the degree of latitude at which the vehicle was at the time of data collection. The degree of latitude could range from 0 (at the equator) to a maximum of +90 in the northern hemisphere or respectively -90 in the southern hemisphere. The GPS position is transferred independently of whether the GPS positioning has been activated or deactivated in your vehicle via the settings menu.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​latitude",
+        "CarData Element": "Vehicle position – degree of latitude",
+        "Description": "This value indicates the degree of latitude at which the vehicle was at the time of data collection. \nThe degree of latitude could range from 0 (at the equator) to a maximum of +90 in the northern hemisphere or respectively -90 in the southern hemisphere. The GPS position is transferred independently of whether the GPS positioning has been activated or deactivated in your vehicle via the settings menu.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.latitude",
         "Data type": "double",
-        "Typical value range": "-90,0000 to+ 90,0000",
+        "Typical value range": "-90,0000 to\n+ 90,0000",
         "Unit": "degrees",
         "Streamable": "true"
     },
     {
-        "CarData Element": "Vehicle position - degree of longitude",
-        "Description": "This value indicates the degree of longitude at which the vehicle was at the time of data collection. The degree of longitude could range from 0 (at the Greenwich meridian / Great Britain) to a maximum of +180 east or respectively -180 west of the meridian. The GPS position is transferred independently of whether the GPS positioning has been activated or deactivated in your vehicle via the settings menu.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​longitude",
+        "CarData Element": "Vehicle position – degree of longitude",
+        "Description": "This value indicates the degree of longitude at which the vehicle was at the time of data collection. \nThe degree of longitude could range from 0 (at the Greenwich meridian / Great Britain) to a maximum of +180 east or respectively -180 west of the meridian. The GPS position is transferred independently of whether the GPS positioning has been activated or deactivated in your vehicle via the settings menu.",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.longitude",
         "Data type": "double",
-        "Typical value range": "-180,0000 to+ 180,0000",
+        "Typical value range": "-180,0000 to\n+ 180,0000",
         "Unit": "degrees",
         "Streamable": "true"
     },
     {
         "CarData Element": "Average distance per day",
         "Description": "Condition Based Services. Estimation on the daily travelled distance of the vehicle but heavily tailored for the us in the Condition Based Services context.",
-        "Technical descriptor": "vehicle.​status.​conditionBasedServicesAverageDistancePerDay",
+        "Technical descriptor": "vehicle.status.conditionBasedServicesAverageDistancePerDay",
         "Data type": "int32",
         "Typical value range": "-",
         "Unit": "km",
@@ -1235,70 +1235,61 @@
     {
         "CarData Element": "Average distance per week",
         "Description": "This indicates the average volume of the distance travelled in kilometres or miles per week.",
-        "Technical descriptor": "vehicle.​vehicle.​averageWeeklyDistanceShortTerm",
+        "Technical descriptor": "vehicle.vehicle.averageWeeklyDistanceShortTerm",
         "Data type": "float",
-        "Typical value range": "1 km to 3000 km or 1 mi to 1864 mi",
+        "Typical value range": "1 km to 3000 km\nor\n1 mi to 1864 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Average distance per week (long-life)",
         "Description": "This value indicates the weekly average travelled in kilometres or miles over a period of 2 months.",
-        "Technical descriptor": "vehicle.​vehicle.​averageWeeklyDistanceLongTerm",
+        "Technical descriptor": "vehicle.vehicle.averageWeeklyDistanceLongTerm",
         "Data type": "float",
-        "Typical value range": "1 km to 3000 km or 1 mi to 1864 mi",
+        "Typical value range": "1 km to 3000 km\nor\n1 mi to 1864 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Check control messages",
         "Description": "The value indicates the last relevant Check Control messages that were displayed in the vehicle and transferred to BMW. Check control monitors functions in the vehicle and notifies the user when there is a fault in the monitored system. A check control message is displayed as a combination of indicator lights or warning lights and text messages on the dashboard, and on the head-up display, if applicable. Note: Not all Check Control messages that are displayed in the vehicle are transferred to BMW.",
-        "Technical descriptor": "vehicle.​status.​checkControlMessages",
+        "Technical descriptor": "vehicle.status.checkControlMessages",
         "Data type": "-",
-        "Typical value range": "The Check Control example is appended at the end of the table (2).",
+        "Typical value range": "-",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "Condition Based Service",
         "Description": "Sensors and special algorithms take into account the operating conditions of the vehicle. CBS uses this to determine the required service. The system hereby adapts the scope of the service to the individual usage profile.",
-        "Technical descriptor": "vehicle.​status.​conditionBasedServices",
+        "Technical descriptor": "vehicle.status.conditionBasedServices",
         "Data type": "-",
-        "Typical value range": "The Condition Based Service example is appended at the end of the table (3).",
+        "Typical value range": "-",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "Consent to OBFCM* data transfer to the EU",
         "Description": "This value indicates whether the client has consented to the transfer of OBFCM* data to the European Commission.",
-        "Technical descriptor": "vehicle.​privacySettings.​dataCollection.​regulations.​obfcm",
+        "Technical descriptor": "vehicle.privacySettings.dataCollection.regulations.obfcm",
         "Data type": "boolean",
-        "Typical value range": "True   False",
+        "Typical value range": "True   \nFalse",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "Last sent remaining range",
         "Description": "Last sent remaining range electric + fuel sent by the vehicle. Range from vehicle Kombi (Queried for PHEV and CE vehicles). Delivers e-range + ce range for PHEV. Ce Range for CE vehicles. Likely 0 for BEV vehicles. This value should only be used for combustion cars. Electric cars should read Vehicle.Drivetrain.ElectricEngine.KombiRemainingElectricRange.",
-        "Technical descriptor": "vehicle.​drivetrain.​lastRemainingRange",
+        "Technical descriptor": "vehicle.drivetrain.lastRemainingRange",
         "Data type": "float",
         "Typical value range": "0-6500",
         "Unit": "km",
         "Streamable": "true"
     },
     {
-        "CarData Element": "Learning navigation",
-        "Description": "Displays the learned navigation recommendations (preferred routes and destinations of the customer).",
-        "Technical descriptor": "vehicle.​learningNavigation",
-        "Data type": "-",
-        "Typical value range": "Details can be found in the corresponding Swagger documentation: ../learningNavigation",
-        "Unit": "-",
-        "Streamable": "false"
-    },
-    {
         "CarData Element": "OBFCM* reference distance during charging mode",
         "Description": "This value indicates the distance travelled during charging mode, i.e. PHEV charges the high-voltage battery.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​inChargeIncreasing.​referenceDistance",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeIncreasing.referenceDistance",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -1307,7 +1298,7 @@
     {
         "CarData Element": "OBFCM* reference distance during electric mode and when the combustion engine is active (PHEV only)",
         "Description": "This value indicates the distance travelled during electric mode and when the combustion engine is active.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​inChargeDepleting.​referenceDistanceEngineOn",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.referenceDistanceEngineOn",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -1316,7 +1307,7 @@
     {
         "CarData Element": "OBFCM* reference distance during electric mode and when the combustion engine is inactive (PHEV only)",
         "Description": "This value indicates the distance travelled during electric mode and when the combustion engine is inactive.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​inChargeDepleting.​referenceDistanceEngineOff",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.referenceDistanceEngineOff",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -1325,7 +1316,7 @@
     {
         "CarData Element": "OBFCM* reference distance for measuring the fuel consumption",
         "Description": "This value indicates the reference distance for measuring fuel consumption.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​overall.​referenceDistance",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.overall.referenceDistance",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -1334,7 +1325,7 @@
     {
         "CarData Element": "OBFCM* total fuel consumption during charging mode (PHEV only)",
         "Description": "This value describes the fuel consumed during charging mode, i.e. PHEV charges the high-voltage battery using the combustion engine.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​inChargeIncreasing.​fuel",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeIncreasing.fuel",
         "Data type": "float",
         "Typical value range": "0.00 l - 30000.00 l",
         "Unit": "l",
@@ -1343,7 +1334,7 @@
     {
         "CarData Element": "OBFCM* total fuel consumption during operation when the battery is discharged (PHEV only)",
         "Description": "This value indicates the amount of fuel consumption when the combustion engine switches on even though the battery is not flat.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​inChargeDepleting.​fuel",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.fuel",
         "Data type": "float",
         "Typical value range": "0.00 l - 30000.00 l",
         "Unit": "l",
@@ -1352,7 +1343,7 @@
     {
         "CarData Element": "Speed range lower",
         "Description": "Lower bound of the speed range in km/h. The Range includes the lower bound. Due to privacy reasons some functions are not allowed to transmit the current driving speed and should use the SpeedRange attribute.",
-        "Technical descriptor": "vehicle.​vehicle.​speedRange.​lowerBound",
+        "Technical descriptor": "vehicle.vehicle.speedRange.lowerBound",
         "Data type": "int16",
         "Typical value range": "-100 km/h - 500 km/h",
         "Unit": "km/h",
@@ -1361,7 +1352,7 @@
     {
         "CarData Element": "Speed range upper",
         "Description": "Upper bound of the speed range in km/h. The Range excludes the upper bound. Due to privacy reasons some functions are not allowed to transmit the current driving speed and should use the SpeedRange attribute.",
-        "Technical descriptor": "vehicle.​vehicle.​speedRange.​upperBound",
+        "Technical descriptor": "vehicle.vehicle.speedRange.upperBound",
         "Data type": "int16",
         "Typical value range": "-100 km/h - 500 km/h",
         "Unit": "km/h",
@@ -1370,7 +1361,7 @@
     {
         "CarData Element": "Total fuel consumption according to legal OBFCM* specifications",
         "Description": "This value indicates the amount of fuel consumed in litres, measured over the reference distance.",
-        "Technical descriptor": "vehicle.​drivetrain.​fuelSystem.​consumptionOverLifeTime.​overall.​fuel",
+        "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.overall.fuel",
         "Data type": "float",
         "Typical value range": "0.00 l - 30000.00 l",
         "Unit": "l",
@@ -1379,16 +1370,16 @@
     {
         "CarData Element": "Automatic Teleservice Call",
         "Description": "This value indicates at what time an Automatic Service Call (ASC) was initiated by the vehicle.",
-        "Technical descriptor": "vehicle.​channel.​teleservice.​lastAutomaticServiceCallTime",
+        "Technical descriptor": "vehicle.channel.teleservice.lastAutomaticServiceCallTime",
         "Data type": "string",
-        "Typical value range": "dd.mm.yyyy hh:mm UTC or mm/dd/yyyy hh:mm UTC",
+        "Typical value range": "dd.mm.yyyy hh:mm UTC\nor\nmm/dd/yyyy hh:mm UTC",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Teleservice report",
         "Description": "This value indicates at what time the teleservice report call was initiated by the vehicle. The vehicle collects measured values or error data for the teleservice report call, and automatically sends them according to defined cycles.",
-        "Technical descriptor": "vehicle.​channel.​teleservice.​lastTeleserviceReportTime",
+        "Technical descriptor": "vehicle.channel.teleservice.lastTeleserviceReportTime",
         "Data type": "string",
         "Typical value range": "dd.mm.yyyy hh:mm:ss UTC",
         "Unit": "-",
@@ -1397,7 +1388,7 @@
     {
         "CarData Element": "48V battery state of health",
         "Description": "SoH (State of Health) of the 48V Battery that is shown to the customer. Created to fulfill EU Battery Regulation.",
-        "Technical descriptor": "vehicle.​electricalSystem.​battery48V.​stateOfHealth.​displayed",
+        "Technical descriptor": "vehicle.electricalSystem.battery48V.stateOfHealth.displayed",
         "Data type": "uint16",
         "Typical value range": "0% to 250%",
         "Unit": "percent",
@@ -1405,17 +1396,17 @@
     },
     {
         "CarData Element": "AC charging current",
-        "Description": "This value indicates the maximum charging current for the most recent charging process in ampere (A) (only when charging with alternating current). Values between 0 and 25 are possible. Both the vehicle and charging station could be individually charged with a certain maximum charging current. The value displayed here is the greater of these two figures.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​acAmpere",
+        "Description": "This value indicates the maximum charging current for the most recent charging process in ampere (A) (only when charging with alternating current). \nValues between 0 and 25 are possible. Both the vehicle and charging station could be individually charged with a certain maximum charging current. The value displayed here is the greater of these two figures.",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.acAmpere",
         "Data type": "uint8",
-        "Typical value range": "0 A to 25 A or-NA-",
+        "Typical value range": "0 A to 25 A or\n-NA-",
         "Unit": "A",
         "Streamable": "true"
     },
     {
         "CarData Element": "AC charging current limit and selection",
-        "Description": "The first value indicates whether the charging current used to charge the vehicle is limited.The second value describes the type of limit (reduced or minimum).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​acRestriction.​isChosen",
+        "Description": "The first value indicates whether the charging current used to charge the vehicle is limited. \n\nThe second value describes the type of limit (reduced or minimum).",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.acRestriction.isChosen",
         "Data type": "boolean",
         "Typical value range": "NOTCHOSEN, CHOSEN, INVALID; MAXCHARGING, REDUCEDCHARGING, MINCHARGING, INVALID",
         "Unit": "-",
@@ -1424,7 +1415,7 @@
     {
         "CarData Element": "AC charging restriction factor",
         "Description": "Response of ac restriction.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​acRestriction.​factor",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.acRestriction.factor",
         "Data type": "string",
         "Typical value range": "MAXCHARGING, REDUCEDCHARGING, MINCHARGING",
         "Unit": "-",
@@ -1432,17 +1423,17 @@
     },
     {
         "CarData Element": "AC charging voltage",
-        "Description": "This value indicates the charging voltage for the most recent charging process (only when charging with alternating current). This value is usually in the region of 230 V. However, charging voltages may range from 0 to 300.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​acVoltage",
+        "Description": "This value indicates the charging voltage for the most recent charging process (only when charging with alternating current). \nThis value is usually in the region of 230 V. \nHowever, charging voltages may range from 0 to 300.",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.acVoltage",
         "Data type": "float",
-        "Typical value range": "0 V to 300 V or-NA-",
+        "Typical value range": "0 V to 300 V or\n-NA-",
         "Unit": "V",
         "Streamable": "true"
     },
     {
         "CarData Element": "Acoustic limitation of charging process",
         "Description": "This value indicates whether charging is limited due to noise emissions.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​acousticLimit",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acousticLimit",
         "Data type": "string",
         "Typical value range": "NO_ACTION, AUTOMATIC, UNLIMITED,LIMITED",
         "Unit": "-",
@@ -1450,8 +1441,8 @@
     },
     {
         "CarData Element": "Activation period for ECO mode during most recent drive",
-        "Description": "Indicates the length of time for which ECO mode was activated during the most recent drive when data were recorded. The values range from 0 to 100.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​drivetrain.​transmission.​setting.​fractionDriveEcoPro",
+        "Description": "Indicates the length of time for which ECO mode was activated during the most recent drive when data were recorded. \nThe values range from 0 to 100.",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveEcoPro",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "percent",
@@ -1459,8 +1450,8 @@
     },
     {
         "CarData Element": "Activation period for ECO PLUS mode during most recent drive",
-        "Description": "Indicates the length of time for which ECO PLUS mode was activated during the most recent drive when data were recorded. The values range from 0 to 100.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​drivetrain.​transmission.​setting.​fractionDriveEcoProPlus",
+        "Description": "Indicates the length of time for which ECO PLUS mode was activated during the most recent drive when data were recorded. \nThe values range from 0 to 100.",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveEcoProPlus",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "percent",
@@ -1469,7 +1460,7 @@
     {
         "CarData Element": "Automatic preconditioning status feedback",
         "Description": "Current state of toggle switch for automatic battery preconditioning. ON means automatic mode (navigation based) of the predictive thermal management (vWM) is activated. OFF means automatic mode (navigation based) of the predictive thermal management (vWM) is deactivated. TEMP_OFF stands for temporary deactivation for current trip of the automatic predictive thermal management.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​preconditioning.​automaticMode.​statusFeedback",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.preconditioning.automaticMode.statusFeedback",
         "Data type": "string",
         "Typical value range": "OFF, ON, TEMP_OFF, UNKNOWN",
         "Unit": "-",
@@ -1478,34 +1469,34 @@
     {
         "CarData Element": "Auxiliary user power (power consumption of electrical components)",
         "Description": "This value indicates the power of the auxiliary users in kW at the time of data collection. This is the on-board power consumption including the power for the air conditioning.",
-        "Technical descriptor": "vehicle.​vehicle.​avgAuxPower",
+        "Technical descriptor": "vehicle.vehicle.avgAuxPower",
         "Data type": "float",
-        "Typical value range": "0 kW to 655,34 kW,INVALID",
+        "Typical value range": "0 kW to 655,34 kW,\nINVALID",
         "Unit": "kW",
         "Streamable": "true"
     },
     {
         "CarData Element": "Average electric consumption",
-        "Description": "This value indicates the average electric consumption in [kWh/100 km or mi/kWh] at the time of data collection. Note: Not available for the models i3 and i8.",
-        "Technical descriptor": "vehicle.​drivetrain.​avgElectricRangeConsumption",
+        "Description": "This value indicates the average electric consumption in [kWh/100 km or mi/kWh] at the time of data collection. \nNote: Not available for the models i3 and i8.",
+        "Technical descriptor": "vehicle.drivetrain.avgElectricRangeConsumption",
         "Data type": "float",
-        "Typical value range": "0 kWh/100 km to 100 kWh/100 km or 0,6213 mi/kWh to 62,1371 mi/kWh",
+        "Typical value range": "0 kWh/100 km to 100 kWh/100 km\nor\n0,6213 mi/kWh to 62,1371 mi/kWh",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Average speed",
         "Description": "The value indicates the average speed driven by the vehicle in km/h or mph at the time of data collection.",
-        "Technical descriptor": "vehicle.​vehicle.​avgSpeed",
+        "Technical descriptor": "vehicle.vehicle.avgSpeed",
         "Data type": "uint16",
-        "Typical value range": "0 km/h to 300 km/h or 0 mph to 186 mph,INVALID",
+        "Typical value range": "0 km/h to \n300 km/h\nor\n0 mph to 186 mph,\nINVALID",
         "Unit": "km/h",
         "Streamable": "true"
     },
     {
         "CarData Element": "Battery care charge mode",
         "Description": "Charging to departure time starts as late as possible, to reduce the time where the car has a high SoE (State of Energy).",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​batteryCarePersisted.​isPreservingChargingMode",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isPreservingChargingMode",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1514,7 +1505,7 @@
     {
         "CarData Element": "Battery care mode active",
         "Description": "Indicator if the battery care persisted mode is active.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​batteryCarePersisted.​isActive",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1523,7 +1514,7 @@
     {
         "CarData Element": "Battery charging port any position flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​anyPosition.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.anyPosition.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1532,7 +1523,7 @@
     {
         "CarData Element": "Battery charging port any position flap open",
         "Description": "This signal indicates, if charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​anyPosition.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.anyPosition.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1541,7 +1532,7 @@
     {
         "CarData Element": "Battery charging port any position plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​anyPosition.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.anyPosition.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1550,7 +1541,7 @@
     {
         "CarData Element": "Battery charging port front left flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the front left flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontLeft.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontLeft.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1559,7 +1550,7 @@
     {
         "CarData Element": "Battery charging port front left flap open",
         "Description": "This signal indicates, if front left charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontLeft.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontLeft.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1568,7 +1559,7 @@
     {
         "CarData Element": "Battery charging port front left plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the front left charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontLeft.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontLeft.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1577,7 +1568,7 @@
     {
         "CarData Element": "Battery charging port front middle flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the front middle flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontMiddle.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontMiddle.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1586,7 +1577,7 @@
     {
         "CarData Element": "Battery charging port front middle flap open",
         "Description": "This signal indicates, if front middle charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontMiddle.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontMiddle.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1595,7 +1586,7 @@
     {
         "CarData Element": "Battery charging port front middle plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the front middle charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontMiddle.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontMiddle.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1604,7 +1595,7 @@
     {
         "CarData Element": "Battery charging port front right flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the front right flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontRight.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontRight.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1613,7 +1604,7 @@
     {
         "CarData Element": "Battery charging port front right flap open",
         "Description": "This signal indicates, if front right charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontRight.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontRight.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1622,7 +1613,7 @@
     {
         "CarData Element": "Battery charging port front right plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the front right charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​frontRight.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.frontRight.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1631,7 +1622,7 @@
     {
         "CarData Element": "Battery charging port rear left flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the rear left flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearLeft.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearLeft.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1640,7 +1631,7 @@
     {
         "CarData Element": "Battery charging port rear left flap open",
         "Description": "This signal indicates, if rear left charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearLeft.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearLeft.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1649,7 +1640,7 @@
     {
         "CarData Element": "Battery charging port rear left plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the rear left charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearLeft.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearLeft.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1658,7 +1649,7 @@
     {
         "CarData Element": "Battery charging port rear middle flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the rear middle flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearMiddle.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearMiddle.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1667,7 +1658,7 @@
     {
         "CarData Element": "Battery charging port rear middle flap open",
         "Description": "This signal indicates, if rear middle charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearMiddle.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearMiddle.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1676,7 +1667,7 @@
     {
         "CarData Element": "Battery charging port rear middle plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the rear middle charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearMiddle.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearMiddle.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1685,7 +1676,7 @@
     {
         "CarData Element": "Battery charging port rear right flap automatic open/close",
         "Description": "This field indicates if customer setting for opening the rear right flap by myWay function (slider in the mobile app) is active. If true, flap opens automatically when the vehicle is close to a charging station with the digital key in the pocket and closes automatically after unplugging the cable.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearRight.​flap.​isAutomaticOpenAndCloseActive",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearRight.flap.isAutomaticOpenAndCloseActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1694,7 +1685,7 @@
     {
         "CarData Element": "Battery charging port rear right flap open",
         "Description": "This signal indicates, if rear right charging port is open in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearRight.​flap.​isOpen",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearRight.flap.isOpen",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1703,7 +1694,7 @@
     {
         "CarData Element": "Battery charging port rear right plugged",
         "Description": "This signal indicates, if a charging cable is plugged in the rear right charging port.",
-        "Technical descriptor": "vehicle.​powertrain.​tractionBattery.​charging.​port.​rearRight.​isPlugged",
+        "Technical descriptor": "vehicle.powertrain.tractionBattery.charging.port.rearRight.isPlugged",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1712,7 +1703,7 @@
     {
         "CarData Element": "Bidirectional charging capability",
         "Description": "Contains the information about the current availability of the BPT (Bidirectional power transfer) function.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​biDirectionalCharging.​availability",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.biDirectionalCharging.availability",
         "Data type": "string",
         "Typical value range": "AVAILABLE, NOT_AVAILABLE, DISABLED_MALIBU, DISABLED_HVS, BPT_AND_IMO_DISABLED, BPT_ONLY_FOR_EMERGENCY_POWER_SUPPLY, DISABLED_IMO_POSSIBLE, DISABLED_LONG_TERM",
         "Unit": "-",
@@ -1721,7 +1712,7 @@
     {
         "CarData Element": "Cable check voltage",
         "Description": "The voltage reached during intialization cable check.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​cableCheckVoltage",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.cableCheckVoltage",
         "Data type": "uint16",
         "Typical value range": "-",
         "Unit": "V",
@@ -1730,16 +1721,16 @@
     {
         "CarData Element": "Calculated remaining charging time of the high-voltage battery",
         "Description": "This value indicates the calculated time (in minutes) until the high-voltage battery is fully charged. If a navigation destination has been set, the time remaining until reaching the destination will be displayed.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​timeToFullyCharged",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.timeToFullyCharged",
         "Data type": "uint16",
-        "Typical value range": "0 - 65500 Min, INVALID",
+        "Typical value range": "0 – 65500 Min, INVALID",
         "Unit": "min",
         "Streamable": "true"
     },
     {
         "CarData Element": "Charging authentication status",
         "Description": "Plug & Charge (Automatic Payment of Charging Services) authorization status of a charging session. \"AUTHORIZATION_SUCCESSFUL\" - Authentication with PlugAndCharge successful, \"TRANSPORT_LAYER_ERROR\" - TLS connection to EVSE not possible, \"HIGH_LEVEL_COMMUNICATION_ERROR\" - High Level communication with ISO15118 error, \"CONTRACT_SERVICE_NOT_SUPPORTED_ERROR\" - EVSE doesn't support Authentication via PlugAndCharge, \"AUTHORIZATION_TIMEOUT\" - Authorization run in an error, \"AUTHORIZATION_TIMEOUT\" - authentication not finished after 120s, \"NVM_READ_CERTIFICATE_ERROR\" - Certificates couldn't be red from Charging Control Unit storrage, \"CERTIFICATE_UPDATE_ERROR\" - update of contract via powerline failed, \"XML_SECURITY_ERROR\" - Schema validation error of transfered data.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​authentication.​status",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.authentication.status",
         "Data type": "string",
         "Typical value range": "AUTHORIZATION_SUCCESSFUL, TRANSPORT_LAYER_ERROR, HIGH_LEVEL_COMMUNICATION_ERROR, CONTRACT_SERVICE_NOT_SUPPORTED_ERROR, AUTHORIZATION_ERROR, AUTHORIZATION_TIMEOUT, NVM_READ_CERTIFICATE_ERROR, CERTIFICATE_UPDATE_ERROR, XML_SECURITY_ERROR",
         "Unit": "-",
@@ -1748,7 +1739,7 @@
     {
         "CarData Element": "Charging authentication status",
         "Description": "This field indicates the status of authentication with the charging station.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​authenticationStatus",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.authenticationStatus",
         "Data type": "string",
         "Typical value range": "NOT_STARTED, STARTED_EIM, STARTED_PNC, STARTED_PLC_EIM, DONE_EIM, DONE_PLC_EIM, DONE_PNC, FAILED_PLC_EIM, FAILED_PNC, UNKNOWN",
         "Unit": "-",
@@ -1757,7 +1748,7 @@
     {
         "CarData Element": "Charging connector status",
         "Description": "Current condition of charging plug across all types (inductive, conductive), modes (AC, DC) and service packs.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​connectorStatus",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.connectorStatus",
         "Data type": "string",
         "Typical value range": "CONNECTED, DISCONNECTED, ERROR",
         "Unit": "-",
@@ -1766,7 +1757,7 @@
     {
         "CarData Element": "Charging current limit",
         "Description": "This value indicates the set limit of the charging current in amperes (A).",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​acLimit.​selected",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acLimit.selected",
         "Data type": "uint8",
         "Typical value range": "0-252 A, INVALID",
         "Unit": "A",
@@ -1775,16 +1766,16 @@
     {
         "CarData Element": "Charging History",
         "Description": "This value shows a list of charging processes performed on the vehicle, which were recorded in the course of the “Charging History” service.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​history.​sessionsList",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.history.sessionsList",
         "Data type": "-",
-        "Typical value range": "Detailscan be found in the corresponding Swagger documentation: ../chargingHistory",
+        "Typical value range": "Details can be found in the corresponding Swagger documentation: ../chargingHistory",
         "Unit": "-",
         "Streamable": "false"
     },
     {
         "CarData Element": "Charging method and plug type",
-        "Description": "This value describes whether the vehicle was charged with direct current (DC) or alternating current (AC) and which charging plug was used for this purpose. The indicated technical value AC_TYPE1PLUG, for example, indicates that the high-voltage battery was charged in alternating current mode, making use of a charging plug of Type 1.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​method",
+        "Description": "This value describes whether the vehicle was charged with direct current (DC) or alternating current (AC) and which charging plug was used for this purpose. \nThe indicated technical value AC_TYPE1PLUG, for example, indicates that the high-voltage battery was charged in alternating current mode, making use of a charging plug of Type 1.",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.method",
         "Data type": "string",
         "Typical value range": "AC_TYPE1PLUG,AC_TYPE2PLUG, NOCHARGING",
         "Unit": "-",
@@ -1793,7 +1784,7 @@
     {
         "CarData Element": "Charging mode",
         "Description": "Current charging mode.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​chargingMode",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.chargingMode",
         "Data type": "string",
         "Typical value range": "NORMAL_PROGNOSE_BASED, STEP_BASED, PLC_MODE",
         "Unit": "-",
@@ -1802,7 +1793,7 @@
     {
         "CarData Element": "Charging mode deviation",
         "Description": "This parameter contains the information of deviation to the customer selected charging mode due to system reasons.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​modeDeviation",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.modeDeviation",
         "Data type": "string",
         "Typical value range": "NO_DEVIATION, DC_DYNAMIC_MALIBU, DC_DYNAMIC_MIN_SOE_PROTECTION, IMMEDIATE_CHARGING_NOT_SUPPORTED_BY_EVSE, IMMEDIATE_CHARGING_WAKE_UP_LIMIT_REACHED, IMMEDIATE_CHARGING, CHARGING_TIMESLOT, CHARGING_IN_TIMESLOT, SMART_CHARGING, DC_DYNAMIC, BIDIRECTIONAL_CHARGING, NO_ACTION, UNKNOWN",
         "Unit": "-",
@@ -1811,7 +1802,7 @@
     {
         "CarData Element": "Charging port connection status",
         "Description": "Current condition for charging plug in all charging modes telling if any plug is currently connected. The value INVALID can have reasons like e.g. no sensor, broken sensor, no value, decoding errors etc. Combines Vehicle.Body.ChargingPort.Status/.DcStatus.",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​combinedStatus",
+        "Technical descriptor": "vehicle.body.chargingPort.combinedStatus",
         "Data type": "string",
         "Typical value range": "DISCONNECTED, CONNECTED, INVALID",
         "Unit": "-",
@@ -1820,7 +1811,7 @@
     {
         "CarData Element": "Charging port locked state",
         "Description": "This signal indicates whether the charging plug is locked, unlocked, an error is send or no aciton is performed. When using this value, also see Vehicle.Body.ChargingPort.PlugStatus.",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​lockedStatus",
+        "Technical descriptor": "vehicle.body.chargingPort.lockedStatus",
         "Data type": "string",
         "Typical value range": "CHARGING_CABLE_NOT_LOCKED, CHARGING_CABLE_LOCKED, CHARGING_CABLE_LOCKING_ERROR_DETECTED, UNKNOWN",
         "Unit": "-",
@@ -1829,7 +1820,7 @@
     {
         "CarData Element": "Charging port plug event ID",
         "Description": "Unique identifier which increases each time the customer plugs in his electrified vehicle (EXCEPT if the time between unplug and plug-in is less than 90 seconds). This value should be unique for each charging session. See ElectricEngine.Charging.PlugStatus.",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​plugEventId",
+        "Technical descriptor": "vehicle.body.chargingPort.plugEventId",
         "Data type": "uint32",
         "Typical value range": "0 - 131068",
         "Unit": "-",
@@ -1837,8 +1828,8 @@
     },
     {
         "CarData Element": "Charging port status text",
-        "Description": "Required alongside Vehicle.Body.ChargingPort.Status to ensure correct handling of charging sessions for G08 BEV vehicles (for details, contact DE-3-E; onboard fix expected by 2021-03)",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​statusClearText",
+        "Description": "Required alongside Vehicle.Body.ChargingPort.Status to ensure correct handling of charging sessions for G08 BEV vehicles.",
+        "Technical descriptor": "vehicle.body.chargingPort.statusClearText",
         "Data type": "string",
         "Typical value range": "DISCONNECTED, CONNECTED",
         "Unit": "-",
@@ -1847,7 +1838,7 @@
     {
         "CarData Element": "Charging power",
         "Description": "The current charging power in Watt. This value should only be considered with respect to the current timestamp.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​power",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.power",
         "Data type": "int32",
         "Typical value range": "20 W to 80 W",
         "Unit": "W",
@@ -1856,7 +1847,7 @@
     {
         "CarData Element": "Charging process of the high-voltage battery (inductive/conductive)",
         "Description": "This value indicates the charging process (CONDUCTIVE/INDUCTIVE) used to charge the vehicle at the time of data collection.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​connectionType",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.connectionType",
         "Data type": "string",
         "Typical value range": "CONDUCTIVE, INDUCTIVE, SIGNAL_INVALID",
         "Unit": "-",
@@ -1865,7 +1856,7 @@
     {
         "CarData Element": "Charging process of the high-voltage battery (phases)",
         "Description": "This value indicates the number of phases in which the high-voltage battery will be charged.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​phaseNumber",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.phaseNumber",
         "Data type": "string",
         "Typical value range": "NO_CHARGING, 1-PHASES, 2-PHASES, 3-PHASES, INVALID",
         "Unit": "-",
@@ -1874,7 +1865,7 @@
     {
         "CarData Element": "Charging profile preference",
         "Description": "Charging preference of current charging profile. This value depends on charge mode selection. For Vehicle.ElectricEngine.Charging.Profile.Mode being \"DELAYED_CHARGING\", Vehicle.ElectricEngine.Charging.Profile.Preference is either \"SMART_CHARGING\" or \"CHARGING_WINDOW\". In case Vehicle.ElectricEngine.Charging.Profile.Mode is \"IMMEDIATE_CHARGING\", Vehicle.ElectricEngine.Charging.Profile.Preference is set to \"NO_PRESELECTION\".",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​preference",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.preference",
         "Data type": "string",
         "Typical value range": "CHARGING_WINDOW, SMART_CHARGING, NO_PRESELECTION",
         "Unit": "-",
@@ -1883,7 +1874,7 @@
     {
         "CarData Element": "Charging session ID",
         "Description": "The Field contains the value of the ISO 15118 sessionID according ASCII.",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​isoSessionId",
+        "Technical descriptor": "vehicle.body.chargingPort.isoSessionId",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -1891,8 +1882,8 @@
     },
     {
         "CarData Element": "Charging status",
-        "Description": "This value indicates the current charging status of the vehicle at the time of data collection. For example, NOCHARGING means that the vehicle's high-voltage battery is currently not being charged. INITIALIZATION means that the charging process is just being prepared, while CHARGINGACTIVE means that the battery is just being charged. Other possible values are: CHARGINGPAUSED (charging paused), CHARGINGENDED (charging ended) and CHARGINGERROR (charging error).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​status",
+        "Description": "This value indicates the current charging status of the vehicle at the time of data collection. \nFor example, NOCHARGING means that the vehicle's high-voltage battery is currently not being charged. \nINITIALIZATION means that the charging process is just being prepared, while CHARGINGACTIVE means that the battery is just being charged. \nOther possible values are: \nCHARGINGPAUSED (charging paused), \nCHARGINGENDED (charging ended) and \nCHARGINGERROR (charging error).",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.status",
         "Data type": "string",
         "Typical value range": "MANUAL_SELECTION, AUTOMATIC_SELECTION, AUTOMATIC_SELECTION_20, UNKNOWN",
         "Unit": "-",
@@ -1901,7 +1892,7 @@
     {
         "CarData Element": "Charging status of battery",
         "Description": "This value indicates the charging status of the high-voltage battery at the end of the most recently logged drive (in percentage).",
-        "Technical descriptor": "vehicle.​trip.​segment.​end.​drivetrain.​batteryManagement.​hvSoc",
+        "Technical descriptor": "vehicle.trip.segment.end.drivetrain.batteryManagement.hvSoc",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "percent",
@@ -1910,7 +1901,7 @@
     {
         "CarData Element": "Charging status of high-voltage battery",
         "Description": "This value indicates the current charging status of the vehicle at the time of data collection.",
-        "Technical descriptor": "vehicle.​drivetrain.​batteryManagement.​header",
+        "Technical descriptor": "vehicle.drivetrain.batteryManagement.header",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "percent",
@@ -1919,7 +1910,7 @@
     {
         "CarData Element": "Charging time display",
         "Description": "This value indicates whether the charging time is displayed in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​chargingDuration.​displayControl",
+        "Technical descriptor": "vehicle.powertrain.electric.chargingDuration.displayControl",
         "Data type": "string",
         "Typical value range": "NO_DISPLAY_TIME_FOR_CHARGING, DISPLAY_CHARGING_DURATION, NO_DISPLAY_CHARGING_DURATION, INVALID",
         "Unit": "-",
@@ -1928,7 +1919,7 @@
     {
         "CarData Element": "Charging timer type",
         "Description": "Charging profile timer type (e.g., Weekdays or TwoTimesTimer)",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​timerType",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.timerType",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -1936,17 +1927,17 @@
     },
     {
         "CarData Element": "Charging window selection",
-        "Description": "Indicates a pre-defined time window in which the high-voltage battery of the vehicle should be charged. The value could be either NOTCHOSEN or CHOSEN.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​windowSelection",
+        "Description": "Indicates a pre-defined time window in which the high-voltage battery of the vehicle should be charged. \nThe value could be either NOTCHOSEN or CHOSEN.",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.windowSelection",
         "Data type": "string",
-        "Typical value range": "CHOSEN, NOTCHOSEN, -NA-",
+        "Typical value range": "CHOSEN, NOTCHOSEN, \n-NA-",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Climatization active",
         "Description": "Climatization Activation of Vehicle in Charging Profile, vehicle interior gets preconditioned for next departure time.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​climatizationActive",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.climatizationActive",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1955,7 +1946,7 @@
     {
         "CarData Element": "Current predicted charging status",
         "Description": "This value indicates the current predicted charging status in percent.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​level",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.level",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "%",
@@ -1964,7 +1955,7 @@
     {
         "CarData Element": "DC charging mode active",
         "Description": "Active direct Current Charging mode (performance vs. efficient).",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​dcChargingModeActive",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.dcChargingModeActive",
         "Data type": "string",
         "Typical value range": "EFFICIENT, STANDARD, PERFORMANCE",
         "Unit": "-",
@@ -1973,7 +1964,7 @@
     {
         "CarData Element": "Departure time display",
         "Description": "This value indicates whether the departure time is displayed in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​departureTime.​displayControl",
+        "Technical descriptor": "vehicle.powertrain.electric.departureTime.displayControl",
         "Data type": "string",
         "Typical value range": "DONT_DISPLAY, DISPLAY_DEPARTURE_TIME, DISPLAY_DEPARTURE_TIME_WITH_V2XSOE, UNKNOWN",
         "Unit": "-",
@@ -1982,7 +1973,7 @@
     {
         "CarData Element": "Departure time relevant",
         "Description": "Information if the upcoming departure time is relevant for the professional mode (bidirectional/unidirectional) and the target state of energy shall be reached at this time.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​settings.​biDirectionalCharging.​departureTimeRelevant",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.settings.biDirectionalCharging.departureTimeRelevant",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1991,7 +1982,7 @@
     {
         "CarData Element": "Discharge allowed",
         "Description": "Allowing discharging in professional mode for the bidirectional power transfer function (BPT) is selected from customer or not (ON/OFF).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​settings.​biDirectionalCharging.​dischargeAllowed",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.settings.biDirectionalCharging.dischargeAllowed",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -1999,26 +1990,26 @@
     },
     {
         "CarData Element": "Driving style evaluation - 'acceleration behaviour'",
-        "Description": "This value indicates the number of stars which the driving style analysis has given to the acceleration behaviour of the driver at the time of data collection. The system allocates 0 to 5 stars.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​acceleration.​starsAverage",
+        "Description": "This value indicates the number of stars which the driving style analysis has given to the acceleration behaviour of the driver at the time of data collection. \nThe system allocates 0 to 5 stars.",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.acceleration.starsAverage",
         "Data type": "float",
-        "Typical value range": "0 to 5stars",
+        "Typical value range": "0 to 5\nstars",
         "Unit": "stars",
         "Streamable": "true"
     },
     {
         "CarData Element": "Driving style evaluation - 'pro-active driving'",
-        "Description": "This value indicates the number of stars which the driving style analysis has given to the 'pro-active driving' behaviour of the driver at the time of data collection. The system allocates 0 to 5 stars.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​chassis.​brake.​starsAverage",
+        "Description": "This value indicates the number of stars which the driving style analysis has given to the 'pro-active driving' behaviour of the driver at the time of data collection. \nThe system allocates 0 to 5 stars.",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.chassis.brake.starsAverage",
         "Data type": "float",
-        "Typical value range": "0 to 5stars",
+        "Typical value range": "0 to 5\nstars",
         "Unit": "stars",
         "Streamable": "true"
     },
     {
         "CarData Element": "Electrical energy consumption in COMFORT mode during the most recent drive",
         "Description": "This indicates the electrical energy consumption (kWh) in COMFORT mode, measured at the time of data collection.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​drivetrain.​electricEngine.​energyConsumptionComfort",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.electricEngine.energyConsumptionComfort",
         "Data type": "double",
         "Typical value range": "0 kWh to 10 kWh",
         "Unit": "kWh",
@@ -2027,7 +2018,7 @@
     {
         "CarData Element": "Electrically driven distance during the most recent drive",
         "Description": "This value indicates the distance covered with electrical energy during the most recent drive in percentage.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​drivetrain.​transmission.​setting.​fractionDriveElectric",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveElectric",
         "Data type": "float",
         "Typical value range": "0 % to 100 %",
         "Unit": "percent",
@@ -2036,7 +2027,7 @@
     {
         "CarData Element": "Energy content of the high-voltage battery",
         "Description": "This value indicates the current energy content of the high-voltage battery.",
-        "Technical descriptor": "vehicle.​drivetrain.​batteryManagement.​maxEnergy",
+        "Technical descriptor": "vehicle.drivetrain.batteryManagement.maxEnergy",
         "Data type": "float",
         "Typical value range": "0 - 300 kWh, INVALID",
         "Unit": "kWh",
@@ -2045,16 +2036,16 @@
     {
         "CarData Element": "Energy recuperated during the last drive",
         "Description": "This value indicates the average electrical energy in kilowatt hours (kWh/100 km or kWh/62 mi) recuperated during the last logged drive per 100 kilometres or 62 miles. The values range from 0 to 254.",
-        "Technical descriptor": "vehicle.​trip.​segment.​accumulated.​drivetrain.​electricEngine.​recuperationTotal",
+        "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.electricEngine.recuperationTotal",
         "Data type": "float",
-        "Typical value range": "0 kWh/100 km to 170 kWh/100 km or 0 kWh/62 mi to 170 kWh/62 mi",
+        "Typical value range": "0 kWh/100 km to 170 kWh/100 km\nor\n0 kWh/62 mi to 170 kWh/62 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Energy required until high-voltage battery fully charged",
         "Description": "This value indicates the amount of energy required to fully charge the battery.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​smeEnergyDeltaFullyCharged",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.smeEnergyDeltaFullyCharged",
         "Data type": "float",
         "Typical value range": "0 - 300 kWh, INVALID",
         "Unit": "kWh",
@@ -2063,7 +2054,7 @@
     {
         "CarData Element": "Estimate of electric range during charging",
         "Description": "This value indicates the electric range predicted during charging.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​remainingElectricRange",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.remainingElectricRange",
         "Data type": "float",
         "Typical value range": "0 - 1000 km",
         "Unit": "km",
@@ -2072,7 +2063,7 @@
     {
         "CarData Element": "Estimate of remaining charging time",
         "Description": "This value indicates the estimated remaining charging time in minutes.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​timeRemaining",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.timeRemaining",
         "Data type": "uint16",
         "Typical value range": "0 - 200 Min",
         "Unit": "min",
@@ -2081,7 +2072,7 @@
     {
         "CarData Element": "Estimate of total range during charging",
         "Description": "This value indicates the total range predicted during charging (total of electric range and combustion engine range).",
-        "Technical descriptor": "vehicle.​drivetrain.​totalRemainingRange",
+        "Technical descriptor": "vehicle.drivetrain.totalRemainingRange",
         "Data type": "float",
         "Typical value range": "0 - 2000 km",
         "Unit": "km",
@@ -2090,7 +2081,7 @@
     {
         "CarData Element": "Health status of the high-voltage battery (SOCE)",
         "Description": "This value indicates the health status of the high-voltage battery (SOCE, State of Certified Energy).",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​stateOfHealth.​displayed",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfHealth.displayed",
         "Data type": "-",
         "Typical value range": "-",
         "Unit": "-",
@@ -2099,7 +2090,7 @@
     {
         "CarData Element": "HV charging system status",
         "Description": "Charging HV Status.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​hvStatus",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.hvStatus",
         "Data type": "string",
         "Typical value range": "INVALID, CHARGING, ERROR, NOT_CHARGING, WAITING_FOR_CHARGING, FINISHED_FULLY_CHARGED, FINISHED_NOT_FULL",
         "Unit": "-",
@@ -2108,7 +2099,7 @@
     {
         "CarData Element": "Immediate charging system reason",
         "Description": "This parameter contains the information that customer selected charging mode is overwritten due to system reasons.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​isImmediateChargingSystemReason",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.isImmediateChargingSystemReason",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -2117,7 +2108,7 @@
     {
         "CarData Element": "Instant charging function status",
         "Description": "This value indicates whether the “instant charging” function is activated.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​isSingleImmediateCharging",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.isSingleImmediateCharging",
         "Data type": "boolean",
         "Typical value range": "DIRECT_CHG_ONCE_NOT_ACTIVE, DIRECT_CHG_ONCE_ACTIVE, INVALID",
         "Unit": "-",
@@ -2126,7 +2117,7 @@
     {
         "CarData Element": "Last charging reason",
         "Description": "Reason of the last charging process.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​lastChargingReason",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.lastChargingReason",
         "Data type": "string",
         "Typical value range": "CHARGING_GOAL_REACHED, END_REQUESTED_BY_DRIVER, CONNECTOR_REMOVED, POWERGRID_FAILED, HV_SYSTEM_FAILURE, CHARGING_STATION_FAILURE, PARKING_LOCK_FAILED, NO_PARKING_LOCK, INVALID, -NA-",
         "Unit": "-",
@@ -2135,7 +2126,7 @@
     {
         "CarData Element": "Last charging result",
         "Description": "Result of the last charging process.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​lastChargingResult",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.lastChargingResult",
         "Data type": "string",
         "Typical value range": "SUCCESS, FAILED, UNKNOWN",
         "Unit": "-",
@@ -2144,7 +2135,7 @@
     {
         "CarData Element": "Location-based charging settings",
         "Description": "The value shows a list of the vehicle's currently stored location-based charging settings, which were recorded as part of the “Location-based charging settings” service.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​settingsList",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.settingsList",
         "Data type": "-",
         "Typical value range": "Details can be found  in the corresponding Swagger documentation: ../locationBasedChargingSettings",
         "Unit": "-",
@@ -2153,7 +2144,7 @@
     {
         "CarData Element": "Locking status of charging plug after charging complete",
         "Description": "This value indicates whether the charging plug is automatically unlocked (HOSPITALITY_ACTIVE) or remains locked (HOSPITALITY_INACTIVE) after charging is completed.",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​isHospitalityActive",
+        "Technical descriptor": "vehicle.body.chargingPort.isHospitalityActive",
         "Data type": "boolean",
         "Typical value range": "HOSPITALITY_INACTIVE, HOSPITALITY_ACTIVE, INVALID",
         "Unit": "-",
@@ -2162,7 +2153,7 @@
     {
         "CarData Element": "Locking status of the charging flap",
         "Description": "This value indicates whether the charging flap is locked independently of the central locking at the time of data collection.",
-        "Technical descriptor": "vehicle.​body.​flap.​isPermanentlyUnlocked",
+        "Technical descriptor": "vehicle.body.flap.isPermanentlyUnlocked",
         "Data type": "boolean",
         "Typical value range": "NO_ACTION, FLAP_UNLOCKED, FLAP_LOCKED, INVALID",
         "Unit": "-",
@@ -2171,7 +2162,7 @@
     {
         "CarData Element": "Manual preconditioning status feedback",
         "Description": "Current state of button for manual battery preconditioning. Either for charging or driving.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​preconditioning.​manualMode.​statusFeedback",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.preconditioning.manualMode.statusFeedback",
         "Data type": "string",
         "Typical value range": "OFF, ON_CHARGE, ON_DRIVE, UNKNOWN",
         "Unit": "-",
@@ -2180,7 +2171,7 @@
     {
         "CarData Element": "Maximum charging current",
         "Description": "This value indicates the maximum available charging current, independently of the infrastructure and selected cable.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​acLimit.​max",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acLimit.max",
         "Data type": "uint8",
         "Typical value range": "0-250 A, INVALID",
         "Unit": "A",
@@ -2189,16 +2180,16 @@
     {
         "CarData Element": "Mileage after last drive",
         "Description": "This value indicates the total mileage after the last drive logged.",
-        "Technical descriptor": "vehicle.​trip.​segment.​end.​travelledDistance",
+        "Technical descriptor": "vehicle.trip.segment.end.travelledDistance",
         "Data type": "float",
-        "Typical value range": "0 km to 999999 km or 0 mi to 621371 mi",
+        "Typical value range": "0 km to 999999 km\nor\n0 mi to 621371 mi",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Minimum charging current",
         "Description": "This value indicates the minimum available charging current, independently of the infrastructure and selected cable.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​acLimit.​min",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acLimit.min",
         "Data type": "uint8",
         "Typical value range": "0-250 A, INVALID",
         "Unit": "A",
@@ -2207,7 +2198,7 @@
     {
         "CarData Element": "OBFCM* reference distance for measuring the supplied mains energy",
         "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​overall.​referenceDistance",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.overall.referenceDistance",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -2216,7 +2207,7 @@
     {
         "CarData Element": "Preconditioning state",
         "Description": "Status of battery preconditioning activity. On legacy value only valid for legacy-project SP2021plus.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​preconditioning.​state",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.preconditioning.state",
         "Data type": "string",
         "Typical value range": "OFF, ON_LEGACY, MANUAL_ON_CHARGE, AUTOMATIC_ON, REMOTE_ON_CHARGE, REMOTE_ON_DRIVE, REMOTE_OFF, UNKNOWN",
         "Unit": "-",
@@ -2225,7 +2216,7 @@
     {
         "CarData Element": "RCP config complete",
         "Description": "Vehicles with a complete RCP (Remote Charging Profile) Configuration explicitly send values for all charging profile attributes. For Vehicles without a complete RCP Configuration, some defaults are applied.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​profile.​isRcpConfigComplete",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.isRcpConfigComplete",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -2234,7 +2225,7 @@
     {
         "CarData Element": "Reason charging ended",
         "Description": "Reason for the end of charging, from SP25 on.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​reasonChargingEnd",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.reasonChargingEnd",
         "Data type": "string",
         "Typical value range": "NO_CHARGING_END_SINCE_IPF_WAKEUP, CUSTOMER_INTERACTION_HMI_UNPLUG_CABLE_ONCE, CUSTOMER_INTERACTION_HMI_CHARGING_TARGET_REACHED, CUSTOMER_INTERACTION_APP_UNPLUG_CABLE_ONCE, CUSTOMER_INTERACTION_APP_CHARGING_TARGET_REACHED, CUSTOMER_INTERACTION_CHARGING_STOP_VIA_CHARGING_STOP_BUTTON_SOCKET, CUSTOMER_INTERACTION_AC_CHARGING_STOP_VIA_KEY, CUSTOMER_INTERACTION_AC_CHARGING_STOP_WALLBOX, CUSTOMER_INTERACTION_AC_CHARGING_STOP_LATCH, HV_BATTERY_FULLY_CHARGED, INFRASTRUCTURE_PHYSICAL_LIMITS_REACHED_TARGET_SOE_NOT_REACHABLE, INFRASTRUCTURE_DC_CCS_EVSE_SHUTDOWN, INFRASTRUCTURE_DC_GBT_CST_MESSAGE, INFRASTRUCTURE_DC_CCS_STATIC_PILOT, INFRASTRUCTURE_DC_CCS_COMMUNICATION_ERROR_FAILED_RESPONSE_CODE, INFRASTRUCTURE_DC_CCS_COMMUNICATION_ERROR, INFRASTRUCTURE_NO_ENERGY_TRANSFER, INFRASTRUCTURE_DC_CCS_PRECHARGE_ERROR, INFRASTRUCTURE_DC_CCS_EVSE_MALFUNCTION_EMERGENCY_SHUTDOWN, INFRASTRUCTURE_STATION_NOT_COMPATIBLE, INFRASTRUCTURE_CHARGE_READINESS_TIMEOUT, INFRASTRUCTURE_AC_MAXIMUM_GRID_ERROR_REACHED, INFRASTRUCTURE_DC_GBT_ISOLATION_ERROR_DETECTED, INFRASTRUCTURE_AUTHENTIFICATION_ERROR, VEHICLE_HV_BATTERY_ERROR, VEHICLE_HV_BATTERY_COMMUNICATION_ERROR, VEHICLE_DCDC_ERROR, VEHICLE_PLC_BOOTUP_ERROR, VEHICLE_HV_BATTERY_MAXIMAL_CURRENT_OVERSHOOT, VEHICLE_ISOLATION_ERROR, VEHICLE_MAXIMUM_TEMPERATURE_CHARGING_SOCKET_OVERSHOOT, VEHICLE_LT3_OVERSHOOT, VEHICLE_FUSI_CABLE_LOCK_ERROR, VEHICLE_PLC_COMMUNICATION_NOT_POSSIBLE, FLEXCHARGER_GRID_ERROR, FLEXCHARGER_GRID_TEMPERATURE_ERROR, FLEXCHARGER_EVSE_TEMPERATURE_ERROR, FLEXCHARGER_EVSE_INTERNAL_ERROR, FLEXCHARGER_AC_DC_FAULT_CURRENT, FLEXCHARGER_INCORRECT_REACTION_TIME_PWM, FLEXCHARGER_CHARGING_CURRENT_TOO_HIGH, FLEXCHARGER_PE_FAULT, INFRASTRUCTURE_INEFFICIENT_CHARGING_LOW_POWER, VEHICLE_CABLE_LOCKING_ERROR, VEHICLE_CONFIGURATION_ERROR_400V_800V, INFRASTRUCTURE_NO_AC_VOLTAGE, PLUG_AND_CHARGE_TLS_ERROR, PLUG_AND_CHARGE_CONTRACT_ERROR, SMART_CHARGING_TARIFF_SELECTION_INVALID, SMART_CHARGING_CHARGING_PROFILE_INVALID, CUSTOMER_INTERACTION_AC_CHARGING_STOP_VIA_APP, CHARGING_PAUSED, DISCHARGE_NOT_POSSIBLE_VOLTAGE_TOO_HIGH, DISCHARGE_NOT_POSSIBLE_SOE_TOO_LOW, DISCHARGE_NOT_POSSIBLE_INTERNAL_ERROR, DISCHARGE_NOT_POSSIBLE_INCOMPATIBLE_ADAPTER, DISCHARGE_NOT_POSSIBLE_INCOMPATIBLE_CONSUMER",
         "Unit": "-",
@@ -2243,7 +2234,7 @@
     {
         "CarData Element": "Reason for ending a charging process",
         "Description": "This value indicates the reason why a charging process was ended.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​hvpmFinishReason",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.hvpmFinishReason",
         "Data type": "string",
         "Typical value range": "UNKNOWN, CHARGING_GOAL_REACHED, END_REQUESTED_BY_DRIVER, CONNECTOR_REMOVED, POWERGRID_FAILED, HV_SYSTEM_FAILURE, CHARGING_STATION_FAILURE, PARKING_LOCK_FAILED, NO_PARKING_LOCK, SIGNAL_INVALID, INVALID",
         "Unit": "-",
@@ -2252,7 +2243,7 @@
     {
         "CarData Element": "Reduced target State of Energy",
         "Description": "Reduce the target SoE (State of Energy) to a defined value, so that the battery doesn't reach high SoEs thus reducing battery aging.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​batteryCarePersisted.​isReducedTargetSoe",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isReducedTargetSoe",
         "Data type": "boolean",
         "Typical value range": "true, false",
         "Unit": "-",
@@ -2261,7 +2252,7 @@
     {
         "CarData Element": "Reference distance for measuring the supplied mains energy while the combustion engine was active",
         "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables while the combustion engine was active (used e.g. by OBFCM*).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​engineOn.​referenceDistance",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOn.referenceDistance",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -2270,7 +2261,7 @@
     {
         "CarData Element": "Reference distance for measuring the supplied mains energy while the combustion engine was inactive",
         "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables while the combustion engine was inactive (used e.g. by OBFCM*).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​engineOff.​referenceDistance",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOff.referenceDistance",
         "Data type": "float",
         "Typical value range": "0.0 km - 250000.0 km",
         "Unit": "km",
@@ -2279,7 +2270,7 @@
     {
         "CarData Element": "Remaining electric range, depending on target charging status",
         "Description": "This value indicates the remaining electric range at the time of data collection. This depends on the set target value of the charging status.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​range.​target",
+        "Technical descriptor": "vehicle.powertrain.electric.range.target",
         "Data type": "float",
         "Typical value range": "0-4000 KM oder MI, INVALID",
         "Unit": "km",
@@ -2288,16 +2279,16 @@
     {
         "CarData Element": "Remaining electric range in km or mi",
         "Description": "This value indicates the remaining electric range at the time of data collection.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​kombiRemainingElectricRange",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.kombiRemainingElectricRange",
         "Data type": "float",
-        "Typical value range": "0 km to 4000 km or 0 mi to 2485 mi,INVALID",
+        "Typical value range": "0 km to 4000 km\nor\n0 mi to 2485 mi,\nINVALID",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Route optimized charging status",
         "Description": "Indicates the charging status in cases where e-route charging is used by the customer for his journey. E-route charging sessions have two distinct phases. Route optimzed charging sessions override the customer target state of charge temporarily.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​routeOptimizedChargingStatus",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.routeOptimizedChargingStatus",
         "Data type": "string",
         "Typical value range": "ROUTE_OPTIMIZED_CHARGING_IN_PROGRESS, ROUTE_OPTIMIZED_SOC_TARGET_REACHED",
         "Unit": "-",
@@ -2306,7 +2297,7 @@
     {
         "CarData Element": "\"Smart Charging\" option",
         "Description": "This value indicates which “Smart Charging” option is being used to charge with.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​preferenceSmartCharging",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.preferenceSmartCharging",
         "Data type": "string",
         "Typical value range": "PRICE_OPTIMIZED, RENEWABLE_ENERGEY, CO2_OPTIMIZED, INVALID",
         "Unit": "-",
@@ -2315,7 +2306,7 @@
     {
         "CarData Element": "Status of charging flap",
         "Description": "This value indicates whether the charging flap is locked at the time of data collection.",
-        "Technical descriptor": "vehicle.​body.​flap.​isLocked",
+        "Technical descriptor": "vehicle.body.flap.isLocked",
         "Data type": "boolean",
         "Typical value range": "FLAP_UNLOCKED, FLAP_LOCKED, INVALID",
         "Unit": "-",
@@ -2324,7 +2315,7 @@
     {
         "CarData Element": "Status of charging limit",
         "Description": "This value indicates whether a charging current limit was active at the time of data collection.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​charging.​acLimit.​isActive",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acLimit.isActive",
         "Data type": "boolean",
         "Typical value range": "AC_LIMIT_INACTIVE, AC_LIMIT_ACTIVE, INVALID",
         "Unit": "-",
@@ -2333,7 +2324,7 @@
     {
         "CarData Element": "Status of charging plug",
         "Description": "This value indicates whether the vehicle was connected to a charging plug at the time of data collection (CONNECTED) or not (DISCONNECTED).",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​status",
+        "Technical descriptor": "vehicle.body.chargingPort.status",
         "Data type": "string",
         "Typical value range": "CONNECTED, DISCONNECTED,  INVALID, -NA-",
         "Unit": "-",
@@ -2342,7 +2333,7 @@
     {
         "CarData Element": "Status of charging plug (DC only)",
         "Description": "This value indicates whether the vehicle was connected to a DC charging plug at the time of data collection (CONNECTED) or not (DISCONNECTED).",
-        "Technical descriptor": "vehicle.​body.​chargingPort.​dcStatus",
+        "Technical descriptor": "vehicle.body.chargingPort.dcStatus",
         "Data type": "string",
         "Typical value range": "DISCONNECTED, CONNECTED, INVALID",
         "Unit": "-",
@@ -2351,7 +2342,7 @@
     {
         "CarData Element": "Target charging status of the high-voltage battery",
         "Description": "This value indicates the target charging status of the high-voltage battery in percent. This is displayed in 10% increments.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​stateOfCharge.​target",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfCharge.target",
         "Data type": "uint8",
         "Typical value range": "0-100 [10% Schritte], INVALID",
         "Unit": "%",
@@ -2360,7 +2351,7 @@
     {
         "CarData Element": "Target min state of charge",
         "Description": "Min target state of charge requested by customer for smart charging and V2X.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​stateOfCharge.​targetMin",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfCharge.targetMin",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -2369,7 +2360,7 @@
     {
         "CarData Element": "Target SOC for professional mode",
         "Description": "Contains the target state of charge that shall be used as target in professional mode. At least this target state of charge will be reached by departure time.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​battery.​stateOfCharge.​targetSoCForProfessionalMode",
+        "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfCharge.targetSoCForProfessionalMode",
         "Data type": "uint8",
         "Typical value range": "0% to 100%",
         "Unit": "percent",
@@ -2378,16 +2369,16 @@
     {
         "CarData Element": "Time of most recent drive",
         "Description": "The time stamp contains the date and local time of the most recently logged and transmitted drive, for example 15.05.2017 15:51:00 UTC or 05/15/2017 15:51:00 UTC.",
-        "Technical descriptor": "vehicle.​trip.​segment.​end.​time",
+        "Technical descriptor": "vehicle.trip.segment.end.time",
         "Data type": "int32",
-        "Typical value range": "dd.mm.yyyy hh:mm:ss UTC or mm/dd/yyyy hh:mm:ss UTC",
+        "Typical value range": "dd.mm.yyyy hh:mm:ss UTC\nor\nmm/dd/yyyy hh:mm:ss UTC",
         "Unit": "-",
         "Streamable": "true"
     },
     {
         "CarData Element": "Total mains energy consumed while the combustion engine was active",
         "Description": "This value indicates the total energy supplied using charging cables while the combustion engine was active (used e.g. by OBFCM*).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​engineOn.​gridEnergy",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOn.gridEnergy",
         "Data type": "float",
         "Typical value range": "kWh",
         "Unit": "kWh",
@@ -2396,7 +2387,7 @@
     {
         "CarData Element": "Total mains energy consumed while the combustion engine was inactive",
         "Description": "This value indicates the total energy supplied using charging cables while the combustion engine was inactive (used e.g. by OBFCM*).",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​engineOff.​gridEnergy",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOff.gridEnergy",
         "Data type": "float",
         "Typical value range": "kWh",
         "Unit": "kWh",
@@ -2405,7 +2396,7 @@
     {
         "CarData Element": "Total mains energy supplied to the vehicle (PHEV only)",
         "Description": "This value indicates the total energy supplied using charging cables.",
-        "Technical descriptor": "vehicle.​drivetrain.​electricEngine.​charging.​consumptionOverLifeTime.​overall.​gridEnergy",
+        "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.overall.gridEnergy",
         "Data type": "float",
         "Typical value range": "0.0 kWh - 30000.0 kWh",
         "Unit": "kWh",
@@ -2414,7 +2405,7 @@
     {
         "CarData Element": "Climate timer overwrite action",
         "Description": "Timer State/Action with states Activate (On), Deactivate (Off) and NoAction (Only used when communicating timer to the vehicle).",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​overwriteTimer.​action",
+        "Technical descriptor": "vehicle.cabin.climate.timers.overwriteTimer.action",
         "Data type": "string",
         "Typical value range": "ACTIVATE, DEACTIVATE, NO_ACTION",
         "Unit": "-",
@@ -2423,7 +2414,7 @@
     {
         "CarData Element": "Climate timer overwrite hour",
         "Description": "Hour setting of climate timer as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​overwriteTimer.​hour",
+        "Technical descriptor": "vehicle.cabin.climate.timers.overwriteTimer.hour",
         "Data type": "uint8",
         "Typical value range": "0 - 23",
         "Unit": "h",
@@ -2432,7 +2423,7 @@
     {
         "CarData Element": "Climate timer overwrite minute",
         "Description": "Minute setting of climate timer as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​overwriteTimer.​minute",
+        "Technical descriptor": "vehicle.cabin.climate.timers.overwriteTimer.minute",
         "Data type": "uint8",
         "Typical value range": "0 - 59",
         "Unit": "min",
@@ -2441,7 +2432,7 @@
     {
         "CarData Element": "Electric range display control",
         "Description": "Indicates if and how the electric range shall be displayed in the vehicle.",
-        "Technical descriptor": "vehicle.​powertrain.​electric.​range.​displayControl",
+        "Technical descriptor": "vehicle.powertrain.electric.range.displayControl",
         "Data type": "string",
         "Typical value range": "-",
         "Unit": "-",
@@ -2450,7 +2441,7 @@
     {
         "CarData Element": "Infotainment distance unit",
         "Description": "Distance unit used in the current HMI",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​hmi.​distanceUnit",
+        "Technical descriptor": "vehicle.cabin.infotainment.hmi.distanceUnit",
         "Data type": "string",
         "Typical value range": "MILES, KILOMETERS",
         "Unit": "-",
@@ -2459,7 +2450,7 @@
     {
         "CarData Element": "Navigation fix status",
         "Description": "GPS fix status. \"NO_FIX\" means when less than 3 satellites are found. \"2D_GPS_FIX\" is obtained when at least 3 satellites are found. \"3D_GPS_FIX\" is obtained when at least 4 satellites are found.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​fixStatus",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.fixStatus",
         "Data type": "string",
         "Typical value range": "NO_FIX, GPS_FIX_2D, GPS_FIX_3D",
         "Unit": "-",
@@ -2468,7 +2459,7 @@
     {
         "CarData Element": "Navigation satellite count",
         "Description": "Number of GPS satellites used for positioning and relates to the reliability of the positioning.",
-        "Technical descriptor": "vehicle.​cabin.​infotainment.​navigation.​currentLocation.​numberOfSatellites",
+        "Technical descriptor": "vehicle.cabin.infotainment.navigation.currentLocation.numberOfSatellites",
         "Data type": "uint8",
         "Typical value range": "-",
         "Unit": "-",
@@ -2477,7 +2468,7 @@
     {
         "CarData Element": "Weekday timer 1 action",
         "Description": "Timer 1 State/Action with states Activate (On), Deactivate (Off) and NoAction (Only used when communicating timer 1 to the vehicle).",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer1.​action",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer1.action",
         "Data type": "string",
         "Typical value range": "ACTIVATE, DEACTIVATE, NO_ACTION",
         "Unit": "-",
@@ -2486,7 +2477,7 @@
     {
         "CarData Element": "Weekday timer 1 hour",
         "Description": "Hour setting of climate timer 1 as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer1.​hour",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer1.hour",
         "Data type": "uint8",
         "Typical value range": "0 - 23",
         "Unit": "h",
@@ -2495,7 +2486,7 @@
     {
         "CarData Element": "Weekday timer 1 minute",
         "Description": "Minute setting of climate timer 1 as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer1.​minute",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer1.minute",
         "Data type": "uint8",
         "Typical value range": "0 - 59",
         "Unit": "min",
@@ -2504,7 +2495,7 @@
     {
         "CarData Element": "Weekday timer 2 action",
         "Description": "Timer 2 State/Action with states Activate (On), Deactivate (Off) and NoAction (Only used when communicating timer 2 to the vehicle).",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer2.​action",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer2.action",
         "Data type": "string",
         "Typical value range": "ACTIVATE, DEACTIVATE, NO_ACTION",
         "Unit": "-",
@@ -2513,7 +2504,7 @@
     {
         "CarData Element": "Weekday timer 2 hour",
         "Description": "Hour setting of climate timer 2 as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer2.​hour",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer2.hour",
         "Data type": "uint8",
         "Typical value range": "0 - 23",
         "Unit": "h",
@@ -2522,7 +2513,7 @@
     {
         "CarData Element": "Weekday timer 2 minute",
         "Description": "Minute setting of climate timer 2 as per vehicle-configured timezone.",
-        "Technical descriptor": "vehicle.​cabin.​climate.​timers.​weekdaysTimer2.​minute",
+        "Technical descriptor": "vehicle.cabin.climate.timers.weekdaysTimer2.minute",
         "Data type": "uint8",
         "Typical value range": "0 - 59",
         "Unit": "min",
@@ -2531,79 +2522,79 @@
     {
         "CarData Element": "Measured tyre pressure, front left",
         "Description": "This value indicates the measured tyre pressure on the front left in kPa",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​left.​tire.​pressure",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.left.tire.pressure",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Measured tyre pressure, front right",
         "Description": "This value indicates the measured tyre pressure on the front right in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​right.​tire.​pressure",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.right.tire.pressure",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Measured tyre pressure, rear left",
         "Description": "This value indicates the measured tyre pressure on the rear left in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​left.​tire.​pressure",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.left.tire.pressure",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Measured tyre pressure, rear right",
         "Description": "This value indicates the measured tyre pressure on the rear right in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​right.​tire.​pressure",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.right.tire.pressure",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Target tyre pressure, front left",
         "Description": "This value indicates the target tyre pressure on the front left in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​left.​tire.​pressureTarget",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Target tyre pressure, front right",
         "Description": "This value indicates the target tyre pressure on the front right in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​right.​tire.​pressureTarget",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Target tyre pressure, rear left",
         "Description": "This value indicates the target tyre pressure on the rear left in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​left.​tire.​pressureTarget",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Target tyre pressure, rear right",
         "Description": "This value indicates the target tyre pressure on the rear right in kPa.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​right.​tire.​pressureTarget",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget",
         "Data type": "uint16",
-        "Typical value range": "0-1000 kPa or-NA-",
+        "Typical value range": "0-1000 kPa or\n-NA-",
         "Unit": "kPa",
         "Streamable": "true"
     },
     {
         "CarData Element": "Tire temperature in Celsius, front left",
         "Description": "Tire temperature in Celsius on the front left.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​left.​tire.​temperature",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.left.tire.temperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "Celsius",
@@ -2612,7 +2603,7 @@
     {
         "CarData Element": "Tire temperature in Celsius, front right",
         "Description": "Tire temperature in Celsius on the front right.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row1.​wheel.​right.​tire.​temperature",
+        "Technical descriptor": "vehicle.chassis.axle.row1.wheel.right.tire.temperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "Celsius",
@@ -2621,7 +2612,7 @@
     {
         "CarData Element": "Tire temperature in Celsius, rear left",
         "Description": "Tire temperature in Celsius on the rear left.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​left.​tire.​temperature",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.left.tire.temperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "Celsius",
@@ -2630,7 +2621,7 @@
     {
         "CarData Element": "Tire temperature in Celsius, rear right",
         "Description": "Tire temperature in Celsius on the rear right.",
-        "Technical descriptor": "vehicle.​chassis.​axle.​row2.​wheel.​right.​tire.​temperature",
+        "Technical descriptor": "vehicle.chassis.axle.row2.wheel.right.tire.temperature",
         "Data type": "float",
         "Typical value range": "0 °C to 50 °C",
         "Unit": "Celsius",
@@ -2639,7 +2630,7 @@
     {
         "CarData Element": "Active ConnectedDrive contracts",
         "Description": "This value provides an overview of all active ConnectedDrive contracts and the end of the respective contract period.",
-        "Technical descriptor": "vehicle.​vehicleIdentification.​connectedDriveContractList",
+        "Technical descriptor": "vehicle.vehicleIdentification.connectedDriveContractList",
         "Data type": "-",
         "Typical value range": "yyyy-mm-dd hh:mm:ss UTC",
         "Unit": "-",
