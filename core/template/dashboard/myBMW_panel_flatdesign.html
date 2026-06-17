@@ -1236,7 +1236,9 @@
 		var session_address=[];
 
 		jeedom.cmd.update['#chargingSessions_id#'] = function(_options) {
+			if (!_options.display_value) return;
 			var sessions = jQuery.parseJSON(_options.display_value);
+			if (!sessions) return;
 			jQuery.each(sessions,function(key,session){
 				session_date.push(session.date);
 				session_energyCharged.push(session.energyCharged);
