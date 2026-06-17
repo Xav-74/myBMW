@@ -232,44 +232,9 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								
 								<div id="div_chargingParameters" class="form-group" style="margin-bottom:32px !important">
 									<legend><i class="fas fa-charging-station"></i> {{Paramètres de charge}}</legend>
-									<label class="col-sm-6 control-label help" data-help="{{Uniquement à titre indicatif. Pour activer cette limitation, définissez une limite du courant de charge}}">{{Limitation du courant de charge activée}}</label>
+									<label class="col-sm-6 control-label help" data-help="{{Donnée utilisée pour calculer le coût d'une recharge électrique, visible sur le graphique de l'historique de charge}}">{{Prix moyen du kWh (€ TTC)}}</label>
 									<div class="col-sm-6" style="height:35px">
-										<input type="checkbox" id="isAcCurrentLimitActive" class="eqLogicAttr" data-l1key="configuration" data-l2key="isAcCurrentLimitActive" disabled />
-									</div>
-									<label class="col-sm-6 control-label">{{Objectif de recharge}}</label>
-									<div class="col-sm-6">
-										<div id="div_chargingTarget" class="input-group" style="margin-bottom:3px !important">
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingTarget">
-												<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
-												<?php
-												for ($i = 20; $i <= 100; $i += 5) {
-													echo '<option value="' . $i . '">' . $i . '%</option>';
-												}
-												?>
-											</select>
-											<span class="input-group-btn">
-												<a class="btn btn-warning cmdAction" id="bt_chargingTarget" title="{{Mettre à jour le paramètre d'objectif de recharge}}"><i class="fa fa-pencil-alt"></i></a>
-											</span>
-										</div>
-									</div>
-									<label class="col-sm-6 control-label">{{Limite du courant de charge}}</label>
-									<div class="col-sm-6">
-										<div id="div_chargingPowerLimit" class="input-group" style="margin-bottom:3px !important">
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="chargingPowerLimit">
-												<option value="" disabled selected hidden>{{Choisir dans la liste}}</option>
-												<?php
-												for ($i = 6; $i <= 16; $i++) {
-													echo '<option value="' . $i . '">' . $i . 'A</option>';
-												}
-												foreach ([20, 24, 28, 32] as $val) {
-													echo '<option value="' . $val . '">' . $val . 'A</option>';
-												}
-												?>
-											</select>
-											<span class="input-group-btn">
-												<a class="btn btn-warning cmdAction" id="bt_chargingPowerLimit" title="{{Mettre à jour le paramètre de limitation du courant de charge}}"><i class="fa fa-pencil-alt"></i></a>
-											</span>
-										</div>
+										<input type="number" class="eqLogicAttr form-control" style="margin-bottom:1px !important" data-l1key="configuration" data-l2key="kWh_price" placeholder=0.00>
 									</div>
 								</div>
 								
@@ -474,34 +439,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			}
 
 			function setDisplayCharge() {
-				$('#div_chargingParameters').hide();
-				/*if ( $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "PLUGIN_HYBRID" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "ELECTRIC_WITH_RANGE_EXTENDER") {
+				if ( $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "BEV" && $('.eqLogicAttr[data-l2key=vehicle_type]').value() != "PHEV") {
 					$('#div_chargingParameters').hide();
 				}
 				else {
 					$('#div_chargingParameters').show();				
-					if ( $('.eqLogicAttr[data-l2key=isChargingTargetSocEnabled]').value() == false  ) {
-						$('#div_chargingTarget select').prop('disabled', true);
-						$('#div_chargingTarget a').addClass('disabled').css('pointer-events', 'none');
-					}
-					else { 
-						$('#div_chargingTarget select').prop('disabled', false);
-						$('#div_chargingTarget a').removeClass('disabled').css('pointer-events', '');
-					}
-
-					if ( $('.eqLogicAttr[data-l2key=isChargingPowerLimitEnabled]').value() == false ) {
-						$('#div_chargingPowerLimit select').prop('disabled', true);
-						$('#div_chargingPowerLimit a').addClass('disabled').css('pointer-events', 'none');
-					}
-					else { 
-						$('#div_chargingPowerLimit select').prop('disabled', false);
-						$('#div_chargingPowerLimit a').removeClass('disabled').css('pointer-events', '');
-					}
-				}
-				if ( $('.eqLogicAttr[data-l2key=isAcCurrentLimitActive]').value() == true ) {
-					$('#isAcCurrentLimitActive').prop('checked', true);
-				}
-				else { $('#isAcCurrentLimitActive').prop('checked', false); }*/
+				}				
 			}
 
 			</script>

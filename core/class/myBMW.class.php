@@ -1182,7 +1182,9 @@ class myBMW extends eqLogic {
 					$minutes = floor(($totalSeconds % 3600) / 60);
 					$time = "{$hours} h {$minutes} min";
 
-					$cost = round($data->chargingCostInformation->calculatedChargingCost,2);
+					//$cost = round($data->chargingCostInformation->calculatedChargingCost,2);
+					$price = $this->getConfiguration("kWh_price") ?: 0;
+					$cost = round($energyCharged*$price,2);
 					$totalEnergyCost = $totalEnergyCost + $cost;
 
 					$address = $data->chargingLocation->formattedAddress;
