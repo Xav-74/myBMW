@@ -94,6 +94,23 @@ if (!isConnect()) {
             <input id="socketPort" class="configKey form-control" data-l1key="socketPort" placeholder="44074" />
         </div>
     </div>
+    <br/>
+
+    <legend><i class="fas fa-calendar-alt"></i> {{Paramètres d'auto-actualisation (cron)}}</legend>
+
+    <div class="form-group pull_class">
+        <label class="col-sm-3 control-label" >{{Cron personnalisé}}
+            <sup><i class="fas fa-question-circle tooltips" title="{{Fréquence de rafraîchissement des commandes de l'équipement. Par défaut : toutes les 2 heures, 5 minutes après l'heure.<br/> Attention à ne pas trop augmenter cette féquence sous peine de dépasser les quotas de requêtes autorisés par BMW (50 requêtes / jour) !}}"></i></sup>
+        </label>
+        <div class="col-sm-2">
+		    <div class="input-group">
+                <input id="cronJob" class="form-control configKey" data-l1key="cronJob" placeholder="5 */2 * * *"/>
+                <span class="input-group-btn">
+                    <a class="btn btn-primary jeeHelper" data-helper="cron" title="{{Assistant cron}}"><i class="fas fa-question-circle"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
     <br/><br/>
     
     </fieldset>
@@ -103,5 +120,45 @@ if (!isConnect()) {
     
     var CommunityButton = document.querySelector('#createCommunityPost > span');
     if(CommunityButton) {CommunityButton.innerHTML = "{{Community}}";}
+
+    /* Fonction permettant la modification du cron */
+    document.getElementById('bt_savePluginConfig').addEventListener('click', function() {
+        scheduleCron();
+    });
+    
+    function scheduleCron()  {
+        
+        var cronJob = document.getElementById('cronJob').value;
+        if (!cronJob || cronJob.trim() === '') {
+            cronJob = '5 */2 * * *';
+        }
+        const cronRegex = /(^((\*\/)?([0-5]?[0-9])((\,|\-|\/)([0-5]?[0-9]))*|\*) ((\*\/)?((2[0-3]|1[0-9]|[0-9]|00))((\,|\-|\/)(2[0-3]|1[0-9]|[0-9]|00))*|\*) ((\*\/)?([1-9]|[12][0-9]|3[01])((\,|\-|\/)([1-9]|[12][0-9]|3[01]))*|\*) ((\*\/)?([1-9]|1[0-2])((\,|\-|\/)([1-9]|1[0-2]))*|\*|(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|des)) ((\*\/)?[0-6]((\,|\-|\/)[0-6])*|\*|00|(sun|mon|tue|wed|thu|fri|sat))\s*$)|@(annually|yearly|monthly|weekly|daily|hourly|reboot)/; 
+        
+        if ( cronRegex.test(cronJob) == true ) {
+            $.ajax({
+                type: "POST",
+                url: "plugins/myBMW/core/ajax/myBMW.ajax.php",
+                data: {
+                    action: "scheduleCron",
+                    cronJob: cronJob,
+                    },
+                dataType: 'json',
+                    error: function (request, status, error) {
+                    handleAjaxError(request, status, error);
+                    },
+                success: function (data) { 			
+
+                    if (data.state != 'ok') {
+                        $('#div_alert').showAlert({message: '{{Erreur lors de la mise à jour du cron}}'+' ('+cronJob+')', level: 'danger'});
+                        return;
+                    }
+                    else  {
+                        $('#div_alert').showAlert({message: '{{Mise à jour du cron réalisée avec succès}}'+' ('+cronJob+')', level: 'success'});
+                    }
+                }
+            });
+        }
+        else { $('#div_alert').showAlert({message: '{{Expression cron erronée}}', level: 'danger'}); }
+    };
 
 </script>

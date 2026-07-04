@@ -40,18 +40,15 @@ class myBMW extends eqLogic {
 
     /*     * ***********************Methode static*************************** */
     
-    public static function cronHourly()
+    public static function pull()
 	{
-		log::add('myBMW', 'debug', 'Cron hourly');
-		$currentHour = (int)date('G');
-		foreach (eqLogic::byType('myBMW', true) as $myBMW) {			// type = myBMW et eqLogic enable
-			if ($currentHour % 2 === 0) {
-				$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
-				if (!is_object($cmdRefresh) ) {							// Si la commande n'existe pas ou condition non respectée
-					continue; 											// continue la boucle
-				}
-				$cmdRefresh->execCmd();
+		log::add('myBMW', 'debug', 'Cron '.config::byKey('cronJob', 'myBMW', '5 */2 * * *'));
+		foreach (eqLogic::byType('myBMW', true) as $myBMW) {		// type = myBMW et eqLogic enable
+			$cmdRefresh = $myBMW->getCmd(null, 'refresh');		
+			if (!is_object($cmdRefresh) ) {							// Si la commande n'existe pas ou condition non respectée
+				continue; 											// continue la boucle
 			}
+			$cmdRefresh->execCmd();
 		}
 	}
 
@@ -234,12 +231,36 @@ class myBMW extends eqLogic {
         $CommunityInfo = $CommunityInfo . 'Host : ' . config::byKey('host', 'myBMW', 'customer.streaming-cardata.bmwgroup.com') . "\n";
         $CommunityInfo = $CommunityInfo . 'Port : ' . config::byKey('port', 'myBMW', 9000) . "\n";
         $CommunityInfo = $CommunityInfo . 'SocketPort : ' . config::byKey('socketPort', 'myBMW', 44074) . "\n";
+		$CommunityInfo = $CommunityInfo . 'Cron : ' . config::byKey('cronJob', 'myBMW', '5 */2 * * *') . "\n";
 		foreach (eqLogic::byType('myBMW', true) as $myBMW)  {
 			$CommunityInfo = $CommunityInfo . "Vehicle #" . $index . " - Brand : " . $myBMW->getConfiguration('vehicle_brand') . " - Model : ". $myBMW->getConfiguration('vehicle_model') . " - Year : ". $myBMW->getConfiguration('vehicle_year') . " - Type : ". $myBMW->getConfiguration('vehicle_type') . "\n";
 			$index++;
 		}
 		$CommunityInfo = $CommunityInfo . "```";
 		return $CommunityInfo;
+	}
+
+	public static function scheduleCron($cronJob) {
+				
+		$cron = cron::byClassAndFunction('myBMW', 'pull');
+		if (!is_object($cron)) {
+			$cron = new cron();
+			$cron->setClass('myBMW');
+			$cron->setFunction('pull');
+			$cron->setEnable(1);
+			$cron->setDeamon(0);
+			$cron->setSchedule('5 */2 * * *');
+			$cron->setTimeout(5);
+			$cron->save();
+			log::add('myBMW', 'debug', 'Create cron pull');
+		}
+		if ($cronJob == '' || $cronJob == null) {
+			$cron->setSchedule('5 */2 * * *');
+		}
+		else { $cron->setSchedule($cronJob); }
+		$cron->save();
+		log::add('myBMW', 'debug', 'Update cron pull - setSchedule : '.$cronJob);
+		return;
 	}
 
 	public static function getBMWEqLogic($vehicle_vin)

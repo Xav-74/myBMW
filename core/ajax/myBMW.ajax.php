@@ -54,6 +54,11 @@ try {
 		$result = myBMW::resetContainer(init('vin'));
 		ajax::success($result);
 	}
+
+	if (init('action') == 'scheduleCron') {
+		$result = myBMW::scheduleCron(init('cronJob'));
+		ajax::success($result);
+	}
 		
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
