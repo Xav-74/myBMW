@@ -2203,5 +2203,14 @@
         "Typical value range": "0 °C to 50 °C",
         "Unit": "Celsius",
         "Streamable": "true"
+    },
+    {
+        "CarData Element": "Condition Based Service",
+        "Description": "Sensors and special algorithms take into account the operating conditions of the vehicle. CBS uses this to determine the required service. The system hereby adapts the scope of the service to the individual usage profile.",
+        "Technical descriptor": "vehicle.status.conditionBasedServices",
+        "Data type": "-",
+        "Typical value range": "-",
+        "Unit": "-",
+        "Streamable": "false"
     }
 ]

@@ -884,11 +884,15 @@ class myBMW extends eqLogic {
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeElectric = '.$value);
 				break;
 
-			case 'vehicle.drivetrain.electricEngine.charging.level':
+			/*case 'vehicle.drivetrain.electricEngine.charging.level':
+				$this->checkAndUpdateCmd('chargingLevelHv', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingLevelHv = '.$value);
+				break;*/
+			case 'vehicle.drivetrain.batteryManagement.header':
 				$this->checkAndUpdateCmd('chargingLevelHv', $value);
 				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingLevelHv = '.$value);
 				break;
-
+			
 			case 'vehicle.drivetrain.electricEngine.charging.timeRemaining':
 				$remainingMinutes = $value;
 				$currentTime = $timestamp;
@@ -987,7 +991,8 @@ class myBMW extends eqLogic {
 			//States
 			$this->checkAndUpdateCmd('mileage', $vehicle['telematicData']['vehicle.vehicle.travelledDistance']['value'] ?? 0);
 
-			$this->checkAndUpdateCmd('doorLockState', $vehicle['telematicData']['vehicle.cabin.door.lock.status']['value'] ?? 'not available');
+			//$this->checkAndUpdateCmd('doorLockState', $vehicle['telematicData']['vehicle.cabin.door.lock.status']['value'] ?? 'not available');
+			
 			$this->checkAndUpdateCmd('doorDriverFront', $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('doorDriverRear', $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] ?? 'not available');
 			$this->checkAndUpdateCmd('doorPassengerFront', $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] ?? 'not available');
@@ -1033,7 +1038,10 @@ class myBMW extends eqLogic {
 				else { $this->checkAndUpdateCmd('connectorStatus', 0); }
 			}
 			$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
-			$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.level']['value'] ?? 0);
+						
+			//$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.level']['value'] ?? 0);
+			$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.batteryManagement.header']['value'] ?? 0);
+						
 			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'] != null ) { 
 				$remainingMinutes = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'];
 				$currentTime = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['timestamp'];
