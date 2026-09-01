@@ -89,8 +89,8 @@
 }
 
 .myBMW_widget_flat #last_update {
-	font-size : 12px;
+	font-size : 11px;
 	text-align:center;
-    color : #FFFFFF !important;
+    /*color : #FFFFFF !important;*/
 	margin : 5px 0px 0px 0px !important;
 }
