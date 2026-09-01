@@ -696,304 +696,288 @@ class myBMW extends eqLogic {
 		return $chargingHistory;
 	}
 
-	private static function tdMap()
-    {
-        return array(
-
-            /* ---- Kilométrage et horodatage ---- */
-            'mileage'                  => array('rest' => 'vehicle.vehicle.travelledDistance'),
-            'lastUpdate'               => array('rest' => 'vehicle.vehicle.travelledDistance'),
-
-            /* ---- Verrouillage  ---- */
-            'doorLockState'            => array('rest' => 'vehicle.cabin.door.lock.status',
-                                                'mqtt' => 'vehicle.cabin.door.status'),
-
-            /* ---- Portes ---- */
-            'doorDriverFront'          => array('rest' => 'vehicle.cabin.door.row1.driver.isOpen'),
-            'doorDriverRear'           => array('rest' => 'vehicle.cabin.door.row2.driver.isOpen'),
-            'doorPassengerFront'       => array('rest' => 'vehicle.cabin.door.row1.passenger.isOpen'),
-            'doorPassengerRear'        => array('rest' => 'vehicle.cabin.door.row2.passenger.isOpen'),
-
-            /* ---- Fenêtres ---- */
-            'windowDriverFront'        => array('rest' => 'vehicle.cabin.window.row1.driver.status'),
-            'windowDriverRear'         => array('rest' => 'vehicle.cabin.window.row2.driver.status'),
-            'windowPassengerFront'     => array('rest' => 'vehicle.cabin.window.row1.passenger.status'),
-            'windowPassengerRear'      => array('rest' => 'vehicle.cabin.window.row2.passenger.status'),
-
-            /* ---- Autres ouvrants ---- */
-            'trunk_state'              => array('rest' => 'vehicle.body.trunk.isOpen'),
-            'hood_state'               => array('rest' => 'vehicle.body.hood.isOpen'),
-            'moonroof_state'           => array('rest' => 'vehicle.cabin.sunroof.overallStatus'),
-
-            /* ---- Pneumatiques (kPa, convertis en bar) ---- */
-            'tireFrontLeft_pressure'   => array('rest' => 'vehicle.chassis.axle.row1.wheel.left.tire.pressure'),
-            'tireFrontLeft_target'     => array('rest' => 'vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget'),
-            'tireFrontRight_pressure'  => array('rest' => 'vehicle.chassis.axle.row1.wheel.right.tire.pressure'),
-            'tireFrontRight_target'    => array('rest' => 'vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget'),
-            'tireRearLeft_pressure'    => array('rest' => 'vehicle.chassis.axle.row2.wheel.left.tire.pressure'),
-            'tireRearLeft_target'      => array('rest' => 'vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget'),
-            'tireRearRight_pressure'   => array('rest' => 'vehicle.chassis.axle.row2.wheel.right.tire.pressure'),
-            'tireRearRight_target'     => array('rest' => 'vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget'),
-
-            /* ---- Charge ---- */
-            'chargingStatus'           => array('rest' => 'vehicle.drivetrain.electricEngine.charging.status'),
-            'connectorStatus'          => array('rest' => 'vehicle.drivetrain.electricEngine.charging.connectorStatus',
-                                                'mqtt' => 'vehicle.body.chargingPort.status'),
-            'beRemainingRangeElectric' => array('rest' => 'vehicle.drivetrain.electricEngine.remainingElectricRange',
-                                                'mqtt' => 'vehicle.drivetrain.electricEngine.kombiRemainingElectricRange'),
-            'chargingLevelHv'          => array('rest' => 'vehicle.drivetrain.batteryManagement.header'),
-            'chargingEndTime'          => array('rest' => 'vehicle.drivetrain.electricEngine.charging.timeToFullyCharged'),
-            'chargingTarget'           => array('rest' => 'vehicle.powertrain.electric.battery.stateOfCharge.target'),
-            'acCurrentLimit'           => array('rest' => 'vehicle.powertrain.electric.battery.charging.acLimit.max'),
-            'isAcCurrentLimitActive'   => array('rest' => 'vehicle.powertrain.electric.battery.charging.acLimit.isActive'),
-
-            /* ---- Carburant et autonomie thermique ---- */
-            'remaining_fuel'           => array('rest' => array('vehicle.drivetrain.fuelSystem.level',
-                                                                'vehicle.drivetrain.fuelSystem.remainingFuel')),
-            'beRemainingRangeFuelKm'   => array('rest' => 'vehicle.drivetrain.totalRemainingRange',
-                                                'mqtt' => 'vehicle.drivetrain.lastRemainingRange'),
-
-            /* ---- Localisation ---- */
-            'gps_coordinates'          => array('rest' => array('vehicle.cabin.infotainment.navigation.currentLocation.latitude',
-                                                                'vehicle.cabin.infotainment.navigation.currentLocation.longitude')),
-
-            /* ---- Messages ---- */
-            'vehicleMessages'          => array('rest' => array('vehicle.status.conditionBasedServices',
-                                                                'vehicle.status.checkControlMessages'),
-                                                'mqtt' => false),
-        );
-    }
-
-	public function applyTelematicData(array $data, $full = false, $src = 'MQTT')
-    {
-        $updatedCmds = array(); $cmdSources = array();
-        $source = ($src === 'REST') ? 'rest' : 'mqtt';
-
-        foreach (self::tdMap() as $id => $d) {
-            $keys = array_key_exists($source, $d) ? $d[$source] : $d['rest'];
-            if (empty($keys)) { continue; }
-
-            $entry = null;
-            foreach ((array) $keys as $k) {
-                if (isset($data[$k]['value'])) { $entry = $data[$k]; $cmdSources[$id] = $k; break; }
-            }
-            if ($entry === null && !$full) { continue; }
-
-            $val = $this->tdConvert($id, $entry, $data, $full);
-            if ($val === null) { continue; }
-
-            $this->checkAndUpdateCmd($id, $updatedCmds[$id] = $val);
-
-            if ($src === 'REST') { log::add('myBMW', 'debug', '| '.(isset($cmdSources[$id]) ? $cmdSources[$id] : '(défaut)').' -> '.$id.' = '.substr((string) $val, 0, 60)); }
-			else { log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$cmdSources[$id].' -> '.$id.' = '.substr((string) $val, 0, 60)); }
-        }
-
-        $this->tdUpdateCalculated($updatedCmds, $src);
-        $this->tdUpdateConfig($updatedCmds, $cmdSources);
-
-		/* Descripteurs reçus qu'aucune commande n'exploite
-        foreach ($data as $key => $entry) {
-            if (!in_array($key, $cmdSources, true) && isset($entry['value'])) {
-                if ($src === 'REST') { log::add('myBMW', 'debug', '| Cmd ignored : '.$key.' = '.json_encode($entry['value'])); }
-				else { log::add('myBMW', 'debug', 'MQTT message received - Cmd ignored : '.$key.' = '.json_encode($entry['value'])); }
-			}
-        }*/
-        
-        return $updatedCmds;
-    }
-
-	/* Conversion des données si nécessaire */
-	private function tdConvert($id, $entry, array $data, $full)
-    {
-        $v = ($entry === null) ? null : $entry['value'];
-        if ($v === 'true')  { $v = true; }                       // le REST renvoie tout en chaîne
-        if ($v === 'false') { $v = false; }
-        $num = is_numeric($v);
-
-        switch ($id) {
-
-            case 'mileage':
-            case 'beRemainingRangeElectric':
-            case 'chargingLevelHv':
-            case 'acCurrentLimit':
-            case 'remaining_fuel':
-                return $num ? (int) round((float) $v) : ($full ? 0 : null);
-
-            case 'chargingTarget':
-                return $num ? (int) round((float) $v) : ($full ? 100 : null);
-
-            case 'connectorStatus':
-                if ($v === 'CONNECTED'    || $v === true)  { return 1; }
-                if ($v === 'DISCONNECTED' || $v === false) { return 0; }
-                return null;                                     // ERROR, INVALID : on garde l'ancienne
-
-            case 'isAcCurrentLimitActive':
-                if ($v === 'AC_LIMIT_ACTIVE'   || $v === true)  { return 1; }
-                if ($v === 'AC_LIMIT_INACTIVE' || $v === false) { return 0; }
-                return $full ? 0 : null;
-
-            case 'lastUpdate':
-                return empty($entry['timestamp']) ? ($full ? 'not available' : null)
-                                                  : date('d/m/Y H:i:s', strtotime($entry['timestamp']));
-
-            case 'chargingEndTime':
-                return ($num && $v > 0 && !empty($entry['timestamp']))
-                     ? date('H:i', strtotime('+'.(int) $v.' minutes', strtotime($entry['timestamp'])))
-                     : 'not available';
-
-            case 'beRemainingRangeFuelKm':
-                return $num ? max(0, (int) round((float) $v - (float) $this->tdLastValue('beRemainingRangeElectric'))) : null;
-
-            case 'gps_coordinates':
-                return $this->tdGps($data, $full);
-
-            case 'vehicleMessages':
-                return ($entry === null) ? null : $this->tdMessages($data);
-        }
-
-        if (strpos($id, 'tire') === 0) {                         // kPa -> bar
-            return $num ? round((float) $v / 100, 2) : ($full ? 0 : null);
-        }
-        if (is_bool($v)) { return $v ? 'OPEN' : 'CLOSED'; }      // portes, capot, coffre en MQTT
-        return ($v === null) ? ($full ? 'not available' : null) : strtoupper((string) $v);
-    }
-
-	/* Latitude et longitude arrivent séparément en MQTT : on complète. */
-    private function tdGps(array $data, $full)
-    {
-        $lat = 'vehicle.cabin.infotainment.navigation.currentLocation.latitude';
-        $lon = 'vehicle.cabin.infotainment.navigation.currentLocation.longitude';
-        $old = explode(',', (string) $this->tdLastValue('gps_coordinates'));
-
-        $latitude  = isset($data[$lat]['value']) ? $data[$lat]['value'] : (isset($old[0]) ? $old[0] : '');
-        $longitude = isset($data[$lon]['value']) ? $data[$lon]['value'] : (isset($old[1]) ? $old[1] : '');
-
-        if (is_numeric($latitude) && is_numeric($longitude)) { return $latitude.','.$longitude; }
-        return $full ? 'not available' : null;
-    }
-
-	/* Commandes calculées */
-    private function tdUpdateCalculated(array $updatedCmds, $src)
-    {
-        foreach (array('allDoorsState' => 'door', 'allWindowsState' => 'window') as $id => $pre) {
-            $parts = array($pre.'DriverFront', $pre.'DriverRear', $pre.'PassengerFront', $pre.'PassengerRear');
-            if (!array_intersect($parts, array_keys($updatedCmds))) { continue; }
-            $state = 'CLOSED';
-            foreach ($parts as $c) {
-                $v = array_key_exists($c, $updatedCmds) ? $updatedCmds[$c] : $this->tdLastValue($c);
-                if ($v === 'OPEN' || $v === 'INTERMEDIATE') { $state = 'OPEN'; break; }
-            }
-            $this->checkAndUpdateCmd($id, $state);
-        }
-
-        if (!isset($updatedCmds['gps_coordinates'])) { return; }
-        $g = explode(',', $updatedCmds['gps_coordinates']);
-        if (count($g) !== 2 || !is_numeric($g[0])) { return; }
-        $dist     = $this->getDistanceLocation($g[0], $g[1]);
-        $presence = ($dist <= $this->getConfiguration('home_distance')) ? 1 : 0;
-        
-		$this->checkAndUpdateCmd('distance', $dist);
-        $this->checkAndUpdateCmd('presence', $presence);
-       
-		if ($src === 'REST') {
-            log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$dist.' m');
-			log::add('myBMW', 'debug', '| Presence : '.$presence);
-        } else {
-            log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : distance = '.$dist.' m');
-            log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : presence = '.$presence);
-        }
-    }
-
-	/* Mise à jour des configs */
-	private function tdUpdateConfig(array $updatedCmds, array $cmdSources)
-    {
-        $save = false;
-        foreach (array('chargingTarget' => 'chargingTarget', 'acCurrentLimit' => 'chargingPowerLimit',
-                       'isAcCurrentLimitActive' => 'isAcCurrentLimitActive') as $id => $key) {
-            if (array_key_exists($id, $updatedCmds)) { $this->setConfiguration($key, $updatedCmds[$id]); $save = true; }
-        }
-        if (isset($cmdSources['remaining_fuel'])) {
-            $this->setConfiguration('fuel_value_unit', substr($cmdSources['remaining_fuel'], -5) === 'level' ? '%' : 'l');
-            $save = true;
-        }
-        if ($save) { $this->save(true); }
-    }
-
-	/* Dernière valeur connue d'une commande */
-    private function tdLastValue($id)
-    {
-        $cmd = $this->getCmd(null, $id);
-        return is_object($cmd) ? $cmd->execCmd() : null;
-    }
-
-	/* --- Messages véhicule */
-    private function tdMessages(array $data)
-    {
-        $checkControl = 'vehicle.status.checkControlMessages';
-        $services     = 'vehicle.status.conditionBasedServices';
-        return json_encode(array(
-            'checkControlMessages' => $this->tdCheckControl(isset($data[$checkControl]['value']) ? $data[$checkControl]['value'] : null),
-            'requiredServices'     => $this->tdServices(isset($data[$services]['value']) ? $data[$services]['value'] : null),
-        ));
-    }
-
-    private function tdCheckControl($raw)
-    {
-        $out  = array();
-        $list = is_string($raw) ? json_decode($raw, true) : $raw;
-        if (!is_array($list)) { return $out; }
-        foreach ($list as $msg) {
-            $items = isset($msg['value']) ? (is_string($msg['value']) ? json_decode($msg['value'], true) : $msg['value']) : $msg;
-            if (!is_array($items)) { continue; }
-            if (isset($items['messageType']) || isset($items['text'])) { $items = array($items); }
-            foreach ($items as $i) {
-                if (is_array($i)) {
-                    $out[] = array('type' => isset($i['messageType']) ? $i['messageType'] : 'CHECK',
-                                   'severity' => isset($i['status']) ? $i['status'] : '',
-                                   'description' => isset($i['text']) ? str_replace("'", ' ', $i['text']) : '');
-                }
-            }
-        }
-        return $out;
-    }
-
-    private function tdServices($raw)
-    {
-        $months = array(1 => '- Janvier', '- Février', '- Mars', '- Avril', '- Mai', '- Juin',
-                        '- Juillet', '- Août', '- Septembre', '- Octobre', '- Novembre', '- Décembre');
-        $titles = array('Engine oil' => 'Huile moteur', 'Brake fluid' => 'Liquide de frein',
-                        'Vehicle check' => 'Révision', 'Vehicle tuv' => 'Contrôle technique',
-                        'Brake pads front' => 'Plaquettes de frein avant', 'Brake pads rear' => 'Plaquettes de frein arrière',
-                        'Tire year front' => 'Usure pneus avant', 'Tire year rear' => 'Usure pneus arrière',
-                        'Washing fluid' => 'Liquide de lave-glace');
-
-        $out  = array();
-        $list = is_string($raw) ? json_decode($raw, true) : $raw;
-        if (!is_array($list)) { return $out; }
-        foreach ($list as $s) {
-            if (!is_array($s)) { continue; }
-            $date = '';
-            if (!empty($s['date']) && strpos($s['date'], '-') !== false) {
-                list($year, $month) = explode('-', $s['date']);
-                $date = $months[(int) $month].' '.$year;
-            }
-            $km    = (!empty($s['unitOfLengthRemaining']) && $s['unitOfLengthRemaining'] !== '-') ? ' ou '.$s['unitOfLengthRemaining'].' km' : '';
-            $title = isset($s['title']) ? $s['title'] : '';
-            $out[] = array('type' => 'SERVICE ', 'date' => $date, 'mileage' => $km,
-                           'state' => isset($s['status']) ? $s['status'] : '',
-                           'title' => isset($titles[$title]) ? $titles[$title] : $title,
-                           'description' => 'La prochaine maintenance arrive à échéance à la date définie'.($km === '' ? '' : ' ou au kilométrage défini'));
-        }
-        return $out;
-    }
-
 	public function handleMqttMessage($message)
 	{
-        if (!is_array($message) || !isset($message['data']) || !is_array($message['data'])) {
+        if (!is_array($message) || !isset($message['data'])) {
 			log::add('myBMW', 'debug', 'MQTT message ignored : invalid format');
 			return;
 		}
-		$this->applyTelematicData($message['data'], false, 'MQTT');
+				
+		$data = $message['data'];
+		$key = array_key_first($data);
+		$value = $data[$key]['value'] ?? null;
+		$timestamp = $data[$key]['timestamp'] ?? null;
+		
+		switch ($key) {
+
+			//States
+			case 'vehicle.vehicle.travelledDistance':
+				$this->checkAndUpdateCmd('mileage', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - mileage = '.$value);
+				$val = date('d/m/Y H:i:s', strtotime($timestamp));
+				$this->checkAndUpdateCmd('lastUpdate', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - lastUpdate = '.$val);
+				break;
+
+			case 'vehicle.cabin.door.status':
+				$this->checkAndUpdateCmd('doorLockState', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - doorLockState = '.$value);
+				break;
+			
+			case 'vehicle.cabin.door.row1.driver.isOpen':
+			case 'vehicle.cabin.door.row2.driver.isOpen':
+			case 'vehicle.cabin.door.row1.passenger.isOpen':
+			case 'vehicle.cabin.door.row2.passenger.isOpen':
+				$doorMap = [
+					'vehicle.cabin.door.row1.driver.isOpen'     => 'doorDriverFront',
+					'vehicle.cabin.door.row2.driver.isOpen'     => 'doorDriverRear',
+					'vehicle.cabin.door.row1.passenger.isOpen'  => 'doorPassengerFront',
+					'vehicle.cabin.door.row2.passenger.isOpen'  => 'doorPassengerRear'
+				];
+				$doorCmd = $doorMap[$key];
+				if ($value === 'CLOSED' || $value === false) {
+					$val = 'CLOSED';
+				} elseif ($value === 'OPEN' || $value === true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd($doorCmd, $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - '.$doorCmd.' = '.$val);
+			
+				$doors = [
+					$this->getCmd(null, 'doorDriverFront')->execCmd(),
+					$this->getCmd(null, 'doorDriverRear')->execCmd(),
+					$this->getCmd(null, 'doorPassengerFront')->execCmd(),
+					$this->getCmd(null, 'doorPassengerRear')->execCmd()
+				];
+
+				$allClosed = true;
+				foreach ($doors as $state) {
+					if (!in_array($state, ['CLOSED', 'not available'])) {
+						$allClosed = false;
+						break;
+					}
+				}
+
+				$this->checkAndUpdateCmd('allDoorsState', $allClosed ? 'CLOSED' : 'OPEN');
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : allDoorsState = '.($allClosed ? 'CLOSED' : 'OPEN'));
+				break;			
+			
+			case 'vehicle.cabin.window.row1.driver.status':
+			case 'vehicle.cabin.window.row2.driver.status':
+			case 'vehicle.cabin.window.row1.passenger.status':
+			case 'vehicle.cabin.window.row2.passenger.status':
+				$windowMap = [
+					'vehicle.cabin.window.row1.driver.status'     => 'windowDriverFront',
+					'vehicle.cabin.window.row2.driver.status'     => 'windowDriverRear',
+					'vehicle.cabin.window.row1.passenger.status'  => 'windowPassengerFront',
+					'vehicle.cabin.window.row2.passenger.status'  => 'windowPassengerRear'
+				];
+				$windowCmd = $windowMap[$key];
+				$this->checkAndUpdateCmd($windowCmd, $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - '.$windowCmd.' = '.$value);
+			
+				$windows = [
+					$this->getCmd(null, 'windowDriverFront')->execCmd(),
+					$this->getCmd(null, 'windowDriverRear')->execCmd(),
+					$this->getCmd(null, 'windowPassengerFront')->execCmd(),
+					$this->getCmd(null, 'windowPassengerRear')->execCmd()
+				];
+
+				$allClosed = true;
+				foreach ($windows as $state) {
+					if (!in_array($state, ['CLOSED', 'not available'])) {
+						$allClosed = false;
+						break;
+					}
+				}
+
+				$this->checkAndUpdateCmd('allWindowsState', $allClosed ? 'CLOSED' : 'OPEN');
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : allWindowsState = '.($allClosed ? 'CLOSED' : 'OPEN'));
+				break;					
+
+			case 'vehicle.body.trunk.isOpen':
+				if ($value === 'CLOSED' || $value === false) {
+					$val = 'CLOSED';
+				} elseif ($value === 'OPEN' || $value === true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd('trunk_state', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - trunk_state = '.$val);
+				break;
+
+			case 'vehicle.body.hood.isOpen':
+				if ($value === 'CLOSED' || $value === false) {
+					$val = 'CLOSED';
+				} elseif ($value === 'OPEN' || $value === true) {
+					$val = 'OPEN';
+				}
+				$this->checkAndUpdateCmd('hood_state', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - hood_state = '.$val);
+				break;
+
+			case 'vehicle.cabin.sunroof.overallStatus':
+				$this->checkAndUpdateCmd('moonroof_state', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - moonroof_state = '.$value);
+				break;
+		
+			case 'vehicle.chassis.axle.row1.wheel.left.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontLeft_pressure', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontLeft_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontLeft_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontLeft_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.right.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontRight_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontRight_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireFrontRight_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireFrontRight_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.left.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearLeft_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearLeft_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearLeft_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearLeft_target = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.right.tire.pressure':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearRight_pressure', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearRight_pressure = '.$val);
+				break;
+
+			case 'vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget':
+				$val = $value / 100;
+				$this->checkAndUpdateCmd('tireRearRight_target', $value / 100);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - tireRearRight_target = '.$val);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.status':
+				$this->checkAndUpdateCmd('chargingStatus', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingStatus = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.charging.connectorStatus':
+				$val = ($value == 'CONNECTED') ? 1 : 0;
+				$this->checkAndUpdateCmd('connectorStatus', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - connectorStatus = '.$val);
+				break;
+
+			case 'vehicle.drivetrain.electricEngine.remainingElectricRange':
+				$this->checkAndUpdateCmd('beRemainingRangeElectric', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeElectric = '.$value);
+				break;
+
+			/*case 'vehicle.drivetrain.electricEngine.charging.level':
+				$this->checkAndUpdateCmd('chargingLevelHv', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingLevelHv = '.$value);
+				break;*/
+			case 'vehicle.drivetrain.batteryManagement.header':
+				$this->checkAndUpdateCmd('chargingLevelHv', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingLevelHv = '.$value);
+				break;
+			
+			case 'vehicle.drivetrain.electricEngine.charging.timeRemaining':
+				$remainingMinutes = $value;
+				$currentTime = $timestamp;
+				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
+				$val = date('H:i', $chargingEndTime);
+				$this->checkAndUpdateCmd('chargingEndTime', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingEndTime = '.$val);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.stateOfCharge.target':
+				$this->checkAndUpdateCmd('chargingTarget', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - chargingTarget = '.$value);
+				$this->setConfiguration('chargingTarget', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.charging.acLimit.max':
+				$this->checkAndUpdateCmd('acCurrentLimit', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - acCurrentLimit = '.$value);
+				$this->setConfiguration('chargingPowerLimit', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.powertrain.electric.battery.charging.acLimit.isActive':
+				$this->checkAndUpdateCmd('isAcCurrentLimitActive', $value);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - isAcCurrentLimitActive = '.$value);
+				$this->setConfiguration('isAcCurrentLimitActive', $value);
+				$this->save(true);
+				break;
+
+			case 'vehicle.drivetrain.fuelSystem.level':
+				$this->checkAndUpdateCmd('remaining_fuel', $value);
+				$this->setConfiguration('fuel_value_unit','%');
+				$this->save(true);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - remaining_fuel = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.fuelSystem.remainingFuel':
+				$this->checkAndUpdateCmd('remaining_fuel', $value);
+				$this->setConfiguration('fuel_value_unit','l');
+				$this->save(true);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - remaining_fuel = '.$value);
+				break;
+
+			case 'vehicle.drivetrain.lastRemainingRange':
+				$val = $value - $this->getCmd(null, 'beRemainingRangeElectric')->execCmd();
+				$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - beRemainingRangeFuelKm = '.$value);
+				break;
+
+			//Location
+			case 'vehicle.cabin.infotainment.navigation.currentLocation.latitude':
+			case 'vehicle.cabin.infotainment.navigation.currentLocation.longitude':
+				$lastValue = $this->getCmd(null, 'gps_coordinates')->execCmd();
+				$coordinates = explode(',', $lastValue);
+				$lat = $coordinates[0];
+				$long = $coordinates[1];
+
+				if ($key == 'vehicle.cabin.infotainment.navigation.currentLocation.latitude') {
+					$lat = $value;
+				} elseif  ($key == 'vehicle.cabin.infotainment.navigation.currentLocation.longitude') {
+					$long = $value;
+				}
+
+				$val =  $lat . ',' . $long;
+				$this->checkAndUpdateCmd('gps_coordinates', $val);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$key.' - gps_coordinates = '.$val);
+				
+				$distance = $this->getDistanceLocation($lat, $long);
+				$this->checkAndUpdateCmd('distance', $distance);
+				log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : distance = '.$distance);
+				if ( $distance <= $this->getConfiguration("home_distance") ) {
+					$this->checkAndUpdateCmd('presence', 1);
+					log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : presence = 1');
+				}
+				else { 
+					$this->checkAndUpdateCmd('presence', 0);
+					log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : presence = 0');
+				}
+				break;
+			
+			default:
+				//log::add('myBMW', 'debug', 'MQTT message received - CMD IGNORED : '.$key.' - '.$value);
+				break;
+		}
 	}
 		
 	public function refreshVehicleInfos()
@@ -1002,14 +986,190 @@ class myBMW extends eqLogic {
 		$result = $myConnection->getTelematicData();
 		$vehicle = json_decode($result->body, true);
 		
-		if (isset($vehicle['telematicData']) && !isset($vehicle['exveErrorId'])) {
-            $this->applyTelematicData($vehicle['telematicData'], true, 'REST');
-        } else {
-            log::add('myBMW', 'debug', '| TelematicData : invalid format');
-        }
+		if ( is_array($vehicle) && !isset($vehicle['exveErrorId']) ) {
+
+			//States
+			$this->checkAndUpdateCmd('mileage', $vehicle['telematicData']['vehicle.vehicle.travelledDistance']['value'] ?? 0);
+
+			//$this->checkAndUpdateCmd('doorLockState', $vehicle['telematicData']['vehicle.cabin.door.lock.status']['value'] ?? 'not available');
+			
+			$this->checkAndUpdateCmd('doorDriverFront', $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorDriverRear', $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorPassengerFront', $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('doorPassengerRear', $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] ?? 'not available');
+			if (
+				($vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.driver.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.driver.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row1.passenger.isOpen']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.door.row2.passenger.isOpen']['value'] == null) )
+			{
+				$this->checkAndUpdateCmd('allDoorsState', 'CLOSED');
+			} 
+			else { $this->checkAndUpdateCmd('allDoorsState', 'OPEN'); }
+			$this->checkAndUpdateCmd('windowDriverFront', $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowDriverRear', $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowPassengerFront', $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('windowPassengerRear', $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] ?? 'not available');
+			if (
+				($vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.driver.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.driver.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row1.passenger.status']['value'] == null) &&
+				($vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] == 'CLOSED' || $vehicle['telematicData']['vehicle.cabin.window.row2.passenger.status']['value'] == null) )
+			{
+				$this->checkAndUpdateCmd('allWindowsState', 'CLOSED');
+			} 
+			else { $this->checkAndUpdateCmd('allWindowsState', 'OPEN'); }
+			$this->checkAndUpdateCmd('trunk_state', $vehicle['telematicData']['vehicle.body.trunk.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('hood_state', $vehicle['telematicData']['vehicle.body.hood.isOpen']['value'] ?? 'not available');
+			$this->checkAndUpdateCmd('moonroof_state', $vehicle['telematicData']['vehicle.cabin.sunroof.overallStatus']['value'] ?? 'not available');
+
+			$this->checkAndUpdateCmd('tireFrontLeft_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.left.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontLeft_target', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontRight_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.right.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireFrontRight_target', $vehicle['telematicData']['vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearLeft_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.left.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearLeft_target', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearRight_pressure', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.right.tire.pressure']['value']/100 ?? 0);
+			$this->checkAndUpdateCmd('tireRearRight_target', $vehicle['telematicData']['vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget']['value']/100 ?? 0);
+
+			$this->checkAndUpdateCmd('chargingStatus', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.status']['value'] ?? 'not available');
+			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] != null) {
+				if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.connectorStatus']['value'] == 'CONNECTED') { $this->checkAndUpdateCmd('connectorStatus', 1); }
+				else { $this->checkAndUpdateCmd('connectorStatus', 0); }
+			}
+			$this->checkAndUpdateCmd('beRemainingRangeElectric', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
+						
+			//$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.level']['value'] ?? 0);
+			$this->checkAndUpdateCmd('chargingLevelHv', $vehicle['telematicData']['vehicle.drivetrain.batteryManagement.header']['value'] ?? 0);
+						
+			if ( $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'] != null ) { 
+				$remainingMinutes = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['value'];
+				$currentTime = $vehicle['telematicData']['vehicle.drivetrain.electricEngine.charging.timeRemaining']['timestamp'];
+				$chargingEndTime = strtotime("+".$remainingMinutes." minutes", strtotime($currentTime));
+				$this->checkAndUpdateCmd('chargingEndTime', date('H:i', $chargingEndTime)); 
+			}
+			else { $this->checkAndUpdateCmd('chargingEndTime', 'not available'); }
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value'] != null ) { 
+				$this->checkAndUpdateCmd('chargingTarget', $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value']);
+				$this->setConfiguration('chargingTarget', $vehicle['telematicData']['vehicle.powertrain.electric.battery.stateOfCharge.target']['value']);
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('chargingTarget', 100); }
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value'] != null ) { 
+				$this->checkAndUpdateCmd('acCurrentLimit', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value']);
+				$this->setConfiguration('chargingPowerLimit', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.max']['value']);
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('acCurrentLimit', 0); }
+			if ( $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value'] != null) { 
+				$this->checkAndUpdateCmd('isAcCurrentLimitActive', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value']);
+				$this->setConfiguration('isAcCurrentLimitActive', $vehicle['telematicData']['vehicle.powertrain.electric.battery.charging.acLimit.isActive']['value']);
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('isAcCurrentLimitActive', 0); }
+			
+			if ( $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value'] != null ) { 
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.level']['value']);
+				$this->setConfiguration('fuel_value_unit','%');
+				$this->save(true);
+			}
+			elseif ( $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value'] != null ) { 
+				$this->checkAndUpdateCmd('remaining_fuel', $vehicle['telematicData']['vehicle.drivetrain.fuelSystem.remainingFuel']['value']);
+				$this->setConfiguration('fuel_value_unit','l');
+				$this->save(true);
+			}
+			else { $this->checkAndUpdateCmd('remaining_fuel', 0); } 
+ 			$this->checkAndUpdateCmd('beRemainingRangeFuelKm', $vehicle['telematicData']['vehicle.drivetrain.totalRemainingRange']['value']-$vehicle['telematicData']['vehicle.drivetrain.electricEngine.remainingElectricRange']['value'] ?? 0);
+
+
+			//Messages
+			$control_messages = json_decode($vehicle['telematicData']['vehicle.status.checkControlMessages']['value']);
+			$services_messages = json_decode($vehicle['telematicData']['vehicle.status.conditionBasedServices']['value']);
+			$table_messages = array();
+			
+			$table_temp = array();
+			if (is_array($control_messages)) {
+				foreach ($control_messages as $message) {
+					$values = json_decode($message->value);
+					foreach ($values as $value) {
+						$message_type = $value->messageType;
+						$message_severity = $value->status;
+						$message_description = $value->text;
+						$table_temp[] = array(
+							"type" => $message_type,
+							"severity" => $message_severity,
+							"description" => str_replace("'", " ",$message_description)
+						);
+					}
+				}
+			}
+			$table_messages['checkControlMessages'] = $table_temp;
+			
+			$table_temp = array();
+			if (is_array($services_messages)) {
+				foreach ($services_messages as $message) {
+					$mois = [
+						1 => "- Janvier", 2 => "- Février", 3 => "- Mars", 4 => "- Avril",
+						5 => "- Mai", 6 => "- Juin", 7 => "- Juillet", 8 => "- Août",
+						9 => "- Septembre", 10 => "- Octobre", 11 => "- Novembre", 12 => "- Décembre"
+					];
+					[$year, $month] = explode('-', $message->date);
+					$message_date = $mois[(int)$month] . " " . $year;
+					if ( $message->unitOfLengthRemaining != "-" ) {
+						$message_mileage = ' ou '.$message->unitOfLengthRemaining." km";
+						$message_description = "La prochaine maintenance arrive à échéance à la date définie ou au kilométrage défini";
+					}
+					else { 
+						$message_mileage = '';
+						$message_description = "La prochaine maintenance arrive à échéance à la date définie";
+					}
+				
+					$message_status = $message->status;
+					
+					if ($message->title == "Engine oil") { $message_title = "Huile moteur"; }
+					elseif ($message->title == "Brake fluid") { $message_title = "Liquide de frein"; }
+					elseif ($message->title == "Vehicle check") { $message_title = "Révision"; }
+					elseif ($message->title == "Vehicle tuv") { $message_title = "Contrôle technique"; }
+					elseif ($message->title == "Brake pads front") { $message_title = "Plaquettes de frein avant"; }
+					elseif ($message->title == "Brake pads rear") { $message_title = "Plaquettes de frein arrière"; }
+					elseif ($message->title == "Tire year front") { $message_title = "Usure pneus avant"; }
+					elseif ($message->title == "Tire year rear") { $message_title = "Usure pneus arrière"; }
+					elseif ($message->title == "Washing fluid") { $message_title = "Liquide de lave-glace"; }
+					else { $message_title = $message->title; }
+					
+					$table_temp[] = array(
+						"type" => "SERVICE ",
+						"date" => $message_date,
+						"mileage" => $message_mileage,
+						"state" => $message_status,
+						"title" => $message_title,
+						"description" => $message_description
+					);
+				}
+			}
+			$table_messages['requiredServices'] = $table_temp;
+			$this->checkAndUpdateCmd('vehicleMessages', json_encode($table_messages));
+			
+
+			//Location - Presence
+			if ( $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'] != null && $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value'] != null ) {
+				 $this->checkAndUpdateCmd('gps_coordinates', $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'].','.$vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value']);
+				}
+			else { $this->checkAndUpdateCmd('gps_coordinates', 'not available'); }
+			$distance = $this->getDistanceLocation( $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.latitude']['value'], $vehicle['telematicData']['vehicle.cabin.infotainment.navigation.currentLocation.longitude']['value'] );
+			$this->checkAndUpdateCmd('distance', $distance);
+			if ( $distance <= $this->getConfiguration("home_distance") ) { $this->checkAndUpdateCmd('presence', 1); }
+			else { $this->checkAndUpdateCmd('presence', 0); }
+			
+
+			//Last update
+			$this->checkAndUpdateCmd('lastUpdate', date('d/m/Y H:i:s', strtotime($vehicle['telematicData']['vehicle.vehicle.travelledDistance']['timestamp'])) ?? 'not available');
+		}	
 
 		log::add('myBMW', 'debug', '| Result getTelematicData() : '. str_replace('\n','',$result->body));
+		log::add('myBMW', 'debug', '| Result getDistanceLocation() : '.$distance.' m');
 		log::add('myBMW', $this->getLogLevelFromHttpStatus($result->httpCode, '200 - OK'), '└─End of vehicle infos refresh : ['.$result->httpCode.']');
+
 
 		// chargingHistory
 		if ( $this->getConfiguration('vehicle_type') == 'BEV' || $this->getConfiguration('vehicle_type') == 'PHEV') {
