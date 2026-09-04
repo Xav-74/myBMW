@@ -6,7 +6,7 @@
 	},
 	"licence" : "AGPL",
 	"author" : "Xav-74",
-	"require" : "4.2",
+	"require" : "4.4",
 	"os": {
 		"min": 11
 	},
