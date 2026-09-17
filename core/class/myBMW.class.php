@@ -737,10 +737,8 @@ class myBMW extends eqLogic {
 
             /* ---- Charge ---- */
             'chargingStatus'           => array('rest' => 'vehicle.drivetrain.electricEngine.charging.status'),
-            'connectorStatus'          => array('rest' => 'vehicle.drivetrain.electricEngine.charging.connectorStatus',
-                                                'mqtt' => 'vehicle.body.chargingPort.status'),
-            'beRemainingRangeElectric' => array('rest' => 'vehicle.drivetrain.electricEngine.remainingElectricRange',
-                                                'mqtt' => 'vehicle.drivetrain.electricEngine.kombiRemainingElectricRange'),
+            'connectorStatus'          => array('rest' => 'vehicle.body.chargingPort.status'),
+            'beRemainingRangeElectric' => array('rest' => 'vehicle.drivetrain.electricEngine.kombiRemainingElectricRange'),
             'chargingLevelHv'          => array('rest' => 'vehicle.drivetrain.batteryManagement.header'),
             'chargingEndTime'          => array('rest' => 'vehicle.drivetrain.electricEngine.charging.timeToFullyCharged'),
             'chargingTarget'           => array('rest' => 'vehicle.powertrain.electric.battery.stateOfCharge.target'),
@@ -750,8 +748,7 @@ class myBMW extends eqLogic {
             /* ---- Carburant et autonomie thermique ---- */
             'remaining_fuel'           => array('rest' => array('vehicle.drivetrain.fuelSystem.level',
                                                                 'vehicle.drivetrain.fuelSystem.remainingFuel')),
-            'beRemainingRangeFuelKm'   => array('rest' => 'vehicle.drivetrain.totalRemainingRange',
-                                                'mqtt' => 'vehicle.drivetrain.lastRemainingRange'),
+            'beRemainingRangeFuelKm'   => array('rest' => 'vehicle.drivetrain.lastRemainingRange'),
 
             /* ---- Localisation ---- */
             'gps_coordinates'          => array('rest' => array('vehicle.cabin.infotainment.navigation.currentLocation.latitude',
@@ -784,7 +781,7 @@ class myBMW extends eqLogic {
 
             $this->checkAndUpdateCmd($id, $updatedCmds[$id] = $val);
 
-            if ($src === 'REST') { log::add('myBMW', 'debug', '| '.(isset($cmdSources[$id]) ? $cmdSources[$id] : '(défaut)').' -> '.$id.' = '.substr((string) $val, 0, 60)); }
+            if ($src === 'REST') { log::add('myBMW', 'debug', '| '.(isset($cmdSources[$id]) ? $cmdSources[$id] : '(no data)').' -> '.$id.' = '.substr((string) $val, 0, 60)); }
 			else { log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$cmdSources[$id].' -> '.$id.' = '.substr((string) $val, 0, 60)); }
         }
 
