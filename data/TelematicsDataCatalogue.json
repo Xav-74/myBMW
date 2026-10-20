@@ -9,15 +9,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Maximum energy content of the high-voltage battery",
-    "Description": "This value indicates the maximum available energy content of the high-voltage battery.",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.hvsMaxEnergyAbsolute",
-    "Data type": "-",
-    "Typical value range": "0 - 300 kWh, INVALID",
-    "Unit": "kWh",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "AntiTheftAlarm activation time",
     "Description": "Timestamp of the last alarm activation time. The value comes without timezone information.",
     "Technical descriptor": "vehicle.vehicle.antiTheftAlarmSystem.alarm.activationTime",
@@ -45,6 +36,24 @@
     "Streamable": "true"
   },
   {
+    "CarData Element": "Availability of teleservices",
+    "Description": "This value indicates whether teleservices are available for this vehicle.",
+    "Technical descriptor": "vehicle.channel.teleservice.status",
+    "Data type": "string",
+    "Typical value range": "PENDING, IDLE, SUCCESSFUL, ERROR",
+    "Unit": "-",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Battery voltage",
+    "Description": "The value indicates the current battery voltage in the vehicle's electrical system. This value is always given in voltage, e.g. 14.4 V.",
+    "Technical descriptor": "vehicle.electricalSystem.battery.voltage",
+    "Data type": "float",
+    "Typical value range": "5 V to 20 V",
+    "Unit": "V",
+    "Streamable": "true"
+  },
+  {
     "CarData Element": "Charging profile",
     "Description": "The charging profile provides information about the charging mode most recently selected for your vehicle. Where appropriate, CarData element may also be used to display individual attributes in cars without an electric drive, e.g. the preconditioning settings.",
     "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.profile.mode",
@@ -69,6 +78,15 @@
     "Data type": "int16",
     "Typical value range": "0 °C to 150 °C or 32 °F to 302 °F",
     "Unit": "Celsius",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Date and time in vehicle",
+    "Description": "These values indicate the time shown in the vehicle at the time of recording the data.",
+    "Technical descriptor": "vehicle.channel.ngtp.timeVehicle",
+    "Data type": "string",
+    "Typical value range": "00:00 to 23:59 or 12:00 am to 11:59 pm",
+    "Unit": "-",
     "Streamable": "true"
   },
   {
@@ -270,6 +288,15 @@
     "Streamable": "true"
   },
   {
+    "CarData Element": "Fault memory",
+    "Description": "The fault memory provides information about potential errors or technical faults in the vehicle. This information is intended for workshops. Customer-relevant errors that are displayed to the driver in the vehicle can be found under the CarData Element “Check control messages”. Details about this are documented in the operating manual of the vehicle.",
+    "Technical descriptor": "vehicle.electronicControlUnit.diagnosticTroubleCodes.raw",
+    "Data type": "-",
+    "Typical value range": "-",
+    "Unit": "-",
+    "Streamable": "true"
+  },
+  {
     "CarData Element": "Front driver door position",
     "Description": "Driver-side front door opening position in percent. 0% represents fully closed and 100% represents fully opened.",
     "Technical descriptor": "vehicle.cabin.door.row1.driver.position",
@@ -369,6 +396,15 @@
     "Streamable": "true"
   },
   {
+    "CarData Element": "Low-voltage battery",
+    "Description": "The value indicates the state of charge of the low-voltage battery in percent measured at the time of data collection.",
+    "Technical descriptor": "vehicle.electricalSystem.battery.stateOfCharge",
+    "Data type": "-",
+    "Typical value range": "-",
+    "Unit": "%",
+    "Streamable": "true"
+  },
+  {
     "CarData Element": "Maximum number of POIs stored in the navigation system",
     "Description": "This value indicates how many POIs (points of interest) can be stored in the navigation system.",
     "Technical descriptor": "vehicle.cabin.infotainment.navigation.pointsOfInterests.max",
@@ -396,22 +432,13 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Navigation destination – latitude",
-    "Description": "This value indicates the coordinate of the active navigation destination – latitude at the time of data collection in billionths of a second.",
-    "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.latitude",
-    "Data type": "-",
-    "Typical value range": "-",
+    "CarData Element": "Motion status of the vehicle",
+    "Description": "This value indicates whether the vehicle was in motion at the time of data collection.",
+    "Technical descriptor": "vehicle.isMoving",
+    "Data type": "boolean",
+    "Typical value range": "ASN_isFalse, ASN_isTrue, ASN_isUnknown",
     "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Navigation destination – longitude",
-    "Description": "This value indicates the coordinate of the active navigation destination – longitude at the time of data collection in billionths of a second.",
-    "Technical descriptor": "vehicle.cabin.infotainment.navigation.destinationSet.longitude",
-    "Data type": "-",
-    "Typical value range": "-",
-    "Unit": "-",
-    "Streamable": "false"
+    "Streamable": "true"
   },
   {
     "CarData Element": "Number of CBS reports",
@@ -621,15 +648,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Remote climate control disclaimer",
-    "Description": "True if remote engine start option is set, otherwise false.",
-    "Technical descriptor": "vehicle.cabin.hvac.preconditioning.configuration.isRemoteEngineStartDisclaimer",
-    "Data type": "boolean",
-    "Typical value range": "true, false",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "State of ignition",
     "Description": "This value indicates whether the ignition was on or off at the time of data collection or whether the status is unknown.",
     "Technical descriptor": "vehicle.drivetrain.engine.isActive",
@@ -655,15 +673,6 @@
     "Typical value range": "CLOSEDSECURED, OPENSECURED",
     "Unit": "-",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "Status of doors",
-    "Description": "This indicates whether the vehicle's doors were locked (LOCKED) or unlocked (UNLOCKED) at the time of data collection. Other possible values are: SELECTIVELOCKED = vehicle locked with the exception of the left front door (state after a remote service door unlock was first performed) SECURED = vehicle has been secured = all doors locked and alarm system activated",
-    "Technical descriptor": "vehicle.cabin.door.lock.status",
-    "Data type": "-",
-    "Typical value range": "SECURED, UNLOCKED, SELECTIVE-LOCKED, LOCKED, INVALID, UNKNOWN",
-    "Unit": "-",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Status of engine (on/off)",
@@ -1053,15 +1062,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Average distance per day",
-    "Description": "Condition Based Services. Estimation on the daily travelled distance of the vehicle but heavily tailored for the us in the Condition Based Services context.",
-    "Technical descriptor": "vehicle.status.conditionBasedServicesAverageDistancePerDay",
-    "Data type": "int32",
-    "Typical value range": "-",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Average distance per week",
     "Description": "This indicates the average volume of the distance travelled in kilometres or miles per week.",
     "Technical descriptor": "vehicle.vehicle.averageWeeklyDistanceShortTerm",
@@ -1080,24 +1080,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Check control messages",
-    "Description": "The value indicates the last relevant Check Control messages that were displayed in the vehicle and transferred to BMW. Check control monitors functions in the vehicle and notifies the user when there is a fault in the monitored system. A check control message is displayed as a combination of indicator lights or warning lights and text messages on the dashboard, and on the head-up display, if applicable. Note: Not all Check Control messages that are displayed in the vehicle are transferred to BMW.",
-    "Technical descriptor": "vehicle.status.checkControlMessages",
-    "Data type": "-",
-    "Typical value range": "-",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Condition Based Service",
-    "Description": "Sensors and special algorithms take into account the operating conditions of the vehicle. CBS uses this to determine the required service. The system hereby adapts the scope of the service to the individual usage profile.",
-    "Technical descriptor": "vehicle.status.conditionBasedServices",
-    "Data type": "-",
-    "Typical value range": "-",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Last sent remaining range",
     "Description": "Last sent remaining range electric + fuel sent by the vehicle. Range from vehicle Kombi (Queried for PHEV and CE vehicles). Delivers e-range + ce range for PHEV. Ce Range for CE vehicles. Likely 0 for BEV vehicles. This value should only be used for combustion cars. Electric cars should read Vehicle.Drivetrain.ElectricEngine.KombiRemainingElectricRange.",
     "Technical descriptor": "vehicle.drivetrain.lastRemainingRange",
@@ -1105,60 +1087,6 @@
     "Typical value range": "0-6500",
     "Unit": "km",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "OBFCM* reference distance during charging mode",
-    "Description": "This value indicates the distance travelled during charging mode, i.e. PHEV charges the high-voltage battery.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeIncreasing.referenceDistance",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "OBFCM* reference distance during electric mode and when the combustion engine is active (PHEV only)",
-    "Description": "This value indicates the distance travelled during electric mode and when the combustion engine is active.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.referenceDistanceEngineOn",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "OBFCM* reference distance during electric mode and when the combustion engine is inactive (PHEV only)",
-    "Description": "This value indicates the distance travelled during electric mode and when the combustion engine is inactive.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.referenceDistanceEngineOff",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "OBFCM* reference distance for measuring the fuel consumption",
-    "Description": "This value indicates the reference distance for measuring fuel consumption.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.overall.referenceDistance",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "OBFCM* total fuel consumption during charging mode (PHEV only)",
-    "Description": "This value describes the fuel consumed during charging mode, i.e. PHEV charges the high-voltage battery using the combustion engine.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeIncreasing.fuel",
-    "Data type": "float",
-    "Typical value range": "0.00 l - 30000.00 l",
-    "Unit": "l",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "OBFCM* total fuel consumption during operation when the battery is discharged (PHEV only)",
-    "Description": "This value indicates the amount of fuel consumption when the combustion engine switches on even though the battery is not flat.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.inChargeDepleting.fuel",
-    "Data type": "float",
-    "Typical value range": "0.00 l - 30000.00 l",
-    "Unit": "l",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Speed range lower",
@@ -1179,13 +1107,31 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Total fuel consumption according to legal OBFCM* specifications",
-    "Description": "This value indicates the amount of fuel consumed in litres, measured over the reference distance.",
-    "Technical descriptor": "vehicle.drivetrain.fuelSystem.consumptionOverLifeTime.overall.fuel",
-    "Data type": "float",
-    "Typical value range": "0.00 l - 30000.00 l",
-    "Unit": "l",
-    "Streamable": "false"
+    "CarData Element": "Automatic Teleservice Call",
+    "Description": "This value indicates at what time an Automatic Service Call (ASC) was initiated by the vehicle.",
+    "Technical descriptor": "vehicle.channel.teleservice.lastAutomaticServiceCallTime",
+    "Data type": "string",
+    "Typical value range": "dd.mm.yyyy hh:mm UTC or mm/dd/yyyy hh:mm UTC",
+    "Unit": "-",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Teleservice report",
+    "Description": "This value indicates at what time the teleservice report call was initiated by the vehicle. The vehicle collects measured values or error data for the teleservice report call, and automatically sends them according to defined cycles.",
+    "Technical descriptor": "vehicle.channel.teleservice.lastTeleserviceReportTime",
+    "Data type": "string",
+    "Typical value range": "dd.mm.yyyy hh:mm:ss UTC",
+    "Unit": "-",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "48V battery state of health",
+    "Description": "SoH (State of Health) of the 48V Battery that is shown to the customer. Created to fulfill EU Battery Regulation.",
+    "Technical descriptor": "vehicle.electricalSystem.battery48V.stateOfHealth.displayed",
+    "Data type": "uint16",
+    "Typical value range": "0% to 250%",
+    "Unit": "percent",
+    "Streamable": "true"
   },
   {
     "CarData Element": "AC charging current",
@@ -1233,6 +1179,24 @@
     "Streamable": "true"
   },
   {
+    "CarData Element": "Activation period for ECO mode during most recent drive",
+    "Description": "Indicates the length of time for which ECO mode was activated during the most recent drive when data were recorded. The values range from 0 to 100.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveEcoPro",
+    "Data type": "float",
+    "Typical value range": "0 % to 100 %",
+    "Unit": "percent",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Activation period for ECO PLUS mode during most recent drive",
+    "Description": "Indicates the length of time for which ECO PLUS mode was activated during the most recent drive when data were recorded. The values range from 0 to 100.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveEcoProPlus",
+    "Data type": "float",
+    "Typical value range": "0 % to 100 %",
+    "Unit": "percent",
+    "Streamable": "true"
+  },
+  {
     "CarData Element": "Automatic preconditioning status feedback",
     "Description": "Current state of toggle switch for automatic battery preconditioning. ON means automatic mode (navigation based) of the predictive thermal management (vWM) is activated. OFF means automatic mode (navigation based) of the predictive thermal management (vWM) is deactivated. TEMP_OFF stands for temporary deactivation for current trip of the automatic predictive thermal management.",
     "Technical descriptor": "vehicle.powertrain.electric.battery.preconditioning.automaticMode.statusFeedback",
@@ -1267,24 +1231,6 @@
     "Typical value range": "0 km/h to 300 km/h or 0 mph to 186 mph, INVALID",
     "Unit": "km/h",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "Battery care charge mode",
-    "Description": "Charging to departure time starts as late as possible, to reduce the time where the car has a high SoE (State of Energy).",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isPreservingChargingMode",
-    "Data type": "boolean",
-    "Typical value range": "true, false",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Battery care mode active",
-    "Description": "Indicator if the battery care persisted mode is active.",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isActive",
-    "Data type": "boolean",
-    "Typical value range": "true, false",
-    "Unit": "-",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Battery charging port any position flap automatic open/close",
@@ -1476,24 +1422,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Bidirectional charging capability",
-    "Description": "Contains the information about the current availability of the BPT (Bidirectional power transfer) function.",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.biDirectionalCharging.availability",
-    "Data type": "string",
-    "Typical value range": "AVAILABLE, NOT_AVAILABLE, DISABLED_MALIBU, DISABLED_HVS, BPT_AND_IMO_DISABLED, BPT_ONLY_FOR_EMERGENCY_POWER_SUPPLY, DISABLED_IMO_POSSIBLE, DISABLED_LONG_TERM",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Cable check voltage",
-    "Description": "The voltage reached during intialization cable check.",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.cableCheckVoltage",
-    "Data type": "uint16",
-    "Typical value range": "-",
-    "Unit": "V",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Calculated remaining charging time of the high-voltage battery",
     "Description": "This value indicates the calculated time (in minutes) until the high-voltage battery is fully charged. If a navigation destination has been set, the time remaining until reaching the destination will be displayed.",
     "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.timeToFullyCharged",
@@ -1501,15 +1429,6 @@
     "Typical value range": "0 – 65500 Min, INVALID",
     "Unit": "min",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "Charging authentication status",
-    "Description": "This field indicates the status of authentication with the charging station.",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.authenticationStatus",
-    "Data type": "string",
-    "Typical value range": "NOT_STARTED, STARTED_EIM, STARTED_PNC, STARTED_PLC_EIM, DONE_EIM, DONE_PLC_EIM, DONE_PNC, FAILED_PLC_EIM, FAILED_PNC, UNKNOWN",
-    "Unit": "-",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Charging authentication status",
@@ -1566,24 +1485,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Charging port connection status",
-    "Description": "Current condition for charging plug in all charging modes telling if any plug is currently connected. The value INVALID can have reasons like e.g. no sensor, broken sensor, no value, decoding errors etc. Combines Vehicle.Body.ChargingPort.Status/.DcStatus.",
-    "Technical descriptor": "vehicle.body.chargingPort.combinedStatus",
-    "Data type": "string",
-    "Typical value range": "DISCONNECTED, CONNECTED, INVALID",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Charging port locked state",
-    "Description": "This signal indicates whether the charging plug is locked, unlocked, an error is send or no aciton is performed. When using this value, also see Vehicle.Body.ChargingPort.PlugStatus.",
-    "Technical descriptor": "vehicle.body.chargingPort.lockedStatus",
-    "Data type": "string",
-    "Typical value range": "CHARGING_CABLE_NOT_LOCKED, CHARGING_CABLE_LOCKED, CHARGING_CABLE_LOCKING_ERROR_DETECTED, UNKNOWN",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Charging port plug event ID",
     "Description": "Unique identifier which increases each time the customer plugs in his electrified vehicle (EXCEPT if the time between unplug and plug-in is less than 90 seconds). This value should be unique for each charging session. See ElectricEngine.Charging.PlugStatus.",
     "Technical descriptor": "vehicle.body.chargingPort.plugEventId",
@@ -1638,20 +1539,11 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Charging session ID",
-    "Description": "The Field contains the value of the ISO 15118 sessionID according ASCII.",
-    "Technical descriptor": "vehicle.body.chargingPort.isoSessionId",
-    "Data type": "string",
-    "Typical value range": "-",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Charging status",
     "Description": "This value indicates the current charging status of the vehicle at the time of data collection. For example, NOCHARGING means that the vehicle's high-voltage battery is currently not being charged. INITIALIZATION means that the charging process is just being prepared, while CHARGINGACTIVE means that the battery is just being charged. Other possible values are: CHARGINGPAUSED (charging paused), CHARGINGENDED (charging ended) and CHARGINGERROR (charging error).",
     "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.status",
     "Data type": "string",
-    "Typical value range": "MANUAL_SELECTION, AUTOMATIC_SELECTION, AUTOMATIC_SELECTION_20, UNKNOWN",
+    "Typical value range": "NOCHARGING, INITIALIZATION, CHARGINGACTIVE, CHARGINGPAUSED, CHARGINGENDED, CHARGINGERROR, CHARGINGINTERRUPTED, CHARGINGDISRUPTED, UNKNOWN",
     "Unit": "-",
     "Streamable": "true"
   },
@@ -1661,6 +1553,15 @@
     "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfCharge.displayed",
     "Data type": "float",
     "Typical value range": "0 - 100 %",
+    "Unit": "percent",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Charging status of battery",
+    "Description": "This value indicates the charging status of the high-voltage battery at the end of the most recently logged drive (in percentage).",
+    "Technical descriptor": "vehicle.trip.segment.end.drivetrain.batteryManagement.hvSoc",
+    "Data type": "float",
+    "Typical value range": "0 % to 100 %",
     "Unit": "percent",
     "Streamable": "true"
   },
@@ -1710,24 +1611,6 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Current predicted charging status",
-    "Description": "This value indicates the current predicted charging status in percent.",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.level",
-    "Data type": "float",
-    "Typical value range": "0 % to 100 %",
-    "Unit": "%",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "DC charging mode active",
-    "Description": "Active direct Current Charging mode (performance vs. efficient).",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.dcChargingModeActive",
-    "Data type": "string",
-    "Typical value range": "EFFICIENT, STANDARD, PERFORMANCE",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
     "CarData Element": "Departure time display",
     "Description": "This value indicates whether the departure time is displayed in the vehicle.",
     "Technical descriptor": "vehicle.powertrain.electric.departureTime.displayControl",
@@ -1755,12 +1638,48 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Energy content of the high-voltage battery",
-    "Description": "This value indicates the current energy content of the high-voltage battery.",
-    "Technical descriptor": "vehicle.drivetrain.batteryManagement.maxEnergy",
+    "CarData Element": "Driving style evaluation - 'acceleration behaviour'",
+    "Description": "This value indicates the number of stars which the driving style analysis has given to the acceleration behaviour of the driver at the time of data collection. The system allocates 0 to 5 stars.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.acceleration.starsAverage",
     "Data type": "float",
-    "Typical value range": "0 - 300 kWh, INVALID",
+    "Typical value range": "0 to 5 stars",
+    "Unit": "stars",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Driving style evaluation - 'pro-active driving'",
+    "Description": "This value indicates the number of stars which the driving style analysis has given to the 'pro-active driving' behaviour of the driver at the time of data collection. The system allocates 0 to 5 stars.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.chassis.brake.starsAverage",
+    "Data type": "float",
+    "Typical value range": "0 to 5 stars",
+    "Unit": "stars",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Electrical energy consumption in COMFORT mode during the most recent drive",
+    "Description": "This indicates the electrical energy consumption (kWh) in COMFORT mode, measured at the time of data collection.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.electricEngine.energyConsumptionComfort",
+    "Data type": "double",
+    "Typical value range": "0 kWh to 10 kWh",
     "Unit": "kWh",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Electrically driven distance during the most recent drive",
+    "Description": "This value indicates the distance covered with electrical energy during the most recent drive in percentage.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.transmission.setting.fractionDriveElectric",
+    "Data type": "float",
+    "Typical value range": "0 % to 100 %",
+    "Unit": "percent",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Energy recuperated during the last drive",
+    "Description": "This value indicates the average electrical energy in kilowatt hours (kWh/100 km or kWh/62 mi) recuperated during the last logged drive per 100 kilometres or 62 miles. The values range from 0 to 254.",
+    "Technical descriptor": "vehicle.trip.segment.accumulated.drivetrain.electricEngine.recuperationTotal",
+    "Data type": "float",
+    "Typical value range": "0 kWh/100 km to 170 kWh/100 km or 0 kWh/62 mi to 170 kWh/62 mi",
+    "Unit": "-",
     "Streamable": "true"
   },
   {
@@ -1768,7 +1687,7 @@
     "Description": "This value indicates the amount of energy required to fully charge the battery.",
     "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.smeEnergyDeltaFullyCharged",
     "Data type": "float",
-    "Typical value range": "0 - 300 kWh, INVALID",
+    "Typical value range": "0 - 1310 kWh",
     "Unit": "kWh",
     "Streamable": "true"
   },
@@ -1798,15 +1717,6 @@
     "Typical value range": "0 - 2000 km",
     "Unit": "km",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "Health status of the high-voltage battery (SOCE)",
-    "Description": "This value indicates the health status of the high-voltage battery (SOCE, State of Certified Energy).",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.stateOfHealth.displayed",
-    "Data type": "-",
-    "Typical value range": "-",
-    "Unit": "-",
-    "Streamable": "false"
   },
   {
     "CarData Element": "HV charging system status",
@@ -1890,6 +1800,15 @@
     "Streamable": "true"
   },
   {
+    "CarData Element": "Mileage after last drive",
+    "Description": "This value indicates the total mileage after the last drive logged.",
+    "Technical descriptor": "vehicle.trip.segment.end.travelledDistance",
+    "Data type": "float",
+    "Typical value range": "0 km to 999999 km or 0 mi to 621371 mi",
+    "Unit": "-",
+    "Streamable": "true"
+  },
+  {
     "CarData Element": "Minimum charging current",
     "Description": "This value indicates the minimum available charging current, independently of the infrastructure and selected cable.",
     "Technical descriptor": "vehicle.powertrain.electric.battery.charging.acLimit.min",
@@ -1897,15 +1816,6 @@
     "Typical value range": "0-250 A, INVALID",
     "Unit": "A",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "OBFCM* reference distance for measuring the supplied mains energy",
-    "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables.",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.overall.referenceDistance",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Preconditioning state",
@@ -1942,33 +1852,6 @@
     "Typical value range": "UNKNOWN, CHARGING_GOAL_REACHED, END_REQUESTED_BY_DRIVER, CONNECTOR_REMOVED, POWERGRID_FAILED, HV_SYSTEM_FAILURE, CHARGING_STATION_FAILURE, PARKING_LOCK_FAILED, NO_PARKING_LOCK, SIGNAL_INVALID, INVALID",
     "Unit": "-",
     "Streamable": "true"
-  },
-  {
-    "CarData Element": "Reduced target State of Energy",
-    "Description": "Reduce the target SoE (State of Energy) to a defined value, so that the battery doesn't reach high SoEs thus reducing battery aging.",
-    "Technical descriptor": "vehicle.powertrain.electric.battery.charging.batteryCarePersisted.isReducedTargetSoe",
-    "Data type": "boolean",
-    "Typical value range": "true, false",
-    "Unit": "-",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Reference distance for measuring the supplied mains energy while the combustion engine was active",
-    "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables while the combustion engine was active (used e.g. by OBFCM*).",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOn.referenceDistance",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Reference distance for measuring the supplied mains energy while the combustion engine was inactive",
-    "Description": "This value indicates the reference distance for measuring the energy supplied using charging cables while the combustion engine was inactive (used e.g. by OBFCM*).",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOff.referenceDistance",
-    "Data type": "float",
-    "Typical value range": "0.0 km - 250000.0 km",
-    "Unit": "km",
-    "Streamable": "false"
   },
   {
     "CarData Element": "Remaining electric range, depending on target charging status",
@@ -2070,22 +1953,13 @@
     "Streamable": "true"
   },
   {
-    "CarData Element": "Total mains energy consumed while the combustion engine was active",
-    "Description": "This value indicates the total energy supplied using charging cables while the combustion engine was active (used e.g. by OBFCM*).",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOn.gridEnergy",
-    "Data type": "float",
-    "Typical value range": "kWh",
-    "Unit": "kWh",
-    "Streamable": "false"
-  },
-  {
-    "CarData Element": "Total mains energy consumed while the combustion engine was inactive",
-    "Description": "This value indicates the total energy supplied using charging cables while the combustion engine was inactive (used e.g. by OBFCM*).",
-    "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.engineOff.gridEnergy",
-    "Data type": "float",
-    "Typical value range": "kWh",
-    "Unit": "kWh",
-    "Streamable": "false"
+    "CarData Element": "Time of most recent drive",
+    "Description": "The time stamp contains the date and local time of the most recently logged and transmitted drive, for example 15.05.2017 15:51:00 UTC or 05/15/2017 15:51:00 UTC.",
+    "Technical descriptor": "vehicle.trip.segment.end.time",
+    "Data type": "int32",
+    "Typical value range": "dd.mm.yyyy hh:mm:ss UTC or mm/dd/yyyy hh:mm:ss UTC",
+    "Unit": "-",
+    "Streamable": "true"
   },
   {
     "CarData Element": "Total mains energy supplied to the vehicle (PHEV only)",
@@ -2093,6 +1967,15 @@
     "Technical descriptor": "vehicle.drivetrain.electricEngine.charging.consumptionOverLifeTime.overall.gridEnergy",
     "Data type": "float",
     "Typical value range": "0.0 kWh - 30000.0 kWh",
+    "Unit": "kWh",
+    "Streamable": "true"
+  },
+  {
+    "CarData Element": "Usable energy from high-voltage battery (fully charged, predicted)",
+    "Description": "Predicted usable energy from the fully charged high-voltage storage device under current conditions (e.g. ageing status, temperature) for standard discharge.",
+    "Technical descriptor": "vehicle.drivetrain.batteryManagement.maxEnergy",
+    "Data type": "float",
+    "Typical value range": "0 - 300 kWh, INVALID",
     "Unit": "kWh",
     "Streamable": "true"
   },
