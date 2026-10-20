@@ -701,75 +701,66 @@ class myBMW extends eqLogic {
         return array(
 
             /* ---- Kilométrage et horodatage ---- */
-            'mileage'                  => array('rest' => 'vehicle.vehicle.travelledDistance'),
-            'lastUpdate'               => array('rest' => 'vehicle.vehicle.travelledDistance'),
+            'mileage'                  => 'vehicle.vehicle.travelledDistance',
+            'lastUpdate'               => 'vehicle.vehicle.travelledDistance',
 
-            /* ---- Verrouillage  ---- */
-            'doorLockState'            => array('rest' => 'vehicle.cabin.door.lock.status',
-                                                'mqtt' => 'vehicle.cabin.door.status'),
+            /* ---- Verrouillage ---- */
+            'doorLockState'            => 'vehicle.cabin.door.status',
 
             /* ---- Portes ---- */
-            'doorDriverFront'          => array('rest' => 'vehicle.cabin.door.row1.driver.isOpen'),
-            'doorDriverRear'           => array('rest' => 'vehicle.cabin.door.row2.driver.isOpen'),
-            'doorPassengerFront'       => array('rest' => 'vehicle.cabin.door.row1.passenger.isOpen'),
-            'doorPassengerRear'        => array('rest' => 'vehicle.cabin.door.row2.passenger.isOpen'),
+            'doorDriverFront'          => 'vehicle.cabin.door.row1.driver.isOpen',
+            'doorDriverRear'           => 'vehicle.cabin.door.row2.driver.isOpen',
+            'doorPassengerFront'       => 'vehicle.cabin.door.row1.passenger.isOpen',
+            'doorPassengerRear'        => 'vehicle.cabin.door.row2.passenger.isOpen',
 
             /* ---- Fenêtres ---- */
-            'windowDriverFront'        => array('rest' => 'vehicle.cabin.window.row1.driver.status'),
-            'windowDriverRear'         => array('rest' => 'vehicle.cabin.window.row2.driver.status'),
-            'windowPassengerFront'     => array('rest' => 'vehicle.cabin.window.row1.passenger.status'),
-            'windowPassengerRear'      => array('rest' => 'vehicle.cabin.window.row2.passenger.status'),
+            'windowDriverFront'        => 'vehicle.cabin.window.row1.driver.status',
+            'windowDriverRear'         => 'vehicle.cabin.window.row2.driver.status',
+            'windowPassengerFront'     => 'vehicle.cabin.window.row1.passenger.status',
+            'windowPassengerRear'      => 'vehicle.cabin.window.row2.passenger.status',
 
             /* ---- Autres ouvrants ---- */
-            'trunk_state'              => array('rest' => 'vehicle.body.trunk.isOpen'),
-            'hood_state'               => array('rest' => 'vehicle.body.hood.isOpen'),
-            'moonroof_state'           => array('rest' => 'vehicle.cabin.sunroof.overallStatus'),
+            'trunk_state'              => 'vehicle.body.trunk.isOpen',
+            'hood_state'               => 'vehicle.body.hood.isOpen',
+            'moonroof_state'           => 'vehicle.cabin.sunroof.overallStatus',
 
             /* ---- Pneumatiques (kPa, convertis en bar) ---- */
-            'tireFrontLeft_pressure'   => array('rest' => 'vehicle.chassis.axle.row1.wheel.left.tire.pressure'),
-            'tireFrontLeft_target'     => array('rest' => 'vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget'),
-            'tireFrontRight_pressure'  => array('rest' => 'vehicle.chassis.axle.row1.wheel.right.tire.pressure'),
-            'tireFrontRight_target'    => array('rest' => 'vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget'),
-            'tireRearLeft_pressure'    => array('rest' => 'vehicle.chassis.axle.row2.wheel.left.tire.pressure'),
-            'tireRearLeft_target'      => array('rest' => 'vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget'),
-            'tireRearRight_pressure'   => array('rest' => 'vehicle.chassis.axle.row2.wheel.right.tire.pressure'),
-            'tireRearRight_target'     => array('rest' => 'vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget'),
+            'tireFrontLeft_pressure'   => 'vehicle.chassis.axle.row1.wheel.left.tire.pressure',
+            'tireFrontLeft_target'     => 'vehicle.chassis.axle.row1.wheel.left.tire.pressureTarget',
+            'tireFrontRight_pressure'  => 'vehicle.chassis.axle.row1.wheel.right.tire.pressure',
+            'tireFrontRight_target'    => 'vehicle.chassis.axle.row1.wheel.right.tire.pressureTarget',
+            'tireRearLeft_pressure'    => 'vehicle.chassis.axle.row2.wheel.left.tire.pressure',
+            'tireRearLeft_target'      => 'vehicle.chassis.axle.row2.wheel.left.tire.pressureTarget',
+            'tireRearRight_pressure'   => 'vehicle.chassis.axle.row2.wheel.right.tire.pressure',
+            'tireRearRight_target'     => 'vehicle.chassis.axle.row2.wheel.right.tire.pressureTarget',
 
             /* ---- Charge ---- */
-            'chargingStatus'           => array('rest' => 'vehicle.drivetrain.electricEngine.charging.status'),
-            'connectorStatus'          => array('rest' => 'vehicle.body.chargingPort.status'),
-            'beRemainingRangeElectric' => array('rest' => 'vehicle.drivetrain.electricEngine.kombiRemainingElectricRange'),
-            'chargingLevelHv'          => array('rest' => 'vehicle.drivetrain.batteryManagement.header'),
-            'chargingEndTime'          => array('rest' => 'vehicle.drivetrain.electricEngine.charging.timeToFullyCharged'),
-            'chargingTarget'           => array('rest' => 'vehicle.powertrain.electric.battery.stateOfCharge.target'),
-            'acCurrentLimit'           => array('rest' => 'vehicle.powertrain.electric.battery.charging.acLimit.max'),
-            'isAcCurrentLimitActive'   => array('rest' => 'vehicle.powertrain.electric.battery.charging.acLimit.isActive'),
+            'chargingStatus'           => 'vehicle.drivetrain.electricEngine.charging.status',
+            'connectorStatus'          => 'vehicle.body.chargingPort.status',
+            'beRemainingRangeElectric' => 'vehicle.drivetrain.electricEngine.kombiRemainingElectricRange',
+            'chargingLevelHv'          => 'vehicle.drivetrain.batteryManagement.header',
+            'chargingEndTime'          => 'vehicle.drivetrain.electricEngine.charging.timeToFullyCharged',
+            'chargingTarget'           => 'vehicle.powertrain.electric.battery.stateOfCharge.target',
+            'acCurrentLimit'           => 'vehicle.powertrain.electric.battery.charging.acLimit.max',
+            'isAcCurrentLimitActive'   => 'vehicle.powertrain.electric.battery.charging.acLimit.isActive',
 
             /* ---- Carburant et autonomie thermique ---- */
-            'remaining_fuel'           => array('rest' => array('vehicle.drivetrain.fuelSystem.level',
-                                                                'vehicle.drivetrain.fuelSystem.remainingFuel')),
-            'beRemainingRangeFuelKm'   => array('rest' => 'vehicle.drivetrain.lastRemainingRange'),
+            'remaining_fuel'           => array('vehicle.drivetrain.fuelSystem.level',
+                                                'vehicle.drivetrain.fuelSystem.remainingFuel'),
+            'beRemainingRangeFuelKm'   => 'vehicle.drivetrain.lastRemainingRange',
 
             /* ---- Localisation ---- */
-            'gps_coordinates'          => array('rest' => array('vehicle.cabin.infotainment.navigation.currentLocation.latitude',
-                                                                'vehicle.cabin.infotainment.navigation.currentLocation.longitude')),
-
-            /* ---- Messages ---- */
-            'vehicleMessages'          => array('rest' => array('vehicle.status.conditionBasedServices',
-                                                                'vehicle.status.checkControlMessages'),
-                                                'mqtt' => false),
+            'gps_coordinates'          => array('vehicle.cabin.infotainment.navigation.currentLocation.latitude',
+                                                'vehicle.cabin.infotainment.navigation.currentLocation.longitude'),
         );
     }
 
 	public function applyTelematicData(array $data, $full = false, $src = 'MQTT')
     {
         $updatedCmds = array(); $cmdSources = array();
-        $source = ($src === 'REST') ? 'rest' : 'mqtt';
+        $prefix = ($src === 'REST') ? '| ' : 'MQTT message received - Cmd updated : ';
 
-        foreach (self::tdMap() as $id => $d) {
-            $keys = array_key_exists($source, $d) ? $d[$source] : $d['rest'];
-            if (empty($keys)) { continue; }
-
+        foreach (self::tdMap() as $id => $keys) {
             $entry = null;
             foreach ((array) $keys as $k) {
                 if (isset($data[$k]['value'])) { $entry = $data[$k]; $cmdSources[$id] = $k; break; }
@@ -780,9 +771,7 @@ class myBMW extends eqLogic {
             if ($val === null) { continue; }
 
             $this->checkAndUpdateCmd($id, $updatedCmds[$id] = $val);
-
-            if ($src === 'REST') { log::add('myBMW', 'debug', '| '.(isset($cmdSources[$id]) ? $cmdSources[$id] : '(no data)').' -> '.$id.' = '.substr((string) $val, 0, 60)); }
-			else { log::add('myBMW', 'debug', 'MQTT message received - Cmd updated : '.$cmdSources[$id].' -> '.$id.' = '.substr((string) $val, 0, 60)); }
+            log::add('myBMW', 'debug', $prefix.(isset($cmdSources[$id]) ? $cmdSources[$id] : '(no data)').' -> '.$id.' = '.substr((string) $val, 0, 60));
         }
 
         $this->tdUpdateCalculated($updatedCmds, $src);
@@ -844,8 +833,8 @@ class myBMW extends eqLogic {
             case 'gps_coordinates':
                 return $this->tdGps($data, $full);
 
-            case 'vehicleMessages':
-                return ($entry === null) ? null : $this->tdMessages($data);
+            case 'doorLockState':                                // absent en REST : on garde la valeur reçue par MQTT
+                return ($v === null) ? null : strtoupper((string) $v);
         }
 
         if (strpos($id, 'tire') === 0) {                         // kPa -> bar
@@ -921,67 +910,6 @@ class myBMW extends eqLogic {
     {
         $cmd = $this->getCmd(null, $id);
         return is_object($cmd) ? $cmd->execCmd() : null;
-    }
-
-	/* --- Messages véhicule */
-    private function tdMessages(array $data)
-    {
-        $checkControl = 'vehicle.status.checkControlMessages';
-        $services     = 'vehicle.status.conditionBasedServices';
-        return json_encode(array(
-            'checkControlMessages' => $this->tdCheckControl(isset($data[$checkControl]['value']) ? $data[$checkControl]['value'] : null),
-            'requiredServices'     => $this->tdServices(isset($data[$services]['value']) ? $data[$services]['value'] : null),
-        ));
-    }
-
-    private function tdCheckControl($raw)
-    {
-        $out  = array();
-        $list = is_string($raw) ? json_decode($raw, true) : $raw;
-        if (!is_array($list)) { return $out; }
-        foreach ($list as $msg) {
-            $items = isset($msg['value']) ? (is_string($msg['value']) ? json_decode($msg['value'], true) : $msg['value']) : $msg;
-            if (!is_array($items)) { continue; }
-            if (isset($items['messageType']) || isset($items['text'])) { $items = array($items); }
-            foreach ($items as $i) {
-                if (is_array($i)) {
-                    $out[] = array('type' => isset($i['messageType']) ? $i['messageType'] : 'CHECK',
-                                   'severity' => isset($i['status']) ? $i['status'] : '',
-                                   'description' => isset($i['text']) ? str_replace("'", ' ', $i['text']) : '');
-                }
-            }
-        }
-        return $out;
-    }
-
-    private function tdServices($raw)
-    {
-        $months = array(1 => '- Janvier', '- Février', '- Mars', '- Avril', '- Mai', '- Juin',
-                        '- Juillet', '- Août', '- Septembre', '- Octobre', '- Novembre', '- Décembre');
-        $titles = array('Engine oil' => 'Huile moteur', 'Brake fluid' => 'Liquide de frein',
-                        'Vehicle check' => 'Révision', 'Vehicle tuv' => 'Contrôle technique',
-                        'Brake pads front' => 'Plaquettes de frein avant', 'Brake pads rear' => 'Plaquettes de frein arrière',
-                        'Tire year front' => 'Usure pneus avant', 'Tire year rear' => 'Usure pneus arrière',
-                        'Washing fluid' => 'Liquide de lave-glace');
-
-        $out  = array();
-        $list = is_string($raw) ? json_decode($raw, true) : $raw;
-        if (!is_array($list)) { return $out; }
-        foreach ($list as $s) {
-            if (!is_array($s)) { continue; }
-            $date = '';
-            if (!empty($s['date']) && strpos($s['date'], '-') !== false) {
-                list($year, $month) = explode('-', $s['date']);
-                $date = $months[(int) $month].' '.$year;
-            }
-            $km    = (!empty($s['unitOfLengthRemaining']) && $s['unitOfLengthRemaining'] !== '-') ? ' ou '.$s['unitOfLengthRemaining'].' km' : '';
-            $title = isset($s['title']) ? $s['title'] : '';
-            $out[] = array('type' => 'SERVICE ', 'date' => $date, 'mileage' => $km,
-                           'state' => isset($s['status']) ? $s['status'] : '',
-                           'title' => isset($titles[$title]) ? $titles[$title] : $title,
-                           'description' => 'La prochaine maintenance arrive à échéance à la date définie'.($km === '' ? '' : ' ou au kilométrage défini'));
-        }
-        return $out;
     }
 
 	public function handleMqttMessage($message)
